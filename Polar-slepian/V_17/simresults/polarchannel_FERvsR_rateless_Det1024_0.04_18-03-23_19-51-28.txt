@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT Rateless LTPT"
+"--------------------------------"
+"N=1024"
+"p_channel=0.04"
+"capacity*N:775.89279838"
+"sim ran :100000"
+"T:20"
+"Compound_plist:"
+[0.04, 0.15, 0.2, 0.25]

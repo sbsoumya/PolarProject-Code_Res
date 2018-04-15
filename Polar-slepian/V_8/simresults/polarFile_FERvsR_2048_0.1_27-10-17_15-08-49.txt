@@ -1,0 +1,6 @@
+"RATE Vs FER REPORT FOR FILE TX"
+"---------------------------"
+"N=2048"
+"p_decode=0.1"
+"capacity*N:1087.49702433"
+"sim ran :10000"

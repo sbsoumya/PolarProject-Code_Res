@@ -1,0 +1,16 @@
+"HIGH PROBABILITY KNOWN PATTERN REPORT"
+"---------------------------"
+"N=32"
+"p=0.1"
+"delta=0.8"
+"constant=10"
+"R=0.125"
+"runsim=100"
+"tolerable error exponent:-2"
+"Good Channels:"
+[31, 15, 23, 27]
+"R=0.125"
+"High Probabiltity flips"
+[3]
+"Error probability for Known patterns"
+"4960 sequences for 3flips"

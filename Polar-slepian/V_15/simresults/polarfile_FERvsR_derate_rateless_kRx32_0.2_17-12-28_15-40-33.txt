@@ -1,0 +1,11 @@
+"RATE Vs FER REPORT FILE Rateless kRx"
+"------------------------------------"
+"N=32"
+"p_design=0.04"
+"p_channel=0.2"
+"capacity*N:24.2466499494"
+"sim ran :1"
+"Rate vs Block_error="
+[0.0, 0.0, 0.0, 0.0, 0.375, 0.375, 0.375, 0.375, 0.375, 0.75]
+[0.0, 0.0, 0.0, 0.0, 0.125, 0.125, 0.125, 0.125, 0.125, 0.25]
+[-Infinity, -Infinity, -Infinity, -Infinity, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]

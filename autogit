@@ -1,0 +1,14 @@
+cp -rp /home/smart/Project/* /home/smart/Grive/IISC-CN2/Project/
+cd /home/smart/Grive/IISC-CN2/Project/code
+find ./* -size +95M | sed 's|^./||' > .gitignore
+echo "*.tar.*" >> .gitignore 
+echo "*.csv" >> .gitignore 
+date >> gitcodesync.txt
+git add .gitignore
+git add .
+sleep 3
+git commit -m "daily-autogit"
+sleep 3
+git push origin master
+sleep 1
+

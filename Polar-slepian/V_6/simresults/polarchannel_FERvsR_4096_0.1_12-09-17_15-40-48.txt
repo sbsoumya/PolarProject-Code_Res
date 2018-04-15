@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT"
+"---------------------------"
+"N=4096"
+"p_decode=0.1"
+"capacity*N:2174.99404866"
+"sim ran :100"
+"Rate vs Block_error="
+[0.2998046875]
+[-2.0]

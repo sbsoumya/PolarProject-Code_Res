@@ -1,0 +1,14 @@
+"LLR Lambda CHANNEL REPORT"
+"---------------------------"
+"N=8"
+"design_p=0.2"
+"Capacity for 8channels:2"
+"tolerable error exponent:-3"
+"Z Construct--------------------------------------------------------"
+"Good Channels:"
+[]
+"Number of good channels:"
+0
+"R=0.0"
+"Frozen channels:"
+8

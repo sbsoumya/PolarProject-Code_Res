@@ -1,0 +1,17 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"N=1024"
+"p_channel=0.2"
+"capacity*N:284.745630835"
+"sim ran :1"
+"T:20"
+"Compound_plist:"
+[0.04, 0.15, 0.2, 0.25]
+"Rate vs Block_error="
+[50, 100]
+[0.0390625, 0.09765625]
+[0.0390625, 0.09765625]
+[-Infinity, -Infinity]
+"Iter Probabilities="
+[{"1": 1.0}, {"1": 1.0}]
+"Time taken:0.272650957108"

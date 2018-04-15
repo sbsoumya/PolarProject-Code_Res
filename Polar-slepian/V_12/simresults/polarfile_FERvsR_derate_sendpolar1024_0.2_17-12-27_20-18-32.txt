@@ -1,0 +1,6 @@
+"RATE Vs FER REPORT FILE send polar"
+"----------------------------------"
+"N=1024"
+"p_decode=0.2"
+"capacity*N:284.745630835"
+"sim ran :10"

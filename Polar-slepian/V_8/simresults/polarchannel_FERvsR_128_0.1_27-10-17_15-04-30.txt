@@ -1,0 +1,6 @@
+"RATE Vs FER REPORT"
+"---------------------------"
+"N=128"
+"p_decode=0.1"
+"capacity*N:67.9685640206"
+"sim ran :10"

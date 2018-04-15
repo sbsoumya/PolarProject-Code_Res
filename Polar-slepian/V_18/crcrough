@@ -1,0 +1,254 @@
+#===========================================================================================CRC stepretro
+"""
+For CRC , a CRC of the UN_nsg it transmitted as key
+At every iteration this is extracted, The CRC is calculated and both are matched
+with Iter retro UN_msg is retro decoded and CRC is calculated
+"""
+def send_rateless_det_Iter_retro_CRC(UN_msg,N,T,I_ord,channel_p,compound_plist,Glist): #T is CRC length should be power of 2
+    
+    #Adding detection bits
+    # T is lock and Key length
+   	UN_lock=ml.getCRC(UN_msg,T)
+   	key_ind=range(Glist[0]-T,Glist[0])
+	UN=np.array(list(UN_msg)+UN_lock) # lock added as key
+	#print UN
+	
+	
+	maxiter=len(compound_plist)-1
+    #the rate considered for the true channel
+	#G=Glist[compound_plist.index(channel_p)]
+	#----------------------------------------------------Iterations start
+	Iterhistory={} #contains indexes of UN sent in each iteration
+	decoded=False
+	
+	# for first Tx
+	Iter=0
+	Iter_UN=UN
+	Iter_p=compound_plist[0]
+	Iter_G=Glist[0]
+	Iter_I=I_ord[:Iter_G]
+	Iter_UN_ind=range(len(UN))
+	
+    
+	#print "Forward decoding"		
+	while not decoded :
+		
+		Iter_UN=[UN[i] for i in Iter_UN_ind]
+		 
+		Iter_D=np.zeros(N-Iter_G,dtype=int).tolist()      #frozen data
+		Iter_XN=ec.polarencodeG(Iter_UN,N,Iter_I,list(Iter_D),False)   #data goes in as per R.I
+		
+		#--------------------Note channel_p used for flipping
+		Iter_YN=pl.BSCN(channel_p,Iter_XN)
+		
+		#-----------------------decoding based on this tx only
+		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
+		Iter_UN_decoded=ec.getUN(Iter_UN_hat,Iter_I,False)
+		
+		#storage needed for final decoding
+		Iterhistory[Iter]=[Iter_UN_ind,Iter_UN_decoded,Iter_YN]
+		#print Iterhistory
+		
+		
+		
+		Iter_UN_retro_decoded=Iter_retro_decode(Iterhistory,Iter,N,I_ord,Glist,Iter_G,Iter_p,Iter_I)
+		#print Iterhistory
+		#Extracting Lock lock and key
+		Iter_UN_decoded_lock=pl.getCRC(list(Iter_UN_retro_decoded)[:Glist[0]-T],T) # calculating CRC
+		Iter_UN_decoded_key=list(Iter_UN_retro_decoded)[-T:] #received CRC		
+		
+		#print Iter_UN_retro_decoded 
+		#print Iter_UN_decoded_lock
+		#print Iter_UN_decoded_key
+		
+		#print Iter_UN_decoded_key
+		if is_mismatch(Iter_UN_decoded_lock,Iter_UN_decoded_key) and Iter<maxiter:
+			
+			
+			# picking out all the channels that are suspected to be bad in past
+			# iterations and putting them for next iteration.
+			# Note first iteration Whole UN is sent
+			# in next only suspected bad channels are sent
+			prev_I=Iter_I
+			Iter+=1
+			
+			#New channel params
+			Iter_p=compound_plist[Iter]
+			Iter_G=Glist[Iter]
+			Iter_I=I_ord[:Iter_G]
+			
+			tosend_ind=[]
+			for i in range(Iter):
+				
+				#picking out the bad channels from prev iterations
+				sent_ind=Iterhistory[i][0]
+				sent_ind_last_iter=sent_ind[:Glist[Iter-1]]
+				bad_ind=sent_ind_last_iter[Iter_G:]
+				tosend_ind.extend(bad_ind)
+			
+			Iter_UN_ind=list(set(tosend_ind))
+			Iter_UN_ind.sort()
+			
+			
+			
+		else:
+			decoded= True
+			
+			
+	
+	#final==================================
+	final_Iter=Iter
+	if is_mismatch(Iter_UN_decoded_lock,Iter_UN_decoded_key): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+		return_iter=final_Iter+1
+		
+	final_decoded=Iter_UN_retro_decoded
+	final_UN_msg=final_decoded[:Glist[0]-T]
+	achieved_rate=float(len(UN_msg))/((final_Iter+1)*N)
+	return (achieved_rate,return_iter,np.array(final_UN_msg))
+	
+#===========================================================================CRC delta
+
+def send_rateless_det_Iter_retro_delta_CRC(UN_msg,N,T,I_ord,channel_p,compound_plist,Glist,deltaG):#T is CRC length should be power of 2
+	#delta G need not be mentioned.explicit argument for readability
+    
+    #Adding detection bits
+    # T is lock and Key length
+	UN_lock=ml.getCRC(UN_msg,T)
+	print UN_msg
+	print UN_lock
+   	key_ind=range(Glist[0]-T,Glist[0])
+   	UN=np.array(list(UN_msg)+UN_lock) # lock added as key
+   	UN_msg_length=len(UN_msg)
+	#print UN
+	
+	maxiter=len(compound_plist)-1
+
+	#----------------------------------------------------Iterations start
+	Iterhistory={} #contains indexes of UN sent in each iteration
+	decoded=False
+	
+	# for first Tx
+	Iter=0
+	Iter_UN=UN
+	Iter_p=compound_plist[0]
+	Iter_G=Glist[0]
+	Iter_I=I_ord[:Iter_G]
+	Iter_UN_ind=range(Glist[0])
+	Iter_key_ind=key_ind
+    
+	while not decoded :
+		#print Iter_G
+		Iter_D=np.zeros(N-Iter_G,dtype=int).tolist()      #frozen data
+		Iter_XN=ec.polarencodeG(Iter_UN,N,Iter_I,list(Iter_D),False)   #data goes in as per R.I
+		
+		#--------------------Note channel_p used for flipping
+		Iter_YN=pl.BSCN(channel_p,Iter_XN)
+		
+		#-----------------------decoding based on this tx only
+		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
+		Iter_UN_decoded=ec.getUN(Iter_UN_hat,Iter_I,False)
+		
+		#storage needed for final decoding
+		Iterhistory[Iter]=[Iter_UN_ind,Iter_UN_decoded,Iter_YN]
+		
+		#~ print "forward"
+		#~ print Iterhistory
+		
+		#updating decoded UN wrt results of present iteration
+		(Iter_UN_retro_decoded_ind,Iter_UN_retro_decoded)=Iter_retro_decode_delta(Iterhistory,Iter,N,I_ord,Glist,Iter_G,Iter_p,Iter_I)
+		
+		
+		#Extracting Lock lock and key
+		Iter_UN_decoded_lock=ml.getCRC(list(Iter_UN_retro_decoded)[:Glist[0]-T],T) # calculating CRC
+		Iter_UN_decoded_key=list(Iter_UN_retro_decoded)[-T:] #received CRC	
+		
+		#~ print Iter_UN_retro_decoded 
+		#~ print Iter_UN_decoded_lock
+		#~ print Iter_UN_decoded_key
+	
+		if is_mismatch(Iter_UN_decoded_lock,Iter_UN_decoded_key) and Iter<maxiter:
+			
+			
+			# picking out all the channels that are suspected to be bad in past
+			# iterations and putting them for next iteration.
+			# Note first iteration Whole UN is sent
+			# in next only suspected bad channels are sent
+			prev_I=Iter_I
+			Iter+=1
+			prev_Iter_key_ind=list(Iter_key_ind)
+			
+			#New channel params
+			Iter_p=compound_plist[Iter]
+			Iter_G=Glist[Iter]
+			Iter_I=I_ord[:Iter_G]
+			
+			tosend_ind=[]
+			for i in range(Iter):
+			
+				#picking out the bad channels from prev iterations
+				sent_ind=Iterhistory[i][0]
+				sent_ind_last_iter=sent_ind[:Glist[Iter-1]]
+				bad_ind=sent_ind_last_iter[Iter_G:]
+				tosend_ind.extend(bad_ind)
+			
+			Iter_UN_ind_retran=list(set(tosend_ind))
+			Iter_UN_ind_retran.sort()
+			Iter_key_ind=[]
+			
+			#construction of Iter_UN
+			#removing Key indices from retran indices
+			for t in prev_Iter_key_ind:
+				try:
+					Iter_UN_ind_retran.remove(t)
+					Iter_key_ind.append(t)
+				except:
+					pass
+			
+					
+			#picking retran data
+			Iter_UN_retran=[UN_msg[i] for i in Iter_UN_ind_retran]
+			
+			#filler
+			Iter_filler_length=Iter_G-Iter*deltaG
+			Iter_UN_ind_filler=range(UN_msg_length+T,UN_msg_length+Iter_filler_length+T)
+			Iter_UN_filler=list(np.random.randint(2,size=Iter_G-Iter*deltaG))
+			
+			#~ print "indices"
+			#~ print Iter_UN_ind_retran
+			#~ print Iter_UN_ind_filler
+			#~ print Iter_key_ind
+			
+			#~ print "new data"			
+			#~ print Iter_UN_retran
+			#~ print Iter_UN_filler
+			#~ print Iter_key
+			
+
+			#Iter_UN
+			Iter_UN=list(Iter_UN_retran)+list(Iter_UN_filler)+list(UN_lock) # adding lock at end
+			Iter_UN_ind=list(Iter_UN_ind_retran)+list(Iter_UN_ind_filler)+list(Iter_key_ind)
+			#print Iter_UN_ind
+			
+			#update UN_msg, will be returned for error checking
+			UN_msg.extend(Iter_UN_filler)
+			UN_msg_length=len(UN_msg)
+				
+		else:
+			decoded= True
+	
+	#final==================================
+	final_Iter=Iter
+	if is_mismatch(Iter_UN_decoded_lock,Iter_UN_decoded_key): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+			return_iter=final_Iter+1
+	final_decoded=Iter_UN_retro_decoded
+	final_indices=Iter_UN_retro_decoded_ind
+	final_UN_msg=ml.extract_otherdata(final_indices,final_decoded,key_ind) #The data in Iter 0 is sorted
+	achieved_rate=float(UN_msg_length)/((final_Iter+1)*N)
+	return (achieved_rate,return_iter,np.array(UN_msg),np.array(final_UN_msg))
+
+
+

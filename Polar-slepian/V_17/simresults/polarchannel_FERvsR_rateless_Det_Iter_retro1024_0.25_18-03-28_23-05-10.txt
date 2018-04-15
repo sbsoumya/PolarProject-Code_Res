@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"N=1024"
+"p_channel=0.25"
+"capacity*N:193.251200554"
+"sim ran :10000"
+"T:20"
+"Compound_plist:"
+[0.04, 0.15, 0.2, 0.25]

@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT FOR FILE TX"
+"---------------------------"
+"N=1024"
+"p_decode=0.1"
+"capacity*N:543.748512165"
+"sim ran :10"
+"Rate vs Block_error="
+[0.099609375, 0.1494140625, 0.19921875, 0.25, 0.2998046875, 0.349609375, 0.3994140625, 0.44921875, 0.5]
+[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -0.5228787452803376, -0.045757490560675115, 0.0]

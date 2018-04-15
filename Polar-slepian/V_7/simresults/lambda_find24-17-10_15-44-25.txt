@@ -1,0 +1,21 @@
+"Lambda_finder"
+"---------------------------"
+"N=64"
+"design_p=0.1"
+"Capacity for 64channels:33"
+"design for rate:33"
+"Z Construct--------------------------------------------------------"
+"Good Channels:"
+[63, 31, 47, 55, 59, 61, 15, 23, 62, 39, 27, 43, 29, 51, 45, 53, 30, 7, 46, 11, 57, 54, 19, 13, 35, 58, 21, 60, 37, 14, 25, 22, 41]
+"Number of good channels:"
+33
+"R=0.515625"
+"Frozen channels:"
+31
+"sim ran for LT:10000"
+"channel_p:0.1"
+"Lambda Min(E(LLR))4.17340836219"
+"Lambda E(min(LLR))2.08209000948"
+"channel_p:0.2"
+"Lambda Min(E(LLR))1.60968672536"
+"Lambda E(min(LLR))0.206099665354"

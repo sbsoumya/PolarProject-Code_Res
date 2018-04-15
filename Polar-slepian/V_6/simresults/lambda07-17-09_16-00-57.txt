@@ -1,0 +1,15 @@
+"LLR Lambda CHANNEL REPORT"
+"---------------------------"
+"N=32"
+"design_p=0.05"
+"Capacity for 32channels:22"
+"design for rate:20"
+"Z Construct--------------------------------------------------------"
+"Good Channels:"
+[31, 15, 23, 27, 29, 30, 7, 11, 19, 13, 21, 14, 25, 22, 3, 26, 5, 28, 9, 6]
+"Number of good channels:"
+20
+"R=0.625"
+"Frozen channels:"
+12
+"sim ran :100"

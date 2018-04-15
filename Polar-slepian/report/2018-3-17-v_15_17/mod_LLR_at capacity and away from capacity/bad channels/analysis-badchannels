@@ -1,0 +1,8 @@
+The FER is lower bounded by P_MD
+We can do better with changing lambda as per expectation plot  by increasing lambda and thus reducing Theta if we are OK with making P_False alarm higher. We get lower P_MD (average of all P_MD for true channels) but we take a rate hit.
+All the thresholdings are done at capacity.
+At capacity the FER is almost 1, so the lower bound of ~0.05 is trivial 
+
+By using lower rate and different thresholds we can get better results.
+At this rate the FER is lower we need to check what lower bound is offered by P_MD by this.
+This happens perhaps because at lower rates the number of bad channels increase (in particular more channels are included from the top).

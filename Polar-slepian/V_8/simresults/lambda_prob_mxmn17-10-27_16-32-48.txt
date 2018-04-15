@@ -1,0 +1,22 @@
+"LLR Lambda CHANNEL REPORT"
+"---------------------------"
+"N=32"
+"design_p=0.1"
+"Capacity for 32channels:16"
+"design for rate:16"
+"Z Construct--------------------------------------------------------"
+"Good Channels:"
+[31, 15, 23, 27, 29, 30, 7, 11, 19, 13, 21, 14, 25, 22, 3, 26]
+"Number of good channels:"
+16
+"R=0.5"
+"Frozen channels:"
+16
+"sim ran :10"
+[3.0761144082707066, 6.1522288165414141, 4.6141716124060608]
+"used_lambda_threshold3.07611440827"
+"p,Pr(Gmin>thr),Pr(Fmax<thr)::Pr(gmin>Fmax)"
+[0.1, 0.3, 0.0, 0.1]
+[0.2, 0.3, 0.0, 0.2]
+[0.3, 0.1, 0.0, 0.0]
+[0.4, 0.2, 0.0, 0.1]

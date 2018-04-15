@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT"
+"---------------------------"
+"N=32"
+"p_decode=0.1"
+"capacity*N:16.9921410051"
+"sim ran :10"
+"Rate vs Block_error="
+[0.09375, 0.125, 0.1875, 0.25, 0.28125, 0.34375, 0.375, 0.4375, 0.5]
+[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -0.5228787452803376, -1.0, -1.0, -0.5228787452803376]

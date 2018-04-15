@@ -1,0 +1,7 @@
+"Timing REPORT for each string (in Secs)"
+"---------------------------"
+"N=1024"
+"p_channel=0.3"
+"sim ran :100"
+"Rate:0.5"
+"Time for construction:0.000951840877533"

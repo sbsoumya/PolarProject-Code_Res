@@ -1,0 +1,9 @@
+Since the plots are non documented well:
+the absolute LLrs are for a design of p=0.1
+channel=0.1 red, 0.2 blue,0.3 green,0.4 yellow
+x axis is reliability ordering of bit channels
+
+the density
+is a plot of absolute llr values of the best bit channel for 0.1 channel
+
+

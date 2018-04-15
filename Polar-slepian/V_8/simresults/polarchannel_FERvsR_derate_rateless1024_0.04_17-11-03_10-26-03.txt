@@ -1,0 +1,7 @@
+"RATE Vs FER REPORT Rateless"
+"---------------------------"
+"N=1024"
+"p_design=0.04"
+"p_channel=0.04"
+"capacity*N:775.89279838"
+"sim ran :1"

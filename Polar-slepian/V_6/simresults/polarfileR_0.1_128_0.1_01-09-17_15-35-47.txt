@@ -1,0 +1,11 @@
+"MONTE _CARLO FILE REPORT"
+"---------------------------"
+"N=128"
+"p=0.1"
+"Rate=0.1"
+"sim ran :5000000"
+"Good Channels:"
+[127, 63, 95, 111, 119, 123, 125, 31, 47, 79, 55, 87]
+"Achieved =0.09375"
+"Frozen channels:"
+116

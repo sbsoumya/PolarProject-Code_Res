@@ -1,0 +1,17 @@
+"MONTE _CARLO CHANNEL REPORT"
+"---------------------------"
+"N=64"
+"p=0.2"
+"Capacity for 64channels:17"
+"No of good channels needed :5(valid if used)"
+"tolerable error exponent:-6"
+"Z Construct--------------------------------------------------------"
+"Good Channels:"
+[63]
+"Corresponding Error Exponents:"
+[-6.202240832515607]
+"Number of good channels:"
+1
+"R=0.015625"
+"Frozen channels:"
+63

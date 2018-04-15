@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT FILE derate"
+"------------------------------"
+"N=1024"
+"p_decode=0.2"
+"capacity*N:284.745630835"
+"sim ran :1"
+"Rate vs Block_error="
+[0.02734375, 0.0546875, 0.0830078125, 0.1103515625, 0.138671875, 0.166015625, 0.1943359375, 0.2216796875, 0.25, 0.27734375]
+[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, 0.0, 0.0, 0.0, 0.0, 0.0]

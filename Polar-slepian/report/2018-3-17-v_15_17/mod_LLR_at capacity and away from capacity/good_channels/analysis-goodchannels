@@ -1,0 +1,12 @@
+The FER is lower bounded by P_MD
+We can do better with changing lambda as per expectation plot  by increasing lambda and thus reducing Theta if we are OK with making P_False alarm higher. We get lower P_MD (average of all P_MD for true channels) but we take a rate hit.
+Unlike in case of bad channels, in case of good channels choosing a increasing the lambda seemed difficult by seeing the expectation plot , hence here only theta was reduced to produce similar effect as suggested above.
+
+The away from capacity does not show desired results need further investigation.
+
+AWAY FROM CAPACITY
+------------------
+When the sent rate changes by derate asumming that that the number of channels crossing Lambda remain same should not the theta change.hence for every sent rate we have to get a new theta , or LT PT pair.
+OR
+we should always calculate percentage using the actual I not derated I.
+ 

@@ -1,0 +1,103 @@
+#-------------------------------------------------------------------------------
+# Name:       polarchannelsim_FERvsR_rateless_det_Iterretro.py
+# Purpose:    FER VS R simulation for given msg_length and varying channel
+#
+# Author:      soumya
+#
+# Created:     19/08/2017
+#----------------------------------------
+
+import numpy as np
+import math as ma
+import problib as pl
+import polarencdec as ec
+import polarconstruct as pcon
+from datetime import datetime
+import json
+import polarchannel as pch
+from pprint import pprint
+import rateless_channel_det_maxiter as rlc
+from timeit import default_timer as timer
+#=================================================================simulation		
+#------------Number of good channels = capacity
+start = timer()
+Nlist=[1024]
+compound_plist=[0.08349999999999963, 0.10599999999999965, 0.13099999999999967, 0.1594999999999997, 0.19249999999999973]
+#[600, 525, 450, 375, 300]
+doiter=1
+#
+#~ [496, 430, 364, 298, 232]
+#~ [0.10499999999999965, 0.12699999999999967, 0.1509999999999997, 0.17849999999999971, 0.20999999999999974]
+#~ 66
+channel_plist=list(np.linspace(0.01,0.10499999999999965,8))
+T=32
+msg_length=496
+deltaG=66
+runsim=10000
+runsimhigh=10
+
+start=timer()
+for N in Nlist:
+	
+	stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
+	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_delta_"+str(msg_length)+"in"+str(N)+"_T"+str(T)+"_doiter"+str(doiter)+"_"+stamp+".txt"
+	f1=open(filename,'w')
+	print filename
+	print "RATE Vs FER REPORT Rateless Det Iter delta"
+	print "------------------------------------------"
+	print "Compound_plist:"
+	print compound_plist
+	print "sim ran :"+str(runsim)
+	print "T:"+str(T)
+	print "doiter:"+str(doiter)
+		
+	json.dump( "RATE Vs FER REPORT Rateless Det Iter delta",f1) ;f1.write("\n")
+	json.dump( "------------------------------------------",f1) ;f1.write("\n")
+	json.dump( "Compound_plist:",f1) ;f1.write("\n")
+	json.dump(compound_plist,f1) ;f1.write("\n")
+	json.dump("sim ran :"+str(runsim),f1) ;f1.write("\n")
+	json.dump("T:"+str(T),f1);f1.write("\n")
+	json.dump("doiter:"+str(doiter),f1);f1.write("\n")
+		
+	print "N="+str(N)
+	json.dump( "N="+str(N),f1) ;f1.write("\n")
+	
+	used_rate=[];
+	achieved_rate=[]
+	FER=[];
+	Iter_problist=[]
+	
+	for channel_p in channel_plist:
+		#print "channel_p:"+str(channel_p)
+		(u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_delta_doiter_sim(N,T,compound_plist,channel_p,msg_length,deltaG,doiter,runsim)
+		#~ if block_error==0:
+			#~ (u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_delta_doiter_sim(N,T,compound_plist,channel_p,msg_length,deltaG,doiter,runsimhigh)
+		used_rate.append(u_rate)
+		achieved_rate.append(ach_rate)
+		FER.append(block_error)
+		Iter_problist.append(Iter_probdict)
+
+block_error_exp=np.log10(FER).tolist()	    
+print channel_plist
+print achieved_rate
+print block_error_exp
+print Iter_problist
+		
+json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")
+json.dump(channel_plist,f1) ;f1.write("\n")
+json.dump(achieved_rate,f1) ;f1.write("\n")
+json.dump(block_error_exp,f1) ;f1.write("\n")
+json.dump( "Iter Probabilities=",f1) ;f1.write("\n")
+json.dump(Iter_problist,f1) ;f1.write("\n")
+
+end = timer()
+TC=(end-start)
+print "Time taken:"+str(TC)	
+json.dump("Time taken:"+str(TC)	,f1) ;f1.write("\n")
+			
+
+		    
+
+
+
+

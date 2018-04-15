@@ -1,0 +1,14 @@
+"LLR Lambda CHANNEL REPORT"
+"---------------------------"
+"N=128"
+"design_p=0.2"
+"Capacity for 128channels:35"
+"tolerable error exponent:-3"
+"Z Construct--------------------------------------------------------"
+"Good Channels:"
+[127, 63, 95, 111, 119]
+"Number of good channels:"
+5
+"R=0.0390625"
+"Frozen channels:"
+123
