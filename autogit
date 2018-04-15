@@ -1,8 +1,12 @@
+echo copying...
 cp -rp /home/smart/Project/* /home/smart/Grive/IISC-CN2/Project/
 cd /home/smart/Grive/IISC-CN2/Project/code
+echo copy complete...
 find ./* -size +95M | sed 's|^./||' > .gitignore
 echo "*.tar.*" >> .gitignore 
 echo "*.csv" >> .gitignore 
+echo ignoring:
+cat .gitignore
 date >> gitcodesync.txt
 git add .gitignore
 git add .
