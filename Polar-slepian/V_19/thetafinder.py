@@ -68,13 +68,16 @@ LT=40
 PT=63
 print LT
 #absllr
-Fdict=lmb.perc_channel_func_WD(LLRdict,channel_plist,N,LT,G,runsim,f_absllr=lmb.f_abs,use_bad=False,use_func_for_LT=True)
-LT=lmb.f_abs(LT)
+#~ Fdict=lmb.perc_channel_func_WD(LLRdict,channel_plist,N,LT,G,runsim,f_absllr=lmb.f_abs,use_bad=False,use_func_for_LT=True)
+#~ LT=lmb.f_abs(LT)
 		
 #f_Irv
 #Fdict=lmb.perc_channel_Irv_WU(LLRdict,channel_plist,N,LT,G,runsim,use_bad=True,use_func_for_LT=True)
 #LT=lmb.f_Irv_abs(LT)
 
+#f_Irv_alt
+#Fdict=lmb.perc_channel_Irv_WU(LLRdict,channel_plist,N,LT,G,runsim,use_bad=True,use_func_for_LT=True)
+#LT=lmb.f_Irv_abs(LT)
 
 #f_Irv_abs
 #~ Fdict=lmb.perc_channel_func_WD(LLRdict,channel_plist,N,LT,G,runsim,f_absllr=lmb.f_Irv_abs,use_bad=True,use_func_for_LT=True)
@@ -106,8 +109,8 @@ f="$|LLR|"
 #~ fnick="f_Irv_abs"
 #~ f="$log 2/(1+e^{-|llr|})"
 
-#~ fnick="f_Irv_altered"
-#~ f="$-log 2/(1+e^{llr*(1-2u)})"
+fnick="f_Irv_altered"
+f="$-log 2/(1+e^{llr*(1-2u)})"
 	
 plt.legend(loc="best")
 plt.title("Thresholds for PHY-ED \n $\lambda$="+str(LT)+",$\Theta$="+str(PT)+",p$_{guessed}$="+str(design_p))

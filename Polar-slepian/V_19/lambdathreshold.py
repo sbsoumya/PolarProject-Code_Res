@@ -323,14 +323,44 @@ def E_channel_altIrv_WU(LLRdict,channel_plist,N,G,runsim):
 		for i in range(runsim):
 			LLRchannels=LLRdict[str(channel_p)][i][0][G:]
 			SentBitchannels=LLRdict[str(channel_p)][i][1][G:]
-			RV=[-f_Irv(-llr,int(sentbit)) for llr,sentbit in zip(LLRchannels,SentBitchannels)]
+			#RV=[-f_Irv(-llr,int(sentbit)) for llr,sentbit in zip(LLRchannels,SentBitchannels)]
+			RV=[f_Irv_alt(llr,int(sentbit)) for llr,sentbit in zip(LLRchannels,SentBitchannels)]
 			
 			E_channel=E_channel+np.array(RV,dtype=float)/runsim
 		
 		Edict[str(channel_p)]=E_channel
 		
 	return Edict
-	
+def E_channel_formIrv_WU(LLRdict,channel_plist,N,G,runsim):
+	#as I is a subsequence of RI , only G is needed
+	#if use_func_for_LT:
+	#	LT=f_Irv_abs(LT)
+		
+	Edict={}
+	for channel_p in channel_plist:
+		print "\nrunning for "+str(channel_p)+"..."
+		
+		Edict[str(channel_p)]=[]
+		RV0=np.zeros(N-G)	
+		RV1=np.zeros(N-G)	
+		Num_ones=np.zeros(N-G)
+		for i in range(runsim):
+			LLRchannels=LLRdict[str(channel_p)][i][0][G:]
+			SentBitchannels=LLRdict[str(channel_p)][i][1][G:]
+			SentBits=[int(sentbit) for sentbit in SentBitchannels]
+			#RV=[-f_Irv(-llr,int(sentbit)) for llr,sentbit in zip(LLRchannels,SentBitchannels)]
+			RV1=RV1+np.array([f_Irv(llr,sentbit)*sentbit for llr,sentbit in zip(LLRchannels,SentBits)])
+			RV0=RV0+np.array([f_Irv(llr,sentbit)*(1-sentbit) for llr,sentbit in zip(LLRchannels,SentBits)])
+			Num_ones=Num_ones+np.array(SentBits)
+		
+		print Num_ones
+		print RV0
+		print RV1    
+		E_channel=(RV1/Num_ones+RV0/(N-Num_ones))
+		
+		Edict[str(channel_p)]=E_channel
+		
+	return Edict	
 def E_channel_Irv_abs(LLRdict,channel_plist,N,G,runsim):
 	#as I is a subsequence of RI , only G is needed
 	#if use_func_for_LT:
@@ -372,8 +402,11 @@ def f_Irv_abs(absllr):
 	return (ma.log(2)-ml.logdomain_sum(0,-absllr))/ma.log(2)
 	
 def f_Irv(llr,sentbit):
-	return (ma.log(2)-ml.logdomain_sum(0,-llr*(1-2*sentbit)))/ma.log(2)
+	return (ma.log(2)-ml.logdomain_sum(0,llr*(2*sentbit-1)))/ma.log(2)
 	 # unlike the theory here llr is p0/p1 s0 -llr
+def f_Irv_alt(llr,sentbit):
+	return -(ma.log(2)-ml.logdomain_sum(0,llr*(1-2*sentbit)))/ma.log(2)
+	#return ml.logdomain_sum(0,llr)*sentbit/ma.log(2)
 
 #----------------------------------fuctions for implementation of rateless LTPT
 def perc_goodchannel_llr(llr,I,LT):

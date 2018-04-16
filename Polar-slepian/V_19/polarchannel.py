@@ -177,6 +177,49 @@ def polarchannelsim_FRTV(N,channel_p,design_p,msg_length,runsim,BER_needed):
 		return (ber_exp,block_error)
 	else:
 		return block_error	
+def polarchannelsim_FRMC(N,channel_p,design_p,msg_length,runsim,BER_needed):
+	p=channel_p
+	#GRANULARITY IN CONSTRUCTION
+	M=512
+	G=msg_length #number of good channels
+	I_ord=pcon.getGCHsim("MK_ALL",N,design_p,1024)
+	#I_ord2=ec.bitreverseorder(I_ord,10)
+	#print I_ord
+	#print I_ord2
+	I=I_ord[:G]
+	
+	if BER_needed:
+		errcnt=np.zeros(G)
+	
+	block_errorcnt=0
+	#print float(len(I))/N
+	#UN=np.random.randint(2,size=G)
+	#print UN
+	for i in range(runsim):
+		#print i
+		UN=np.random.randint(2,size=G)
+		FD=np.zeros(N-G,dtype=int).tolist()#frozen data
+		XN=ec.polarencodeG(UN,N,I,list(FD),False)
+		
+		YN=pl.BSCN(p,XN)
+		UN_hat=ec.polarSCdecodeG(YN,N,design_p,I,list(FD),False)
+		UN_decoded=ec.getUN(UN_hat,I,False)
+		if BER_needed:
+			errcnt=errcnt+np.logical_xor(UN,UN_decoded)
+						
+		if UN.tolist()!=UN_decoded.tolist():
+			block_errorcnt+=1
+		#print UN,YN,UN_decoded
+	if BER_needed:		
+		berN=errcnt/runsim
+		ber_exp=np.log10(berN).tolist()
+	
+	block_error=float(block_errorcnt)/runsim
+		
+	if BER_needed:
+		return (ber_exp,block_error)
+	else:
+		return block_error	
 #=========================================polar channel sim derate
 #0.04 debug 20-12-2017
 #These are for simulations to match rateless style

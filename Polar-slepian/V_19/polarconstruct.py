@@ -85,6 +85,8 @@ def getGChMCK(design_p,N,K,runsim):
 	for i in range(runsim):
 		UN=np.random.randint(2,size=N)
 		UN_decoded=ec.polarSCdecode(pl.BSCN(p,ec.polarencode(UN,len(UN))),len(UN),p)
+		if (i%1000)==0:
+			print i
 		err=err+np.logical_xor(UN,UN_decoded)
 	
 	aZN=err/runsim
@@ -102,7 +104,7 @@ def getGChMCK(design_p,N,K,runsim):
 	json.dump(rgood_channels_all,f3)
 	
 	return (rgood_channels,ber_exp[:K],ber_exp)
-
+#getGChMCK(0.01,1024,1024,10000)
 	
 def getGChMCL(design_p,N,L,runsim):
 	p=design_p
@@ -203,7 +205,8 @@ def getRI_LLRsim(N):
 #----------------------------------------------------------------Reliability order
 def getreliability_order(N):
 	return getGChZCK(0.01,N,N)[0]	
-	
+#print getreliability_order(1024)	
+#print getGCHsim("MK_ALL",1024,0.01,1024)
 #=================================================================simulation	
 #print getGChMZ(0.01,1024,-6,1000)	
 

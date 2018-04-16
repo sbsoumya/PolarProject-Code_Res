@@ -32,17 +32,27 @@ plt.rc('font', family='serif')
 
 #filename="./simresults/llrsgndict-1024-0p2-18-02-15_14-58-44.txt"
 #filename="./simresults/llrsgndict-1024-0p15-18-02-15_14-58-32.txt"
-filename="./simresults/llrsgndict-1024-0p04-18-02-15_14-58-19.txt"
+#filename="./simresults/llrsgndict-1024-0p04-18-02-15_14-58-19.txt"
+
+
+#--------------------------------LLR new files
+#filename="./simresults/llrsgndict-1024-0p0835-18-04-14_20-04-58.txt"
+#filename="./simresults/llrsgndict-1024-0p1925-18-04-14_20-06-05.txt"
+#filename="./simresults/llrsgndict-1024-0p2455-18-04-14_20-07-15.txt"
+filename="./simresults/llrsgndict-1024-0p2785-18-04-14_20-08-14.txt"
+
 
 
 LLRdict=lmb.load_LLRdict(filename)
 N=1024
-design_p=0.04
 runsim=1000
-channel_plist=[0.04,0.15,0.2,0.25]
+channel_plist=LLRdict.keys()
+channel_plist.sort()
+design_p=min(channel_plist)
+print design_p
+print channel_plist
+G=int(pl.CapacityBSC(N,float(design_p)))
 skip=0
-C=pl.CapacityBSC(N,design_p)
-G=int(C)
 F=N-G
 #------------------------------------LT
 #G=250
@@ -51,13 +61,14 @@ F=N-G
 
 		
 #f_Irv
+#Edict=lmb.E_channel_Irv_WU(LLRdict,channel_plist,N,G,runsim)
 Edict=lmb.E_channel_altIrv_WU(LLRdict,channel_plist,N,G,runsim)
-
-
+#Edict=lmb.E_channel_formIrv_WU(LLRdict,channel_plist,N,G,runsim)
 #f_Irv_abs
 #Edict=lmb.E_channel_Irv_abs(LLRdict,channel_plist,N,G,runsim)
 
-color=["red","blue","green","yellow"]
+colors=["red","blue","green","yellow","black"]
+color=colors[:len(channel_plist)]
 plt.figure(1)
 index= range(runsim)
 j=1
@@ -65,7 +76,10 @@ j=1
 for channel_p in channel_plist:
 	j+=1
 	plt.scatter([channel_p]*F,Edict[str(channel_p)],color=color[j-2],label="p$_{channel}=$"+str(channel_p))
-	
+	#~ print "CalcCap"
+	#~ print sum(Edict[str(channel_p)])/1.28
+	#~ print "ActCap"
+	#~ print pl.CapacityBSC(N,float(channel_p))
 
 for i in range(F):
 	#Edictline=[Edict[str(cp)][i] for cp in channel_plist]
@@ -97,7 +111,7 @@ plt.xlabel("p$_{channel}$")
 plt.grid(True)
 #plt.ylabel("\% of good channels with $|LLR| \geq \lambda$")
 plt.ylabel("E[] for Frozen channel ")
-plt.savefig("./simresults/Ex_"+fnick+"_0p04"+"_"+".png", bbox_inches='tight')
+plt.savefig("./simresults/Ex_"+fnick+"-"+str(design_p).replace(".","p")+".png", bbox_inches='tight')
 
 plt.show();
 
