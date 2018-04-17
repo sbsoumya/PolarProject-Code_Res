@@ -28,6 +28,7 @@ FR5="./simresults/polarchannel_FERvsp_FR76in1024_18-03-31_21-09-55.txt"
 FR6="./simresults/polarchannel_FERvsp_FRTV508in1024_18-04-13_23-15-53.txt"
 FR6="./simresults/polarchannel_FERvsp_FRTV508in1024_18-04-14_19-30-01.txt"
 FR6="./simresults/polarchannel_FERvsp_FRTV508in1024_18-04-14_22-14-20.txt"
+FR7="./simresults/polarchannel_FERvsp_FRMC508in1024_18-04-16_16-50-59.txt"
 fig=plt.figure()
 N=1024
 
@@ -40,6 +41,10 @@ plt.semilogy(lines[0],[10**i for i in lines[1]],'-^g',label="ZCON")
 lines=ml.getline(FR6,[x,z])
 point=len(lines[0])
 plt.semilogy(lines[0],[10**i for i in lines[1]],'-^r',label="TVCON") 
+(x,z)=(6,7)
+lines=ml.getline(FR7,[x,z])
+point=len(lines[0])
+plt.semilogy(lines[0],[10**i for i in lines[1]],'-^k',label="MLCON") 
 #~ lines=ml.getline(FR2,[x,z])
 #~ point=len(lines[0])
 #~ plt.semilogy(lines[0],[10**i for i in lines[1]],':r') 
