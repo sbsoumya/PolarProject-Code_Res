@@ -17,7 +17,10 @@ import polarconstruct as pcon
 from datetime import datetime
 import json
 import matlib as ml
-import lpdecpcon as lpcon
+try:
+	import lpdecpcon as lpcon
+except:
+	pass
 #p is channel_p
 
 #==================Polar channel sim 

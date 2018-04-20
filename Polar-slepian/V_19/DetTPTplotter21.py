@@ -7,6 +7,7 @@
 # Created:     19/08/2017
 #----------------------------------------
 
+#EQUAL M+T VERSION
 import matplotlib.pyplot as plt
 import json
 import numpy as np

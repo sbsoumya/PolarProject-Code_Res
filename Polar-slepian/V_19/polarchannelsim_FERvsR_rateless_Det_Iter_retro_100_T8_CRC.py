@@ -26,8 +26,9 @@ channel_plist=list(np.linspace(0.05,0.45,10))
 compound_plist=[0.08349999999999963, 0.19249999999999973, 0.24549999999999977, 0.2784999999999998, 0.3009999999999998]
 compoundcap=[600, 300, 200, 150, 120]
 T=8
-msg_length=112
-runsim=1
+R_p1=120
+msg_length=R_p1-T
+runsim=10000
 
 start=timer()
 for N in Nlist:
