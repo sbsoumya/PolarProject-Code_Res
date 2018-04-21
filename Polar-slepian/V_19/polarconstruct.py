@@ -46,10 +46,12 @@ def getGChZCK(design_p,N,K):
 	rgood_channels=ec.bitreverseorder(good_channels,n)
 	
 	f2=open("./simresults/GC/GCZK_"+str(N)+"_"+str(p).replace(".","p")+"_"+str(K)+".txt",'w')
-	json.dump(rgood_channels,f2)
 	
+	json.dump(rgood_channels,f2);f2.write("\n")
+	json.dump(list(sZN),f2)
 	
 	return (rgood_channels,ber_exp[:K])
+
 		
 def getGChZCL(design_p,N,L):#L is error exponent
 	p=design_p
@@ -205,6 +207,9 @@ def getRI_LLRsim(N):
 #----------------------------------------------------------------Reliability order
 def getreliability_order(N):
 	return getGChZCK(0.01,N,N)[0]	
+	
+def getreliability_orderZ(N,p):
+	return getGChZCK(p,N,N)
 #print getreliability_order(1024)	
 #print getGCHsim("MK_ALL",1024,0.01,1024)
 #=================================================================simulation	
