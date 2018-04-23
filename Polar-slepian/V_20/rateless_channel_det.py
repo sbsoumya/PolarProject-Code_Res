@@ -36,7 +36,7 @@ def getGlist(MaxG,lenG):
 	lcm=ml.get_lcm_for(range(1,lenG+1))
 	return [int(MaxG/lcm)*(lcm/(i+1)) for i in range(lenG)]
 
-#print getGlist(532,5)
+#print getGlist(540,5)
 #adjusts Glist for delta
 #max G is a part of the output 
 #hence msglength=max G is ok
@@ -411,6 +411,49 @@ def send_rateless_det_Iter_retro_sim(N,T,compound_plist_u,channel_p,msg_length,r
 		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
 		
 	return (used_rate,achievedrate,block_error,Iter_probdict)
+	
+def getGGlist(msglengthhigh,msglengthlow,step,lenG,T):
+	#print  [msg_length+T for msg_length in np.arange(msglengthlow,msglengthhigh,step)]
+	return [getGlist(msg_length+T,lenG) for msg_length in np.arange(msglengthlow,msglengthhigh,step)]
+
+
+def send_rateless_det_Iter_retro_itracker_sim(N,T,compound_plist_u,channel_p,msglengthhigh,msglengthlow,step,runsim): #using bestchannel sent rate in place of derate
+
+	compound_plist=list(compound_plist_u) #best channel first
+	compound_plist.sort()
+	I_ord=pcon.getreliability_order(N)
+	lenG=len(compound_plist)
+	GGlist=getGGlist(msglengthhigh,msglengthlow,step,lenG,T)
+	#print GGlist
+	Gears=len(GGlist)-1
+	gear=Gears
+	
+	block_errorcnt=0
+	Iter_probdict={}
+	achievedrate=0
+	#print "msg_length:"+str(Glist[0]-T)
+	print "channel_p:"+str(channel_p)
+	gearcnt=0
+	for i in range(runsim):
+		Glist=GGlist[gear]
+		gearcnt=gearcnt+Glist[0]	
+		UN_msg=np.random.randint(2,size=Glist[0]-T)
+		(achievedrate_sim,Iter,UN_msg_decoded)=send_rateless_det_Iter_retro(UN_msg,N,T,I_ord,channel_p,compound_plist,Glist)
+		achievedrate+=float(achievedrate_sim)/runsim
+		if UN_msg.tolist()!=UN_msg_decoded.tolist():
+			block_errorcnt+=1
+		if Iter==0:
+			if gear>0:
+				gear-=1
+		else:
+			if gear<Gears:
+				gear+=1
+	print float(gearcnt)/runsim	
+			
+	#used_rate=float(Glist[0]-T)/N	
+	block_error=float(block_errorcnt)/runsim
+			
+	return (achievedrate,block_error)
 
 
 #================================================================================Delta with step retro

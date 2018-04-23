@@ -29,22 +29,31 @@ FR6="./simresults/polarchannel_FERvsp_FRTV508in1024_18-04-13_23-15-53.txt"
 FR6="./simresults/polarchannel_FERvsp_FRTV508in1024_18-04-14_19-30-01.txt"
 FR6="./simresults/polarchannel_FERvsp_FRTV508in1024_18-04-14_22-14-20.txt"
 FR7="./simresults/polarchannel_FERvsp_FRMC508in1024_18-04-16_16-50-59.txt"
+
+FR8="./simresults/polarchannel_FERvsp_FR540in1024_18-04-22_14-14-31.txt"
+FR9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_540in1024_T0_doiter1_18-04-22_14-17-34.txt"
+FR10="./simresults/polarchannel_FERvsp_FR270in1024_18-04-22_14-15-06.txt"
+FR11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_540in1024_T0_doiter2_18-04-22_14-18-14.txt"
 fig=plt.figure()
 N=1024
 
 #~ #---------------FR
 (x,z)=(6,7)
-lines=ml.getline(FR1,[x,z])
+lines=ml.getline(FR8,[x,z])
 point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^g',label="ZCON") 
+plt.semilogy(lines[0],[10**i for i in lines[1]],'-^g',label="FR540") 
+(x,z)=(9,11)
+lines=ml.getline(FR9,[x,z])
+point=len(lines[0])
+plt.semilogy(lines[0],[10**i for i in lines[1]],'-^r',label="1-Iter540") 
 (x,z)=(6,7)
-lines=ml.getline(FR6,[x,z])
+lines=ml.getline(FR10,[x,z])
 point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^r',label="TVCON") 
-(x,z)=(6,7)
-lines=ml.getline(FR7,[x,z])
+plt.semilogy(lines[0],[10**i for i in lines[1]],'-^k',label="FR270") 
+(x,z)=(9,11)
+lines=ml.getline(FR11,[x,z])
 point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^k',label="MLCON") 
+plt.semilogy(lines[0],[10**i for i in lines[1]],'-^b',label="2-Iter540") 
 #~ lines=ml.getline(FR2,[x,z])
 #~ point=len(lines[0])
 #~ plt.semilogy(lines[0],[10**i for i in lines[1]],':r') 
@@ -58,7 +67,7 @@ plt.semilogy(lines[0],[10**i for i in lines[1]],'-^k',label="MLCON")
 #~ point=len(lines[0])
 #~ plt.semilogy(lines[0],[10**i for i in lines[1]],':k') 
 msg_length=508
-plt.title("FER vs p for N="+str(N)+", K="+str(msg_length)) 
+plt.title("FER vs p for N="+str(N)+", $R_{p_1}$="+str(msg_length)) 
 plt.ylabel('FER')
 plt.xlabel('BSC(p)')
 plt.grid(True)
