@@ -45,4 +45,10 @@ polarfile_FERvsR_rateless_Det_Iter_retro_900in1024_T32_18-04-08_01-49-20.txt
 ./simresults/polarchannel_FERvsp_FRSBCD540in1024_18-04-21_20-04-59.txt
 
 
-
+#maxtpt E
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE540in1024_c0p11_18-04-24_14-19-33.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE540in1024_c0p29_18-04-24_14-19-31.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE540in1024_c0p23_18-04-24_14-19-43.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE540in1024_c0p15_18-04-24_14-19-35.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE540in1024_c0p27_18-04-24_14-19-45.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE540in1024_c0p19_18-04-24_14-19-39.txt

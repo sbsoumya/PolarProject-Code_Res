@@ -6,17 +6,21 @@ x=Symbol('x')
 
 R=Symbol('R')
 T=Symbol('T')
-F1=Symbol('F1')
-F2=Symbol('F2')
+e=Symbol('e')
+f=Symbol('f')
 p=Symbol('p')
 x=Symbol('x')
-pc=Symbol('pc')
-tpt=(R-T)*(1-F2-(F1-F2)*(1-p)**T)/(2-(1-p)**T)
-tpt2=(R-ln(x)/pc)*(1-F2-(F1-F2)*x)/(2-x)
+a=Symbol('a')
+b=Symbol('b')
+c=Symbol('c')
+tpt=(R-T)*(1-f-(e-f)*(1-p)**T)/(2-(1-p)**T)
+tpt2=(R-ln(x)/p)*(1-f-(e-f)*x)/(2-x)
 print tpt2
 tptprime=tpt.diff(T)
 tpt2prime=tpt2.diff(x)
 print tpt2prime
 #tsoln=solve(tpt2prime,x)
-tsoln=solve(x*ln(x),x)
+form= f*(p*R*x+x**2-3*x+2)+(-f+2*e-1)*x*ln(x)-2*e*p*R*x+p*R*x-e*x**2+2*e*x+x-2
+form2= x*a+b+c*x*ln(x)
+tsoln=solve(form2,x)
 print tsoln

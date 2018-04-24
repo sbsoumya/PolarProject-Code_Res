@@ -411,6 +411,145 @@ def send_rateless_det_Iter_retro_sim(N,T,compound_plist_u,channel_p,msg_length,r
 		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
 		
 	return (used_rate,achievedrate,block_error,Iter_probdict)
+#============================Min_Iter	
+def send_rateless_det_Iter_MinIter_retro(UN_msg,N,T,I_ord,channel_p,compound_plist,Glist,miniter): 
+    
+    #Adding detection bits
+    # T is lock and Key length
+   	UN_lock=list(UN_msg)[:T]
+   	key_ind=range(Glist[0]-T,Glist[0])
+	UN=np.array(list(UN_msg)+UN_lock) # lock added as key
+	#print UN
+	
+	
+	maxiter=len(compound_plist)-1
+    #the rate considered for the true channel
+	#G=Glist[compound_plist.index(channel_p)]
+	#----------------------------------------------------Iterations start
+	Iterhistory={} #contains indexes of UN sent in each iteration
+	decoded=False
+	
+	# for first Tx
+	Iter=0
+	Iter_UN=UN
+	Iter_p=compound_plist[0]
+	Iter_G=Glist[0]
+	Iter_I=I_ord[:Iter_G]
+	Iter_UN_ind=range(len(UN))
+	
+    
+	#print "Forward decoding"		
+	while not decoded :
+		
+		Iter_UN=[UN[i] for i in Iter_UN_ind]
+		 
+		Iter_D=np.zeros(N-Iter_G,dtype=int).tolist()      #frozen data
+		Iter_XN=ec.polarencodeG(Iter_UN,N,Iter_I,list(Iter_D),False)   #data goes in as per R.I
+		
+		#--------------------Note channel_p used for flipping
+		Iter_YN=pl.BSCN(channel_p,Iter_XN)
+		
+		#-----------------------decoding based on this tx only
+		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
+		Iter_UN_decoded=ec.getUN(Iter_UN_hat,Iter_I,False)
+		
+		#storage needed for final decoding
+		Iterhistory[Iter]=[Iter_UN_ind,Iter_UN_decoded,Iter_YN]
+		#print Iterhistory
+		
+		
+		
+		Iter_UN_retro_decoded=Iter_retro_decode(Iterhistory,Iter,N,I_ord,Glist,Iter_G,Iter_p,Iter_I)
+		#print Iterhistory
+		#Extracting Lock lock and key
+		Iter_UN_decoded_lock=list(Iter_UN_retro_decoded)[:T] # updated lock
+		Iter_UN_decoded_key=list(Iter_UN_retro_decoded)[-T:]		
+		
+		#print Iter_UN_retro_decoded 
+		#print Iter_UN_decoded_lock
+		#print Iter_UN_decoded_key
+		
+		#print Iter_UN_decoded_key
+		if (is_mismatch(Iter_UN_decoded_lock,Iter_UN_decoded_key) and Iter<maxiter) or Iter<miniter:
+			
+			
+			# picking out all the channels that are suspected to be bad in past
+			# iterations and putting them for next iteration.
+			# Note first iteration Whole UN is sent
+			# in next only suspected bad channels are sent
+			prev_I=Iter_I
+			Iter+=1
+			
+			#New channel params
+			Iter_p=compound_plist[Iter]
+			Iter_G=Glist[Iter]
+			Iter_I=I_ord[:Iter_G]
+			
+			tosend_ind=[]
+			for i in range(Iter):
+				
+				#picking out the bad channels from prev iterations
+				sent_ind=Iterhistory[i][0]
+				sent_ind_last_iter=sent_ind[:Glist[Iter-1]]
+				bad_ind=sent_ind_last_iter[Iter_G:]
+				tosend_ind.extend(bad_ind)
+			
+			Iter_UN_ind=list(set(tosend_ind))
+			Iter_UN_ind.sort()
+			
+			
+			
+		else:
+			decoded= True
+			
+			
+	
+	#final==================================
+	final_Iter=Iter
+	if is_mismatch(Iter_UN_decoded_lock,Iter_UN_decoded_key): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+		return_iter=final_Iter+1
+	final_decoded=Iter_UN_retro_decoded
+	final_UN_msg=final_decoded[:Glist[0]-T]
+	achieved_rate=float(len(UN_msg))/((final_Iter+1)*N)
+	return (achieved_rate,return_iter,np.array(final_UN_msg))
+
+def send_rateless_det_Iter_retro_MinIter_sim(N,T,compound_plist_u,channel_p,msg_length,Min_Iter,runsim): #using bestchannel sent rate in place of derate
+
+	compound_plist=list(compound_plist_u) #best channel first
+	compound_plist.sort()
+	I_ord=pcon.getreliability_order(N)
+	lenG=len(compound_plist)
+	Glist=getGlist(msg_length+T,lenG)
+	
+	block_errorcnt=0
+	Iter_probdict={}
+	achievedrate=0
+	print "msg_length:"+str(Glist[0]-T)
+	print "channel_p:"+str(channel_p)
+	
+	for i in range(runsim):
+		UN_msg=np.random.randint(2,size=Glist[0]-T)
+		(achievedrate_sim,Iter,UN_msg_decoded)=send_rateless_det_Iter_MinIter_retro(UN_msg,N,T,I_ord,channel_p,compound_plist,Glist,Min_Iter)
+		achievedrate+=float(achievedrate_sim)/runsim
+		if UN_msg.tolist()!=UN_msg_decoded.tolist():
+			block_errorcnt+=1
+		try:
+			Iter_probdict[Iter]+=1
+		except:
+			Iter_probdict[Iter]=1
+			
+	used_rate=float(Glist[0]-T)/N	
+	block_error=float(block_errorcnt)/runsim
+	
+	for Iter in Iter_probdict:
+		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
+		
+	return (used_rate,achievedrate,block_error,Iter_probdict)	
+	
+	
+#================================Itrackr	
 	
 def getGGlist(msglengthhigh,msglengthlow,step,lenG,T):
 	#print  [msg_length+T for msg_length in np.arange(msglengthlow,msglengthhigh,step)]

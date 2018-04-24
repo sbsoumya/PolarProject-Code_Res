@@ -118,7 +118,8 @@ def takeClosest(myList, myNumber):
        
 #print takeClosest([1,2,3,4,5,6,7,10,15,19,45,71,73,97,98,99],72)
 
-def bittostring(msg):
+def bittostring(msgbits):
+	msg=msgbits
 	padlength=len(msg)%8
 	paddedmsg=list(msg)+list(zeros(padlength,dtype=int))
 	charnumber=len(paddedmsg)/8
@@ -131,6 +132,19 @@ def bittostring(msg):
 		msgstring+=chr(int(singcharbin,2))
 	return msgstring
 	
+#print bittostring([0,0,0,0,1,0,1,0,0,0,0,1])
+
+def stringtobit(msgstring):
+	
+	msgbin=['{0:08b}'.format((ord(char))) for char in msgstring]
+	msgbits=[]
+	for m in msgbin:
+		msgbits.extend([int(i) for i in m])
+	
+	return msgbits
+
+#print stringtobit(bittostring([1,0,1,1,1,0,0,1,1,1,1,0,0]))
+
 def getCRC(msg,length):
 	if log2(length)> int(log2(length)):
 		print "CRC length must be int"

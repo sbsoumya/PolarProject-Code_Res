@@ -16,46 +16,43 @@ from datetime import datetime
 import json
 import polarchannel as pch
 from pprint import pprint
-import rateless_channel_det_maxiter as rlc
+import rateless_channel_det as rlc
 from timeit import default_timer as timer
 #=================================================================simulation		
 #------------Number of good channels = capacity
 start = timer()
-Nlist=[1024] #keep this singleton
+Nlist=[1024]
+channel_p=0.27
 compound_plist=[0.08349999999999963, 0.19249999999999973, 0.24549999999999977, 0.2784999999999998, 0.3009999999999998]
-#[600, 300, 200, 150, 120]
-#~ [540.0, 270.0, 180.0, 135.0, 108.0]
-#~ [0.10099999999999965, 0.20699999999999974, 0.2579999999999998, 0.2894999999999998, 0.31099999999999983]
-#~ [508, 238, 148, 103, 76]
-doiter=2
-channel_plist=list(np.linspace(compound_plist[1],compound_plist[2],5))
-T=0
-msg_length=540
-runsim=10000
-runsimhigh=100000
+compoundcap=[600, 30, 200, 150, 120]
+Tlist=[1,2,4,8,16,20,32,64,128]
+R_p1=540
+
+runsim=1000
 
 start=timer()
 for N in Nlist:
 	
 	stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_"+str(msg_length)+"in"+str(N)+"_T"+str(T)+"_doiter"+str(doiter)+"_"+stamp+".txt"
+	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtptE"+str(R_p1)+"in"+str(N)+"_c"+str(channel_p).replace(".","p")+"_"+stamp+".txt"
 	f1=open(filename,'w')
 	print filename
+	
 	print "RATE Vs FER REPORT Rateless Det Iter retro"
 	print "------------------------------------------"
-	print "Compound_plist:"
+	print "Compound_plist and their capacities:"
 	print compound_plist
+	print compoundcap
 	print "sim ran :"+str(runsim)
-	print "T:"+str(T)
-	print "doiter:"+str(doiter)
+	#print "T:"+str(T)
 		
-	json.dump( "RATE Vs FER REPORT Rateless Det Iter delta",f1) ;f1.write("\n")
+	json.dump( "RATE Vs FER REPORT Rateless Det Iter retro",f1) ;f1.write("\n")
 	json.dump( "------------------------------------------",f1) ;f1.write("\n")
 	json.dump( "Compound_plist:",f1) ;f1.write("\n")
 	json.dump(compound_plist,f1) ;f1.write("\n")
+	json.dump(compoundcap,f1) ;f1.write("\n")
 	json.dump("sim ran :"+str(runsim),f1) ;f1.write("\n")
-	json.dump("T:"+str(T),f1);f1.write("\n")
-	json.dump("doiter:"+str(doiter),f1);f1.write("\n")
+	#json.dump("T:"+str(T),f1);f1.write("\n")
 		
 	print "N="+str(N)
 	json.dump( "N="+str(N),f1) ;f1.write("\n")
@@ -65,28 +62,33 @@ for N in Nlist:
 	FER=[];
 	Iter_problist=[]
 	
-	for channel_p in channel_plist:
-		#print "channel_p:"+str(channel_p)
-		(u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_doiter_sim(N,T,compound_plist,channel_p,msg_length,doiter,runsim)
+	for T in Tlist:
+		msg_length=R_p1-T
+		print "T:"+str(T)
+		(u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_sim(N,T,compound_plist,channel_p,msg_length,runsim)
 		used_rate.append(u_rate)
-		#~ if block_error==0:
-			#~ (u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_doiter_sim(N,T,compound_plist,channel_p,msg_length,doiter,runsimhigh)
 		achieved_rate.append(ach_rate)
 		FER.append(block_error)
 		Iter_problist.append(Iter_probdict)
 
+
 block_error_exp=np.log10(FER).tolist()	    
-print channel_plist
+print channel_p
+print Tlist
 print achieved_rate
 print block_error_exp
 print Iter_problist
-		
+MeanIters=pl.getMeanIter(Iter_problist,2)
+tpt=[float(R_p1-Tlist[i])/(MeanIters[i]*N)*(1-10**block_error_exp[i]) for i in range(len(Tlist))]
+print tpt		
 json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")
-json.dump(channel_plist,f1) ;f1.write("\n")
+json.dump(channel_p,f1) ;f1.write("\n")
+json.dump(Tlist,f1) ;f1.write("\n")
 json.dump(achieved_rate,f1) ;f1.write("\n")
 json.dump(block_error_exp,f1) ;f1.write("\n")
 json.dump( "Iter Probabilities=",f1) ;f1.write("\n")
 json.dump(Iter_problist,f1) ;f1.write("\n")
+json.dump(tpt,f1);f1.write("\n")
 
 end = timer()
 TC=(end-start)

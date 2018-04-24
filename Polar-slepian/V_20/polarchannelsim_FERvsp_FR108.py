@@ -29,8 +29,8 @@ compound_plist=[0.08349999999999963, 0.19249999999999973, 0.24549999999999977, 0
 #~ [0.10099999999999965, 0.20699999999999974, 0.2579999999999998, 0.2894999999999998, 0.31099999999999983]
 #~ [508, 238, 148, 103, 76]
 
-design_plist=list(np.linspace(compound_plist[0],compound_plist[2],20))
-msg_length=270
+design_plist=list(np.linspace(compound_plist[3],compound_plist[4],10))
+msg_length=108
 
 runsim=10000
 runsimhigh=100000

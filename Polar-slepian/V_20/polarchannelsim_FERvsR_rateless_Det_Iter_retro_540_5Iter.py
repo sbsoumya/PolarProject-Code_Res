@@ -27,8 +27,8 @@ compound_plist=[0.08349999999999963, 0.19249999999999973, 0.24549999999999977, 0
 #~ [540.0, 270.0, 180.0, 135.0, 108.0]
 #~ [0.10099999999999965, 0.20699999999999974, 0.2579999999999998, 0.2894999999999998, 0.31099999999999983]
 #~ [508, 238, 148, 103, 76]
-doiter=2
-channel_plist=list(np.linspace(compound_plist[1],compound_plist[2],5))
+doiter=5
+channel_plist=list(np.linspace(compound_plist[3],compound_plist[4],10))
 T=0
 msg_length=540
 runsim=10000
