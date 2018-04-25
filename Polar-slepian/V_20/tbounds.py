@@ -32,6 +32,18 @@ def mdindeZ(Tlist,N,NR_p1,p):
 		#print lhsT
 		lhs.append(lhsT)
 	return lhs
+"""
+N=1024
+p1=0.08
+p2=0.2
+(I,Z1)=pcon.getreliability_orderZ(N,p1)
+(I,Z2)=pcon.getreliability_orderZ(N,p2)
+plt.plot(range(N),[10**Z for Z in Z1],"g")
+plt.plot(range(N),[10**Z for Z in Z2],"r")
+plt.plot(range(N),[10**z1-10**z2 for (z1,z2) in zip(Z1,Z2)],"k")
+plt.show()
+"""
+
 	
 def pmdguarantee(Tlist,N,NR_p1,p,a):
 	pmd=np.array(mdindeZ(Tlist,N,NR_p1,p))
@@ -67,19 +79,19 @@ def maxTPT_ana(Tlist,F1,F2,N,NR_p1,p):
 #~ plt.plot(np.arange(1,100,1),maxTPT_ana(np.arange(1,100,1),.9,.01,1024,540,0.17),"-b*")
 #~ plt.show()
 #=============================================union bounds(NOT OK)
-#~ def mdunionZ(Tlist,N,NR_p1,p_2):		
-	#~ (I,Z)=pcon.getreliability_orderZ(N,p_2)
-	#~ lhs=[]
-	#~ for T in Tlist:
-		#~ print Z[NR_p1-T:NR_p1]
-		#~ print [10**z for z in Z[NR_p1-T:NR_p1]]
-		#~ print np.power(10,Z[NR_p1-T:NR_p1])
-		#~ lhsT=1-sum(np.power(10,Z[NR_p1-T:NR_p1]))
-		#~ #print lhsT
-		#~ lhs.append(lhsT)
+def mdunionZ(Tlist,N,NR_p1,p_2):		
+	(I,Z)=pcon.getreliability_orderZ(N,p_2)
+	lhs=[]
+	for T in Tlist:
+	  Zinv=[.5-np.sqrt(1-np.power(z,2))/2 for z in np.power(10,Z[NR_p1-T:NR_p1])]
+	  lhsT=1-sum(Zinv)
+	  print lhsT
+	  lhs.append(lhsT)
 
-	#~ return lhs
-#~ #print mdunionZ([8],1024,540,0.192)
+	return lhs
+plt.plot([1,2,4,8,16],mdunionZ([1,2,4,8,16],1024,400,0.0192),"k")
+plt.plot([1,2,4,8,16],mdindeZ([1,2,4,8,16],1024,400,0.0192),"b")
+plt.show()
 #===============================================1-PsT(subblock)
 
 #for p=p2
@@ -171,7 +183,7 @@ plt.show()
 
 """
 #========================================================= throughput analysis
-
+"""
 plist=[0.11,0.13,0.15,0.17,0.19]
 color=["b","g","r","m","c"]
 FER1=[0.997475,1,1,1,1]
@@ -230,7 +242,7 @@ plt.xlabel('T')
 plt.grid(True)
 plt.legend(loc="best")
 plt.show()	
-
+"""
 #==============================================T vs P
 """
 pmg=[]
