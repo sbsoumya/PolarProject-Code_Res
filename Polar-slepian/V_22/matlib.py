@@ -167,8 +167,8 @@ def getline(filename,lineno):
 	with open(filename,'r') as f:
 		for line in f:
 			table0.append(json.loads(line))
-	print filename
-	print  [table0[i] for i in lineno]
+	#print filename
+	#print  [table0[i] for i in lineno]
 	return [table0[i] for i in lineno]
 
 #~ UN_msg=random.randint(2,size=1024)

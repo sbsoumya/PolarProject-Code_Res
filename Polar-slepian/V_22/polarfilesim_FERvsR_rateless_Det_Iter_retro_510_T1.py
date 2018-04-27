@@ -25,7 +25,7 @@ Nlist=[1024] #keep this singleton
 channel_plist=list(np.linspace(0.01,0.2,10))
 compound_plist=[0.03,0.11,0.17]
 #[756, 378, 252, 151]
-T=8
+T=1
 F_p1=510
 R_p1=Nlist[0]-F_p1
 error_free_msg_length=F_p1+T
