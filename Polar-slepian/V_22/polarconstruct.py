@@ -10,6 +10,7 @@ import numpy as np
 import math as ma
 import problib as pl
 import polarencdec as ec
+import matlib as ml
 from datetime import datetime
 import json
 
@@ -84,8 +85,9 @@ def getGChMCK(design_p,N,K,runsim):
 	n=int(ma.log(N,2))
 	err=np.zeros(N)
 	print "MC(K)..."+str(runsim)
+	UN=np.zeros(N,dtype=int)
 	for i in range(runsim):
-		UN=np.random.randint(2,size=N)
+		
 		UN_decoded=ec.polarSCdecode(pl.BSCN(p,ec.polarencode(UN,len(UN))),len(UN),p)
 		if (i%1000)==0:
 			print i
@@ -99,11 +101,19 @@ def getGChMCK(design_p,N,K,runsim):
 	rgood_channels=ec.bitreverseorder(good_channels,n)
 	rgood_channels_all=ec.bitreverseorder(good_channels_all,n)
 	
-	f2=open("./simresults/GC/GCMK_"+str(N)+"_"+str(p).replace(".","p")+"_"+str(K)+".txt",'w')
-	json.dump(rgood_channels,f2)
+	# commented of 28.4.2018 somethings might break(mostly ununsed)
+	#~ f2=open("./simresults/GC/GCMK_"+str(N)+"_"+str(p).replace(".","p")+"_"+str(K)+".txt",'w')
+	#~ json.dump(rgood_channels,f2);f2.write("\n")
+	#~ json.dump(ber_exp[:K],f2);f2.write("\n")
 	
-	f3=open("./simresults/GC/GCMK_ALL"+str(N)+".txt",'w')
-	json.dump(rgood_channels_all,f3)
+	#~ f3=open("./simresults/GC/GCMK_ALL"+str(N)+".txt",'w')
+	#~ json.dump(rgood_channels_all,f3);f3.write("\n")
+	#~ json.dump(ber_exp,f3);f3.write("\n")
+	filename="./simresults/GC/GCMK_ALL"+str(N)+"_"+str(design_p).replace(".","p")+"_"+str(runsim)+".txt"
+	print filename
+	f3=open(filename,'w')
+	json.dump(rgood_channels_all,f3);f3.write("\n")
+	json.dump(ber_exp,f3);f3.write("\n")
 	
 	return (rgood_channels,ber_exp[:K],ber_exp)
 #getGChMCK(0.01,1024,1024,10000)
@@ -113,8 +123,9 @@ def getGChMCL(design_p,N,L,runsim):
 	n=int(ma.log(N,2))
 	err=np.zeros(N)
 	print "MC(error)..."+str(runsim)
+	UN=np.zeros(N,dtype=int)
 	for i in range(runsim):
-		UN=np.random.randint(2,size=N)
+		
 		UN_decoded=ec.polarSCdecode(pl.BSCN(p,ec.polarencode(UN,len(UN))),len(UN),p)
 		err=err+np.logical_xor(UN,UN_decoded)
 	
@@ -135,11 +146,11 @@ def getGChMCL(design_p,N,L,runsim):
 	rgood_channels_all=ec.bitreverseorder(good_channels_all,n)
 	
 	f2=open("./simresults/GC/GCML_"+str(N)+"_"+str(p).replace(".","p")+"_"+str(L)+".txt",'w')
-	json.dump(rgood_channels,f2)
-	
+	json.dump(rgood_channels,f2);f2.write("\n")
+	json.dump(ber_exp[:K],f2);f2.write("\n")
 	f3=open("./simresults/GC/GCML_ALL"+str(N)+".txt",'w')
 	json.dump(rgood_channels_all,f3)
-	
+	json.dump(ber_exp,f2);f2.write("\n")
 	#print ber_exp
 	return (rgood_channels,ber_exp[:K],ber_exp)
 
@@ -171,11 +182,11 @@ def getGCHsim(tsim,N,design_p,param): # tsim = ML / MK/ ZL/ ZK/ MZ/ MK_ALL
 			filename="./simresults/GC/GC"+str(tsim)+str(N)+".txt"
 			f1=open(filename,'r')
 		    
-			return json.load(f1)[:param]
+			return json.load(f1)[0][:param]
 		else:
 			filename="./simresults/GC/GC"+str(tsim)+"_"+str(N)+"_"+str(p).replace(".","p")+"_"+str(param)+".txt"
 			f1=open(filename,'r')
-			return json.load(f1)
+			return json.load(f1)[0]
 		
 #--------------------------------------------------------------llr based
 def getRI_LLR(absllr,I,N):
@@ -210,6 +221,20 @@ def getreliability_order(N):
 	
 def getreliability_orderZ(N,p):
 	return getGChZCK(p,N,N)
+	
+def getreliability_orderZMC(N,p,gen,runsim):
+	if not gen:
+		try:
+			f1="./simresults/GC/GCMK_ALL"+str(N)+"_"+str(p).replace(".","p")+"_"+str(runsim)+".txt"
+			return ml.getline(f1,[0,1])
+		except:
+			print "Channel ordering not found, try generating."
+			return 
+			
+	else:
+		return getGChMCK(p,N,N,runsim)
+			
+
 #print getreliability_order(1024)	
 #print getGCHsim("MK_ALL",1024,0.01,1024)
 #=================================================================simulation	

@@ -1,0 +1,8 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+[824, 512, 350]
+"sim ran :1000"
+"T:1"
+"N=1024"
