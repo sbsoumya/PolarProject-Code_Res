@@ -25,7 +25,7 @@ Nlist=[1024]
 channel_p=0.17
 compound_plist=[0.03,0.11,0.17] #restriction
 compoundcap=[824, 512]#, 200, 150, 120]
-Tlist=[1,2,4,6,8,10,16,32,64]
+Tlist=range(60,120,10)
 R_p1=678
 
 runsim=1000

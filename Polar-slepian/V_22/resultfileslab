@@ -1,17 +1,35 @@
+#scheme-1--------------510
 #maxtpt
-polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-04-27_12-50-10.txt
-
 TPTfilep1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-04-27_14-50-18.txt"
 TPTfilep2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p11_18-04-27_14-48-37.txt"
 TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p17_18-04-27_14-47-21.txt"
+
+#doiterfile
+FER3file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter3_18-04-26_22-04-23.txt"
+FER2file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter2_18-04-26_22-05-14.txt"
+FER1file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter1_18-04-26_22-06-46.txt"
+
+#SB
+pf1file="./simresults/polarchannel_FERvsp_FRSB0p03_510in1024_18-04-26_21-57-42.txt"
+pmd1file="./simresults/polarchannel_FERvsp_FRSB0p11_510in1024_18-04-26_21-56-52.txt"
+pf2file="./simresults/polarchannel_FERvsp_FRSB0p11_255in1024_18-04-26_22-02-37.txt"
+pmd2file="./simresults/polarchannel_FERvsp_FRSB0p17_255in1024_18-04-26_21-59-03.txt"
+
+
+
 
 #schemefile
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_12-33-09.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_12-32-56.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_12-33-02.txt
 
+fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_15-31-33.txt"
+fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_15-29-44.txt"
+fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T11_18-04-29_14-56-55.txt"
+fileT8="/home/smart/Desktop/Project/code/Polar-slepian/V_22/simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_15-30-03.txt"
 
-#scheme3-------------
+
+#scheme3-------------378
 #maxtpt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt378in1024_c0p03_18-04-28_16-26-34.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt378in1024_c0p11_18-04-28_16-27-21.txt
@@ -19,10 +37,19 @@ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0
 
 #do-iter
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T0_doiter1_18-04-28_16-26-57.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T0_doiter2_18-04-28_16-26-36.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T0_doiter3_18-04-28_16-26-13.txt
+
 
 #SB
+./simresults/polarchannel_FERvsp_FRSB0p17_189in1024_18-04-28_16-11-06.txt
+./simresults/polarchannel_FERvsp_FRSB0p11_378in1024_18-04-28_16-13-14.txt
+./simresults/polarchannel_FERvsp_FRSB0p03_378in1024_18-04-28_16-13-55.txt
+./simresults/polarchannel_FERvsp_FRSB0p11_189in1024_18-04-29_12-41-38.txt
 
-
+#final
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T47_18-04-29_16-37-23.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T1_18-04-29_16-36-30.txt
 
 #scheme2------------678-
 #maxtpt
@@ -30,12 +57,27 @@ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt678in1024_c0p11_18-04-28_16-24-53.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt678in1024_c0p17_18-04-28_16-24-31.txt
 
+TPTfile21="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt678in1024_c0p11_18-04-29_16-10-34.txt"
+TPTfile22="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt678in1024_c0p17_18-04-29_16-12-24.txt"
+
+
 #doiter
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T0_doiter1_18-04-28_16-24-51.txt
-
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T0_doiter2_18-04-28_16-24-29.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T0_doiter3_18-04-28_16-24-08.txt
 
 #SB
 ./simresults/polarchannel_FERvsp_FRSB0p11_339in1024_18-04-28_16-13-49.txt
 ./simresults/polarchannel_FERvsp_FRSB0p03_678in1024_18-04-28_16-12-02.txt
 ./simresults/polarchannel_FERvsp_FRSB0p17_339in1024_18-04-28_16-13-00.txt
 ./simresults/polarchannel_FERvsp_FRSB0p11_678in1024_18-04-28_16-11-24.txt
+
+#final
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T1_18-04-29_14-56-40.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T7_18-04-29_16-31-31.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T101_18-04-29_16-30-58.txt
+
+
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T32_18-04-29_14-56-34.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T11_18-04-29_14-56-28.txt
+

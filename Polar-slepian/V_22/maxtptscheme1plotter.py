@@ -121,9 +121,9 @@ from tbounds import *
 #~ FER2file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter2_18-04-26_22-05-14.txt"
 #~ FER1file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter1_18-04-26_22-06-46.txt"
 
-TPTfilep1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-04-27_14-50-18.txt"
-TPTfilep2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p11_18-04-27_14-48-37.txt"
-TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p17_18-04-27_14-47-21.txt"
+#~ TPTfilep1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-04-27_14-50-18.txt"
+#~ TPTfilep2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p11_18-04-27_14-48-37.txt"
+#~ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p17_18-04-27_14-47-21.txt"
 
 #~ #number of p and tpt is same, dont confuse
 #~ (x,z)=(9,11)
@@ -135,7 +135,7 @@ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0
 
 #~ print FER1iter,FER2iter,FER3iter
 
-#~ TlistANA=np.arange(1,80,2)
+#~ TlistANA=np.arange(1,NR_p2-NR_p3,2)
 #~ PMD1=np.array(mdindeZ(TlistANA,N,NR_p1,p_2))
 #~ PMD2=np.array(mdindeZ(TlistANA,N,NR_p2,p_3))
 #~ PF1=np.array(pfunionZ(TlistANA,N,NR_p1,p_1))
@@ -199,8 +199,8 @@ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0
 #~ plt.plot(TlistANA[list(TPTANAp3).index(max(TPTANAp3))],max(TPTANAp3),"ko",label="max(TPT-ANA)")
 #~ FERp3=np.multiply(FER2est[2],(1-PMD2))+np.multiply(FER3est[2],PMD2)
 #~ TPTANAp3=(NR_p1-np.array(TlistANA))*(1-FERp2)/(N*E_Iterp3)
-#~ plt.plot(TlistANA,TPTANAp3,"-c^",label="TPT-ANA,p="+str(p_3))
-#~ plt.plot(TlistANA[list(TPTANAp3).index(max(TPTANAp3))],max(TPTANAp3),"yo",label="max(TPT-ANA)")
+#~ plt.plot(TlistANA,TPTANAp3,"-c^",label="TPT-FER,p="+str(p_3))
+#~ plt.plot(TlistANA[list(TPTANAp3).index(max(TPTANAp3))],max(TPTANAp3),"yo",label="max(TPT-FER)")
 
 
 #~ (x,z)=(9,-2)
@@ -215,40 +215,43 @@ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0
 #~ plt.show()
 
 #====================================final scheme performance
-#~ fileT8="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_12-33-09.txt"
-#~ fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_12-32-56.txt"
-#~ fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_12-33-02.txt"
 
 fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_15-31-33.txt"
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_15-29-44.txt"
-fileT8="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_15-30-03.txt"
+fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T11_18-04-29_14-56-55.txt"
+fileT8="/home/smart/Desktop/Project/code/Polar-slepian/V_22/simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_15-30-03.txt"
 complist=[0.03,0.11,0.17]
 N=1024
 fig=plt.figure()
 fig.suptitle("HARQ schemes  \n N=1024,ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$ \}$")
 R_p1=510
-
+maxiters=3
 (x,y,z)=(9,10,11)
 T=1
 lines=ml.getline(fileT1,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],5)
+MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
 
+
+#~ T=11
+#~ lines=ml.getline(fileT11,[x,y,z])
+#~ point=len(lines[0])
+#~ MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],3)
+#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
 
 T=8
 lines=ml.getline(fileT8,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],5)
+MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
 
-#~ plt.plot(lines[0],lines[1],"-b^",label="TPT-sim,p="+str(p_2))
 
 
 T=32
 lines=ml.getline(fileT32,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT32,[13])[0],5)
+MeanIters=pl.getMeanIter(ml.getline(fileT32,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
 
 #~ T=1

@@ -22,29 +22,29 @@ from timeit import default_timer as timer
 #------------Number of good channels = capacity
 start = timer()
 Nlist=[1024]
-channel_p=0.11
-compound_plist=[0.03,0.11,0.17] #restriction
-compoundcap=[824, 512]#, 200, 150, 120]
-Tlist=range(60,120,10)
+channel_plist=list(np.linspace(0.01,0.2,20))
+print channel_plist
+compound_plist=[0.03,0.11,0.17] 
+compoundcap=[824, 512,350]
+T=7
 R_p1=678
-
+msg_length=R_p1-T
 runsim=1000
 
 start=timer()
 for N in Nlist:
 	
 	stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt"+str(R_p1)+"in"+str(N)+"_c"+str(channel_p).replace(".","p")+"_"+stamp+".txt"
+	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 	f1=open(filename,'w')
 	print filename
-	
 	print "RATE Vs FER REPORT Rateless Det Iter retro"
 	print "------------------------------------------"
 	print "Compound_plist and their capacities:"
 	print compound_plist
 	print compoundcap
 	print "sim ran :"+str(runsim)
-	#print "T:"+str(T)
+	print "T:"+str(T)
 		
 	json.dump( "RATE Vs FER REPORT Rateless Det Iter retro",f1) ;f1.write("\n")
 	json.dump( "------------------------------------------",f1) ;f1.write("\n")
@@ -52,7 +52,7 @@ for N in Nlist:
 	json.dump(compound_plist,f1) ;f1.write("\n")
 	json.dump(compoundcap,f1) ;f1.write("\n")
 	json.dump("sim ran :"+str(runsim),f1) ;f1.write("\n")
-	#json.dump("T:"+str(T),f1);f1.write("\n")
+	json.dump("T:"+str(T),f1);f1.write("\n")
 		
 	print "N="+str(N)
 	json.dump( "N="+str(N),f1) ;f1.write("\n")
@@ -62,33 +62,26 @@ for N in Nlist:
 	FER=[];
 	Iter_problist=[]
 	
-	for T in Tlist:
-		msg_length=R_p1-T
-		print "T:"+str(T)
+	for channel_p in channel_plist:
+		#print "channel_p:"+str(channel_p)
 		(u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_sim(N,T,compound_plist,channel_p,msg_length,runsim)
 		used_rate.append(u_rate)
 		achieved_rate.append(ach_rate)
 		FER.append(block_error)
 		Iter_problist.append(Iter_probdict)
 
-
 block_error_exp=np.log10(FER).tolist()	    
-print channel_p
-print Tlist
+print channel_plist
 print achieved_rate
 print block_error_exp
 print Iter_problist
-MeanIters=pl.getMeanIter(Iter_problist,2)
-tpt=[float(R_p1-Tlist[i])/(MeanIters[i]*N)*(1-10**block_error_exp[i]) for i in range(len(Tlist))]
-print tpt		
+		
 json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")
-json.dump(channel_p,f1) ;f1.write("\n")
-json.dump(Tlist,f1) ;f1.write("\n")
+json.dump(channel_plist,f1) ;f1.write("\n")
 json.dump(achieved_rate,f1) ;f1.write("\n")
 json.dump(block_error_exp,f1) ;f1.write("\n")
 json.dump( "Iter Probabilities=",f1) ;f1.write("\n")
 json.dump(Iter_problist,f1) ;f1.write("\n")
-json.dump(tpt,f1);f1.write("\n")
 
 end = timer()
 TC=(end-start)

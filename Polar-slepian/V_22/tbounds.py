@@ -66,10 +66,26 @@ def pfunionZ(Tlist,N,NR_p1,p):
 	for T in Tlist:
 	  lhsT=sum(np.power(10,Z[NR_p1-T:NR_p1]))
 	  #print lhsT
+	  if lhsT>=1:
+		  lhsT=1
 	  lhs.append(lhsT)
 
 	return lhs
-	
+
+def pfunionE(Tlist,N,NR_p1,p):	
+	I=pcon.getreliability_order(N)
+	(IMC,EMC)=pcon.getreliability_orderZMC(N,p,False,100000)	
+	E=[EMC[IMC.index(i)] for i in I]
+	print E
+	lhs=[]
+	for T in Tlist:
+	  lhsT=sum(np.power(10,E[NR_p1-T:NR_p1]))
+	  #print lhsT
+	  lhs.append(lhsT)
+
+	return lhs
+#print pfunionE([1],1024,678,0.03)
+
 def estimateFER(Tlist,N,NR_p1,p,Iter):
 	(I,Z)=pcon.getreliability_orderZ(N,p)
 	FERlist=[]
