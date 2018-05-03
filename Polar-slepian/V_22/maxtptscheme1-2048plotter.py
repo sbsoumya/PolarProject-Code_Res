@@ -286,19 +286,8 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 #~ (x,z)=(9,-2)
 #~ lines=ml.getline(TPTfilep3,[x,z])
 #~ plt.plot(complist[2],lines[1][lines[0].index(32)],"go")
-
-#==================UK
-T=0
-fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK510in1024_T0_18-05-03_15-42-41.txt"
-lines=ml.getline(fileUK,[x,y,z])
-point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileUK,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-c^',label='Decoding failure, $NR_{p_1}=$'+str(R_p1))
-
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
-
-
 
 plt.ylabel('Throughput=($NR_{p_1}-T$)*(1-FER)/N*E[Iterations]')
 plt.xlabel('BSC(p)')
