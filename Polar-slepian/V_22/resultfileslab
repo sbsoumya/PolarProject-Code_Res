@@ -51,6 +51,10 @@ fileT8="/home/smart/Desktop/Project/code/Polar-slepian/V_22/simresults/polarchan
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T47_18-04-29_16-37-23.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_378in1024_T1_18-04-29_16-36-30.txt
 
+
+#UK file
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK378in1024_T0_18-05-03_19-07-23.txt
+
 #scheme2------------678-
 #maxtpt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt678in1024_c0p03_18-04-28_16-23-58.txt
@@ -81,3 +85,6 @@ TPTfile22="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt678in1024_c0
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T32_18-04-29_14-56-34.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T11_18-04-29_14-56-28.txt
 
+
+#UKfile
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK678in1024_T0_18-05-03_19-07-56.txt

@@ -39,7 +39,7 @@ from tbounds import *
 
 
 #~ fig=plt.figure()
-#~ fig.suptitle("Estimation of $P_{MD},P_{F}$ for N=1024,$NR_{P_1}=$"+str(NR_p1)+"\n p_1=$"+str(p_1)+"$p_2=$"+str(p_2)+"$p_3=$"+str(p_3))
+#~ fig.suptitle("Estimation of $P_{MD},P_{F}$ for N=1024,$NR_1=$"+str(NR_p1)+"\n p_1=$"+str(p_1)+"$p_2=$"+str(p_2)+"$p_3=$"+str(p_3))
 
 #~ plt.subplot(221)
 #~ #pf1
@@ -231,20 +231,20 @@ T=1
 lines=ml.getline(fileT1,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 
 #~ T=11
 #~ lines=ml.getline(fileT11,[x,y,z])
 #~ point=len(lines[0])
 #~ MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],3)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
+#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 T=8
 lines=ml.getline(fileT8,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 
 
@@ -252,7 +252,7 @@ T=32
 lines=ml.getline(fileT32,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT32,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_{p_1}=$'+str(R_p1))
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 #~ T=1
 #~ (x,z)=(9,-2)
@@ -289,7 +289,7 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
 
-plt.ylabel('Throughput=($NR_{p_1}-T$)*(1-FER)/N*E[Iterations]')
+plt.ylabel('Throughput=($NR_1-T$)*(1-FER)/N*E[Iterations]')
 plt.xlabel('BSC(p)')
 plt.grid(True)
 plt.legend(loc="best")
