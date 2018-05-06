@@ -16,6 +16,9 @@ pf2file="./simresults/polarchannel_FERvsp_FRSB0p11_510in2048_18-05-04_21-40-46.t
 pmd2file="./simresults/polarchannel_FERvsp_FRSB0p17_510in2048_18-05-04_21-42-59.txt"
 
 #final
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T11_18-05-06_22-59-43.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T51_18-05-06_23-00-16.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T1_18-05-06_22-59-13.txt
 
 
 #UK
@@ -39,7 +42,9 @@ pmd2file="./simresults/polarchannel_FERvsp_FRSB0p17_510in2048_18-05-04_21-42-59.
 ./simresults/polarchannel_FERvsp_FRSB0p03_246in512_18-05-04_23-22-44.txt
 ./simresults/polarchannel_FERvsp_FRSB0p11_246in512_18-05-04_23-22-38.txt
 #final
-
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T11_18-05-06_23-19-05.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T1_18-05-06_23-18-45.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T19_18-05-06_23-19-32.txt
 
 #UK file
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-04_23-31-44.txt
