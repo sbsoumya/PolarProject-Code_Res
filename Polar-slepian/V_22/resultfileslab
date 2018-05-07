@@ -22,6 +22,9 @@ pmd2file="./simresults/polarchannel_FERvsp_FRSB0p17_255in1024_18-04-26_21-59-03.
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_12-33-09.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_12-32-56.txt
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_12-33-02.txt
+#nest file in V_23
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T11_18-05-07_15-32-05.txt
+
 
 fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_15-31-33.txt"
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_15-29-44.txt"
