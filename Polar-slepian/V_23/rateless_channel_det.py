@@ -387,7 +387,7 @@ def send_rateless_det_Iter_retro_sim(N,T,compound_plist_u,channel_p,msg_length,r
 	I_ord=pcon.getreliability_order(N)
 	lenG=len(compound_plist)
 	Glist=getGlist(msg_length+T,lenG)
-	
+	print Glist
 	block_errorcnt=0
 	Iter_probdict={}
 	achievedrate=0

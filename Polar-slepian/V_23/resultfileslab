@@ -108,3 +108,7 @@ i
 #final 
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_18in64_T1_18-05-07_14-33-16.txt"
 fileT3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_18in64_T3_18-05-07_14-41-30.txt"
+
+#5-iter,3-iter
+fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_18-05-08_22-58-34.txt"
+fileT11_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T11_18-05-08_20-15-47.txt"

@@ -24,6 +24,7 @@ start = timer()
 Nlist=[2048]
 channel_p=0.03
 compound_plist=[0.03,0.11,0.17] #restriction
+maxiters=len(compound_plist)
 compoundcap=[824, 512]#, 200, 150, 120]
 Tlist=[1,2,4,6,8,10,16,32,64]
 R_p1=1020
@@ -78,7 +79,7 @@ print Tlist
 print achieved_rate
 print block_error_exp
 print Iter_problist
-MeanIters=pl.getMeanIter(Iter_problist,2)
+MeanIters=pl.getMeanIter(Iter_problist,maxiters)
 tpt=[float(R_p1-Tlist[i])/(MeanIters[i]*N)*(1-10**block_error_exp[i]) for i in range(len(Tlist))]
 print tpt		
 json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")

@@ -13,11 +13,12 @@ from tbounds import *
 #~ plt.plot(range(N),[10**Z for Z in Z2],"r",label="$p_2=0.11,R_2=123/512$")
 #~ plt.plot(range(N),[10**Z for Z in Z3],"b",label="$p_3=0.17,R_3=82/512$")
 #~ #plt.plot(range(N),[10**z1-10**z2 for (z1,z2) in zip(Z1,Z2)],"k")
-#~ print pl.CapacityBSC(512,p1)/3
+
 
 #~ plt.title("Choice of $R$ based on $Z(W) \leq 5*10^{-2}$,N =512 \nand satisfying $R_2=R_1/2,R_3=R_1/3$ ") 
 #~ plt.legend(loc="best")
 #~ plt.grid(True)
+#~ print pl.CapacityBSC(512,p1)
 #~ print pl.CapacityBSC(512,p2)
 #~ print pl.CapacityBSC(512,p3)
 #~ #print pl.Inversecap512(pl.CapacityBSC(512,p1)/3)
@@ -215,7 +216,6 @@ from tbounds import *
 #~ plt.show()
 
 #====================================final scheme performance
-
 fileT19="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T19_18-05-06_23-19-32.txt"
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T1_18-05-06_23-18-45.txt"
 fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T11_18-05-06_23-19-05.txt"
@@ -247,39 +247,6 @@ point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT19,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
-#~ T=1
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep1,[x,z])
-#~ plt.plot(complist[0],lines[1][lines[0].index(1)],"ro")
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep2,[x,z])
-#~ plt.plot(complist[1],lines[1][lines[0].index(1)],"ro")
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep3,[x,z])
-#~ plt.plot(complist[2],lines[1][lines[0].index(1)],"ro")
-
-#~ T=8
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep1,[x,z])
-#~ plt.plot(complist[0],lines[1][lines[0].index(8)],"bo")
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep2,[x,z])
-#~ plt.plot(complist[1],lines[1][lines[0].index(8)],"bo")
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep3,[x,z])
-#~ plt.plot(complist[2],lines[1][lines[0].index(8)],"bo")
-
-#~ T=32
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep1,[x,z])
-#~ plt.plot(complist[0],lines[1][lines[0].index(32)],"go")
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep2,[x,z])
-#~ plt.plot(complist[1],lines[1][lines[0].index(32)],"go")
-#~ (x,z)=(9,-2)
-#~ lines=ml.getline(TPTfilep3,[x,z])
-#~ plt.plot(complist[2],lines[1][lines[0].index(32)],"go")
-
 #~ #==================UK
 T=0
 fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-04_23-31-44.txt"
@@ -290,6 +257,33 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
+
+#=====================cp=dp
+fileFR0e005="./simresults/polarchannel_FERvsp_FR-2e30102999566in512_18-05-08_23-47-09.txt"
+fileFR0e1="./simresults/polarchannel_FERvsp_FR-1e0in512_18-05-08_23-53-00.txt"
+fileFR0e05="./simresults/polarchannel_FERvsp_FR-1e30102999566in512_18-05-08_23-46-32.txt"
+fileFR0e5="./simresults/polarchannel_FERvsp_FR-0e3010299956639812in512_18-05-09_00-43-29.txt"
+
+
+(x,y,z)=(-4,-3,-2)
+
+lines=ml.getline(fileFR0e5,[x,y,z])
+point=len(lines[0])
+plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'-m>',label='$Z \leq 0.1$')
+
+lines=ml.getline(fileFR0e1,[x,y,z])
+point=len(lines[0])
+plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'-m>',label='$Z \leq 0.1$')
+
+#~ lines=ml.getline(fileFR0e05,[x,y,z])
+#~ point=len(lines[0])
+#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],':m^',label='$Z \leq 0.05$')
+
+#~ lines=ml.getline(fileFR0e005,[x,y,z])
+#~ point=len(lines[0])
+#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'.-m',label='$Z \leq 0.005$')
+
+
 
 
 

@@ -25,7 +25,7 @@ Nlist=[512]
 channel_plist=list(np.linspace(0.01,0.2,20))
 print channel_plist
 compound_plist=[0.03,0.11,0.17]
-compoundcap=[2*824, 2*512,2*350]
+compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
 T=11
 R_p1=246
 msg_length=R_p1-T
