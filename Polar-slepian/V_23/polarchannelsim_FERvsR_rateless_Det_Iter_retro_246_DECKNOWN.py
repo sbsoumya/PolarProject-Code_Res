@@ -29,7 +29,7 @@ compoundcap=[824*2, 512*2,350*2]
 T=0
 R_p1=246
 msg_length=R_p1-T
-runsim=1000
+runsim=10000
 
 start=timer()
 for N in Nlist:

@@ -48,7 +48,7 @@ pmd2file="./simresults/polarchannel_FERvsp_FRSB0p17_510in2048_18-05-04_21-42-59.
 
 #UK file
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-04_23-31-44.txt
-
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt #10000
 #scheme-1 42/128
 
 #maxtpt
@@ -104,11 +104,36 @@ i
 
 #UK
 ./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK18in64_T0_18-05-07_12-40-34.txt
+fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt"
 
 #final 
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_18in64_T1_18-05-07_14-33-16.txt"
 fileT3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_18in64_T3_18-05-07_14-41-30.txt"
 
 #5-iter,3-iter
-fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_18-05-08_22-58-34.txt"
-fileT11_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T11_18-05-08_20-15-47.txt"
+fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_3I_18-05-08_22-58-34.txt"
+fileT11_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_5I_18-05-08_20-15-47.txt"
+#UK for 5iter
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK240in512_T0_5I_18-05-09_16-38-53.txt
+
+
+#cp=dp
+#0.05 ./simresults/polarchannel_FERvsp_FR-2e30102999566in512_18-05-08_23-47-09.txt
+#0.1 ./simresults/polarchannel_FERvsp_FR-1e0in512_18-05-08_23-53-00.txt
+#0.005 ./simresults/polarchannel_FERvsp_FR-1e30102999566in512_18-05-08_23-46-32.txt
+#0.5 ./simresults/polarchannel_FERvsp_FR-0e3010299956639812in512_18-05-09_00-43-29.txt
+./simresults/polarchannel_FERvsp_FR0e4in512_18-05-09_14-25-53.txt
+./simresults/polarchannel_FERvsp_FR0e3in512_18-05-09_14-25-30.txt
+./simresults/polarchannel_FERvsp_FR0e2in512_18-05-09_14-25-08.txt
+./simresults/polarchannel_FERvsp_FR0e08in512_18-05-09_14-24-36.txt
+./simresults/polarchannel_FERvsp_FR0e03in512_18-05-09_14-23-04.txt
+./simresults/polarchannel_FERvsp_FR0e02in512_18-05-09_14-17-33.txt
+
+fileFR["0e25"]="./simresults/polarchannel_FERvsp_FR0e25in512_18-05-09_15-21-47.txt"#10000
+
+
+#CRCvsCB
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T8_18-05-09_20-15-49.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_CRC246in512_T8_18-05-09_20-16-27.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_CRC1020in2048_T32_18-05-09_20-20-08.txt
+./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T32_18-05-09_20-17-57.txt

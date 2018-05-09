@@ -258,33 +258,6 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
 
-#=====================cp=dp
-fileFR0e005="./simresults/polarchannel_FERvsp_FR-2e30102999566in512_18-05-08_23-47-09.txt"
-fileFR0e1="./simresults/polarchannel_FERvsp_FR-1e0in512_18-05-08_23-53-00.txt"
-fileFR0e05="./simresults/polarchannel_FERvsp_FR-1e30102999566in512_18-05-08_23-46-32.txt"
-fileFR0e5="./simresults/polarchannel_FERvsp_FR-0e3010299956639812in512_18-05-09_00-43-29.txt"
-
-
-(x,y,z)=(-4,-3,-2)
-
-lines=ml.getline(fileFR0e5,[x,y,z])
-point=len(lines[0])
-plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'-m>',label='$Z \leq 0.1$')
-
-lines=ml.getline(fileFR0e1,[x,y,z])
-point=len(lines[0])
-plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'-m>',label='$Z \leq 0.1$')
-
-#~ lines=ml.getline(fileFR0e05,[x,y,z])
-#~ point=len(lines[0])
-#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],':m^',label='$Z \leq 0.05$')
-
-#~ lines=ml.getline(fileFR0e005,[x,y,z])
-#~ point=len(lines[0])
-#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'.-m',label='$Z \leq 0.005$')
-
-
-
 
 
 plt.ylabel('Throughput=($NR_1-T$)*(1-FER)/N*E[Iterations]')
@@ -293,3 +266,40 @@ plt.grid(True)
 plt.legend(loc="best")
 
 plt.show()
+
+#=====================cp=dp
+#~ N=512
+#~ fileFR0e005="./simresults/polarchannel_FERvsp_FR-2e30102999566in512_18-05-08_23-47-09.txt"
+#~ fileFR0e1="./simresults/polarchannel_FERvsp_FR-1e0in512_18-05-08_23-53-00.txt"
+#~ fileFR0e05="./simresults/polarchannel_FERvsp_FR-1e30102999566in512_18-05-08_23-46-32.txt"
+#~ fileFR0e5="./simresults/polarchannel_FERvsp_FR-0e3010299956639812in512_18-05-09_00-43-29.txt"
+
+
+#~ (x,y,z)=(-4,-3,-2)
+
+#~ lines=ml.getline(fileFR0e5,[x,y,z])
+#~ point=len(lines[0])
+#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'-m>',label='$Z \leq 0.5$')
+
+#~ lines=ml.getline(fileFR0e1,[x,y,z])
+#~ point=len(lines[0])
+#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'-go',label='$Z \leq 0.1$')
+
+#~ lines=ml.getline(fileFR0e05,[x,y,z])
+#~ point=len(lines[0])
+#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],':y^',label='$Z \leq 0.05$')
+
+#~ lines=ml.getline(fileFR0e005,[x,y,z])
+#~ point=len(lines[0])
+#~ plt.plot(lines[0],[float(lines[1][i]*(1-10**lines[2][i]))/N for i in range(point)],'.-b',label='$Z \leq 0.005$')
+
+#~ plt.title("Throughput for Fixed rate Polar code") 
+
+
+
+#~ plt.ylabel('Throughput=R(1-FER)')
+#~ plt.xlabel('BSC(p)')
+#~ plt.grid(True)
+#~ plt.legend(loc="best")
+
+#~ plt.show()

@@ -25,8 +25,9 @@ Nlist=[512]
 N=Nlist[0]
 channel_plist=list(np.linspace(0.01,0.2,20))
 design_plist=channel_plist
-L=np.log10(0.5)
-Rlist=[len(pcon.getGChZCL(p,N,L)[0]) for p in design_plist]
+L=0.5
+Lexp=np.log10(L)
+Rlist=[len(pcon.getGChZCL(p,N,Lexp)[0]) for p in design_plist]
 print Rlist
 print design_plist
 

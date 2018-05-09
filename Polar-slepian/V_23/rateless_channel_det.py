@@ -1055,20 +1055,19 @@ def send_rateless_det_Iter_retro_CRC(UN_msg,N,T,I_ord,channel_p,compound_plist,G
 	return (achieved_rate,return_iter,np.array(final_UN_msg))
 
 def send_rateless_det_Iter_retro_CRC_sim(N,T,compound_plist_u,channel_p,msg_length,runsim): #using bestchannel sent rate in place of derate
-
+    
 	compound_plist=list(compound_plist_u) #best channel first
 	compound_plist.sort()
 	I_ord=pcon.getreliability_order(N)
 	lenG=len(compound_plist)
 	Glist=getGlist(msg_length+T,lenG)
-	
+	print Glist
 	block_errorcnt=0
 	Iter_probdict={}
 	achievedrate=0
-	
 	print "msg_length:"+str(Glist[0]-T)
 	print "channel_p:"+str(channel_p)
-	
+    	
 	for i in range(runsim):
 		UN_msg=np.random.randint(2,size=Glist[0]-T)
 		(achievedrate_sim,Iter,UN_msg_decoded)=send_rateless_det_Iter_retro_CRC(UN_msg,N,T,I_ord,channel_p,compound_plist,Glist)
