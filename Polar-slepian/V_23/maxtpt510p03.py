@@ -24,8 +24,12 @@ start = timer()
 Nlist=[1024]
 channel_p=0.03
 compound_plist=[0.03,0.11,0.17] #restriction
-compoundcap=[824, 512]#, 200, 150, 120]
-Tlist=[1,2,4,6,8,10,16,32,64]
+compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
+maxiters=len(compound_plist)
+NR_p1=510
+NR_p2=510/2
+NR_p3=510/3
+Tlist=list(np.arange(1,NR_p2-NR_p3,2))
 R_p1=510
 
 runsim=1000
@@ -78,7 +82,7 @@ print Tlist
 print achieved_rate
 print block_error_exp
 print Iter_problist
-MeanIters=pl.getMeanIter(Iter_problist,2)
+MeanIters=pl.getMeanIter(Iter_problist,maxiters)
 tpt=[float(R_p1-Tlist[i])/(MeanIters[i]*N)*(1-10**block_error_exp[i]) for i in range(len(Tlist))]
 print tpt		
 json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")

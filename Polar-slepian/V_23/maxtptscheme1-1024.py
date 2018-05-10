@@ -121,17 +121,21 @@ FER3file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_
 FER2file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter2_18-04-26_22-05-14.txt"
 FER1file="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T0_doiter1_18-04-26_22-06-46.txt"
 
-TPTfilep1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-04-27_14-50-18.txt"
-TPTfilep2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p11_18-04-27_14-48-37.txt"
-TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p17_18-04-27_14-47-21.txt"
+#~ TPTfilep1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-04-27_14-50-18.txt"
+#~ TPTfilep2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p11_18-04-27_14-48-37.txt"
+#~ TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p17_18-04-27_14-47-21.txt"
+
+
+TPTfilep2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p11_18-05-10_12-21-08.txt"
+TPTfilep3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p17_18-05-10_12-20-51.txt"
+TPTfilep1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_maxtpt510in1024_c0p03_18-05-10_12-21-15.txt"
+
 
 #number of p and tpt is same, dont confuse
 (x,z)=(9,11)
 FER1iter=np.array([10**i for i in  ml.getline(FER1file,[x,z])[1]])
 FER2iter=np.array([10**i for i in  ml.getline(FER2file,[x,z])[1]])
 FER3iter=np.array([10**i for i in  ml.getline(FER3file,[x,z])[1]])
-
-
 
 print FER1iter,FER2iter,FER3iter
 

@@ -25,10 +25,12 @@ Nlist=[1024]
 channel_p=0.17
 compound_plist=[0.03,0.11,0.17] #restriction
 maxiters=len(compound_plist)
-compoundcap=[824, 512]#, 200, 150, 120]
-Tlist=[1,2,4,6,8,10,16,32,64]
+compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
+NR_p1=510
+NR_p2=510/2
+NR_p3=510/3
+Tlist=list(np.arange(1,NR_p2-NR_p3,2))
 R_p1=510
-
 runsim=1000
 
 start=timer()

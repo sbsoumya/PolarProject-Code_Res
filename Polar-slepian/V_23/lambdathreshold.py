@@ -195,7 +195,15 @@ def perc_channel_func_WD(LLRdict,channel_plist,N,LT,G,runsim,f_absllr,use_bad,us
 			Fdict[str(channel_p)].append(float(num_channel)*100/len(LLRchannels))
 		
 	return Fdict
-
+	
+def perc_goodchannel_llr(llr,I,LT):
+	G=len(I)
+	L=abs(llr)
+	#print len(llr),G
+	LLRgoodchannels=ec.getchannel(L,I,False)
+	#print(min(LLRgoodchannels))
+	perc=float(sum(llr >= LT for llr in LLRgoodchannels))*100/G
+	return perc
 
 def perc_goodchannel_LTvec_WD(LLRdict,channel_plist,N,LTvec,G,runsim): #LTvec in order of good channels
 	#as I is a subsequence of RI , only G is needed
@@ -409,12 +417,12 @@ def f_Irv_alt(llr,sentbit):
 	#return ml.logdomain_sum(0,llr)*sentbit/ma.log(2)
 
 #----------------------------------fuctions for implementation of rateless LTPT
-def perc_goodchannel_llr(llr,I,LT):
-	G=len(I)
-	L=abs(llr)
-	LLRgoodchannels=ec.getchannel(L,I,False)
-	perc=float(sum(llr >= LT for llr in LLRgoodchannels))*100/G
-	return perc
+#~ def perc_goodchannel_llr(llr,I,LT):
+	#~ G=len(I)
+	#~ L=abs(llr)
+	#~ LLRgoodchannels=ec.getchannel(L,I,False)
+	#~ perc=float(sum(llr >= LT for llr in LLRgoodchannels))*100/G
+	#~ return perc
 	
 # only for bad channels
 def perc_bad_channel_Irv_WU_llr(llr,F,LT,Frozen_data,use_func_for_LT):

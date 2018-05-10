@@ -25,12 +25,16 @@ import lambdathreshold as lmb
 designbyrate=True
 #-----------------
 
-N=1024
-channel_plist=[0.2,0.25]
+N=512
+NR_p1=246
+NR_p2=NR_p1/2
+NR_p3=NR_p1/3
+channel_plist=[0.03,0.11]
+K=NR_p1
 channel_plist.sort()
 design_p=min(channel_plist) #design agrressively
 
-runsim=1000
+runsim=1
 
 stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
 f1=open("./simresults/LLRdictWU_sim"+stamp+".txt",'w')
@@ -40,11 +44,13 @@ C=pl.CapacityBSC(N,design_p)
 deratepercentage=10
 tolerable_error= -2
 
+
+
 if designbyrate:
 	
 	
 	#K=int((100-deratepercentage)*C/100)
-	K=int(C)
+	#K=int(C)
 	
 	try:
 		I=pcon.getGCHsim('ZK',N,design_p,K)

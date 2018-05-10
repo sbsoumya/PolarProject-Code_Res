@@ -51,7 +51,7 @@ channel_plist=LLRdict.keys()
 channel_plist.sort()
 design_p=min(channel_plist)
 print channel_plist
-G=500
+G=400
 
 #------------------------------------LT
 #G=250
@@ -64,12 +64,12 @@ delta=4
 #~ E_forTakeClose=list(E[channel_plist[0]])
 #~ E_forTakeClose.sort()
 #~ print ml.takeClosest(E_forTakeClose,LT)
-LT=40
+LT=10
 PT=63
 print LT
 #absllr
-#~ Fdict=lmb.perc_channel_func_WD(LLRdict,channel_plist,N,LT,G,runsim,f_absllr=lmb.f_abs,use_bad=False,use_func_for_LT=True)
-#~ LT=lmb.f_abs(LT)
+Fdict=lmb.perc_channel_func_WD(LLRdict,channel_plist,N,LT,G,runsim,f_absllr=lmb.f_abs,use_bad=False,use_func_for_LT=True)
+LT=lmb.f_abs(LT)
 		
 #f_Irv
 #Fdict=lmb.perc_channel_Irv_WU(LLRdict,channel_plist,N,LT,G,runsim,use_bad=True,use_func_for_LT=True)

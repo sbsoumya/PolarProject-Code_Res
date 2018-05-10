@@ -19,7 +19,8 @@ import polarconstruct as pcon
 from pprint import pprint
 import matlib as ml
 import lambdathreshold as lmb
-plist=[0.04,0.15,0.2,0.25] #16 12 6 4 3
+import copy
+#plist=[0.04,0.15,0.2,0.25] #16 12 6 4 3
 #plist=[0.04,0.15,0.2,0.25] #16 12 6 4 3
 	
 #----------------------------------------adjusts Glist for R,R/2.. 
@@ -279,6 +280,7 @@ def send_rateless_kRx_sim(N,compound_plist_u,channel_p,derate,runsim,BER_needed)
 #decodable if actual rate is greater than present rate
 def is_decodable_LTPT(llr,I,LT,PT):
 	#find of good channels above LT
+	#print len(I)
 	perc=lmb.perc_goodchannel_llr(llr,I,LT)	
 	return perc>=PT        
 
@@ -467,12 +469,172 @@ def send_rateless_LTPT(UN,N,channel_p,compound_plist_u,derate,LTPTdict,use_adjus
 			(Iterhistory[Iter][0],Iterhistory[Iter][1])=ml.sortAextend(Iterhistory_ind_upd,Iterhistory_data_upd.tolist())
 			#print Iterhistory[Iter][0]
 			#print Iterhistory[Iter][1]
-	         
-	         
+	
+		         
 	#pprint(Iterhistory)
 	final_decoded= Iterhistory[0][1]
 	achieved_rate=float(len(UN))/((final_Iter+1)*N)
 	return (achieved_rate,np.array(final_decoded))
+		
+#------------In det iter retro format
+def Iter_retro_decode(Iterhistory_original,this_Iter,N,I_ord,Glist,this_Iter_G,this_Iter_p,this_Iter_I):	
+	Iterhistory=copy.deepcopy(Iterhistory_original)
+	#-----------------------------------------Retro decoding
+	for Iter in range(this_Iter-1,-1,-1):
+			
+			# note INC_FREEZE and FROZEN zeroes are treated seperately
+			Prev_correct_ind=Iterhistory[Iter+1][0]
+			Prev_correct_data=Iterhistory[Iter+1][1]
+			
+			#PICKING INC FROZEN NEEDED FOR THIS ITERATION
+			IncFreeze_ind_UN=[i for i in Prev_correct_ind if i in Iterhistory[Iter][0]] #picking the indexes of the prev iter frozen data needed FOR DECODING in this iter i.e, 12
+			#picking the data i.e. u12
+			IncFreeze_ind_ind=[Prev_correct_ind.index(j) for j in IncFreeze_ind_UN]
+			IncFreeze_data=[Prev_correct_data[k] for k in IncFreeze_ind_ind]
+			
+			#finding the channels where 12 went in this iter 16 15 14 "13"<--- here
+			#i.e, removing the top channel_G channels (as they are good) from top Iter_i_G channels
+			Iter_G=Glist[Iter]
+			IncFreeze_ind=I_ord[:Iter_G][this_Iter_G:]
+		
+			#print "Frozen zeroes"
+			Iter_D=np.zeros(N-Iter_G,dtype=int).tolist()      #frozen data as per iteration
+							
+			Iter_YN=Iterhistory[Iter][2]
+			Iter_UN_hat=ec.polarIncFrzSCdecodeG(Iter_YN,N,this_Iter_p,this_Iter_I,list(Iter_D),IncFreeze_ind,IncFreeze_data,False)
+			Iter_UN_decoded=ec.getUN(Iter_UN_hat,this_Iter_I,False)
+			
+			#print Iter_UN_decoded
+			
+			#history update
+			Iterhistory_ind_upd=list(Prev_correct_ind)
+			Iterhistory_ind_upd.extend(Iterhistory[Iter][0][:this_Iter_G]) #ie adding 5,6,11 to 4,10,12
+			Iterhistory_data_upd=np.hstack((Prev_correct_data,Iter_UN_decoded)) #same as extend
+			(Iterhistory[Iter][0],Iterhistory[Iter][1])=ml.sortAextend(Iterhistory_ind_upd,Iterhistory_data_upd.tolist())
+	#print "retro decode"
+	#print Iterhistory
+	return Iterhistory[0][1]
+	
+def send_rateless_LTPT_new(UN_msg,N,LTPTdict,I_ord,channel_p,compound_plist,Glist): 
+	UN=UN_msg
+	maxiter=len(compound_plist)-1
+    #the rate considered for the true channel
+	#G=Glist[compound_plist.index(channel_p)]
+	#----------------------------------------------------Iterations start
+	Iterhistory={} #contains indexes of UN sent in each iteration
+	decoded=False
+
+	# for first Tx
+	Iter=0
+	Iter_UN=UN
+	Iter_p=compound_plist[0]
+	Iter_G=Glist[0]
+	Iter_I=I_ord[:Iter_G]
+	Iter_UN_ind=range(len(UN))
+	
+    
+	#print "Forward decoding"		
+	while not decoded :
+		
+				
+		Iter_UN=[UN[i] for i in Iter_UN_ind]
+		 
+		Iter_D=np.zeros(N-Iter_G,dtype=int).tolist()      #frozen data
+		Iter_XN=ec.polarencodeG(Iter_UN,N,Iter_I,list(Iter_D),False)   #data goes in as per R.I
+		
+		#--------------------Note channel_p used for flipping
+		Iter_YN=pl.BSCN(channel_p,Iter_XN)
+		
+		#-----------------------decoding based on this tx only
+		(Iter_llr,Iter_UN_hat)=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),True)		
+		Iter_UN_decoded=ec.getUN(Iter_UN_hat,Iter_I,False)
+		
+		#storage needed for final decoding
+		Iterhistory[Iter]=[Iter_UN_ind,Iter_UN_decoded,Iter_YN]
+		
+		
+		Iter_LT=LTPTdict[str(Iter_p)][0]
+		Iter_PT=LTPTdict[str(Iter_p)][1]
+
+		if not is_decodable_LTPT(Iter_llr,Iter_I,Iter_LT,Iter_PT) and Iter<maxiter:
+			
+			
+			# picking out all the channels that are suspected to be bad in past
+			# iterations and putting them for next iteration.
+			# Note first iteration Whole UN is sent
+			# in next only suspected bad channels are sent
+			prev_I=Iter_I
+			Iter+=1
+			
+			#New channel params
+			Iter_p=compound_plist[Iter]
+			Iter_G=Glist[Iter]
+			Iter_I=I_ord[:Iter_G]
+			
+			tosend_ind=[]
+			for i in range(Iter):
+				
+				#picking out the bad channels from prev iterations
+				sent_ind=Iterhistory[i][0]
+				sent_ind_last_iter=sent_ind[:Glist[Iter-1]]
+				bad_ind=sent_ind_last_iter[Iter_G:]
+				tosend_ind.extend(bad_ind)
+			
+			Iter_UN_ind=list(set(tosend_ind))
+			Iter_UN_ind.sort()
+			
+			
+			
+		else:
+			decoded= True
+			
+	Iter_UN_retro_decoded=Iter_retro_decode(Iterhistory,Iter,N,I_ord,Glist,Iter_G,Iter_p,Iter_I)		
+	
+	#final==================================
+	final_Iter=Iter
+	if not is_decodable_LTPT(Iter_llr,Iter_I,Iter_LT,Iter_PT): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+		return_iter=final_Iter+1
+	final_decoded=Iter_UN_retro_decoded
+	final_UN_msg=final_decoded[:Glist[0]]
+	achieved_rate=float(len(UN_msg))/((final_Iter+1)*N)
+	return (achieved_rate,return_iter,np.array(final_UN_msg))
+
+
+def send_rateless_LTPT_new_sim(N,LTPTdict,compound_plist_u,channel_p,msg_length,runsim): #using bestchannel sent rate in place of derate
+
+	compound_plist=list(compound_plist_u) #best channel first
+	compound_plist.sort()
+	I_ord=pcon.getreliability_order(N)
+	lenG=len(compound_plist)
+	Glist=getGlist(msg_length,lenG)
+	print Glist
+	block_errorcnt=0
+	Iter_probdict={}
+	achievedrate=0
+	print "msg_length:"+str(Glist[0])
+	print "channel_p:"+str(channel_p)
+	
+	for i in range(runsim):
+		UN_msg=np.random.randint(2,size=Glist[0])
+		(achievedrate_sim,Iter,UN_msg_decoded)=send_rateless_LTPT_new(UN_msg,N,LTPTdict,I_ord,channel_p,compound_plist,Glist)
+		achievedrate+=float(achievedrate_sim)/runsim
+		if UN_msg.tolist()!=UN_msg_decoded.tolist():
+			block_errorcnt+=1
+		try:
+			Iter_probdict[Iter]+=1
+		except:
+			Iter_probdict[Iter]=1
+			
+	used_rate=float(Glist[0])/N	
+	block_error=float(block_errorcnt)/runsim
+	
+	for Iter in Iter_probdict:
+		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
+		
+	return (used_rate,achievedrate,block_error,Iter_probdict)
+#----------------------------------------------------------------new format end
 	
 #R R/2 R/3 R/4.....		
 def send_rateless_LTPT_sim(N,compound_plist_u,channel_p,derate,LTPTdict,runsim,BER_needed):
@@ -509,6 +671,11 @@ def send_rateless_LTPT_sim(N,compound_plist_u,channel_p,derate,LTPTdict,runsim,B
 		return (achievedrate,used_rate,ber_exp,block_error)
 	else:
 		return (achievedrate,used_rate,block_error)
+
+
+
+
+
 #---------------------------------------------------------------------------------bin		
 def send_rateless_LTPT_sim_bin(ERR_DICT,DP,N,compound_plist_u,channel_p,derate,LTPTdict,runsim):
 	

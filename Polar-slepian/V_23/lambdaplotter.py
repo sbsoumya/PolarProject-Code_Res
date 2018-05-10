@@ -30,19 +30,21 @@ plt.rc('font', family='serif')
 #-------------------------------------------polar_channel_FERvsR
 
 #to be automated
+#./simresults/llrsgndict-512-0p03-18-05-10_12-50-13.txt
+#./simresults/llrsgndict-512-0p11-18-05-10_12-50-57.txt
 
-#filename1="./simresults/llrsgndict-1024-0p04-17-11-23_17-28-36.txt"
-filename="./simresults/llrsgndict-1024-0p04-18-02-15_14-58-19.txt"
+
+filename="./simresults/llrsgndict-512-0p11-18-05-10_12-50-57.txt"
 LLRdict=lmb.load_LLRdict(filename)
-N=1024
-design_p=0.04
+N=512
+design_p=0.11
 runsim=1000
-channel_plist=[0.04,0.15,0.2,0.25]
+channel_plist=[0.11,0.17]
 skip=0
 C=pl.CapacityBSC(N,design_p)
 G=int(C)
 F=N-G
-color=["red","blue","green","yellow"]
+color=["red","blue","green"]
 plt.figure(1)
 j=0
 
@@ -107,13 +109,13 @@ f="$|LLR|$"
 #~ fnick="f_Irv_altered"
 #~ f="$-log 2/(1+e^{llr*(1-2u)})$"
 
-plt.title(f+" for p$_{guess}$=0.04,\emph{Compound Channel=$\{$0.04,0.15,0.2,0.25$\}$ }")
+plt.title(f+" for p$_{guess}$=0.11,\emph{Compound Channel=$\{$0.03,0.11,0.17$\}$ }")
 plt.xlabel('Polarized bit Channel as per Reliability Ordering.')
 plt.ylabel(f)
-plt.legend(loc="lower right")
+plt.legend(loc="upper right")
 plt.grid(True)
 
-plt.savefig("./simresults/lambda_"+fnick+"_0p04"+"_"+".png", bbox_inches='tight')
+plt.savefig("./simresults/lambda_"+fnick+"_0p11"+"_"+".png", bbox_inches='tight')
 
 plt.show();
 
