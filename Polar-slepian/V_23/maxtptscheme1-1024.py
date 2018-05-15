@@ -1,4 +1,9 @@
 from tbounds import *
+# the axes attributes need to be set before the call to subplot
+#plt.rc('xtick.major', size=5, pad=7)
+plt.rc('xtick', labelsize=14)
+plt.rc('ytick', labelsize=14)
+plt.rc('savefig',dpi=300) 
 
 
 #=================================================choice of R
@@ -150,9 +155,9 @@ FER2est=[estimateFER(TlistANA,N,NR_p1,p_1,2),estimateFER(TlistANA,N,NR_p1,p_2,2)
 FER3est=[estimateFER(TlistANA,N,NR_p1,p_1,3),estimateFER(TlistANA,N,NR_p1,p_2,3),estimateFER(TlistANA,N,NR_p1,p_3,3)]
 #===============================tpt 
 fig=plt.figure()
-ax=plt.subplot(111)
-#plt.subplot(311)
-plt.title("Estimation of throughput for BSC($p$)")
+ax=plt.subplot(311)
+ax.locator_params(axis='y', nbins=4)
+plt.title("Estimation of throughput $\eta$ for BSC($p$)")
 #for p1
 E_Iterp1=(1-PF1)+2*PF1
 FERp1=FER1iter[0]*(1-PF1)+FER2iter[0]*(PF1)
@@ -176,7 +181,8 @@ plt.ylabel('$\eta$ for $p=$'+str(p_1))
 plt.grid(True)
 
 
-#plt.subplot(312)
+ax=plt.subplot(312)
+ax.locator_params(axis='y', nbins=4)
 #for p=p2
 E_Iterp2=PMD1+2*np.multiply(1-PMD1,1-PF2)+3*np.multiply(1-PMD1,PF2)
 FERp2=FER1iter[1]*PMD1+FER2iter[1]*np.multiply(1-PMD1,1-PF2)+FER3iter[1]*np.multiply(1-PMD1,PF2)
@@ -196,12 +202,12 @@ plt.plot(lines[0],lines[1],"-bo")
 #plt.plot(lines[0][lines[1].index(max(lines[1]))],max(lines[1]),"go",label="max(TPT-sim)")
 plt.axvline(x=lines[0][lines[1].index(max(lines[1]))], color='b', linestyle='-.')
 #plt.legend(loc="lower right")
-plt.ylabel('$\eta$ for $p=0.11$')
+plt.ylabel('$\eta$ for $p=0.11$')#, fontsize=20)
 plt.grid(True)
 
 
-#ax = plt.subplot(313)
-
+ax = plt.subplot(313)
+ax.locator_params(axis='y', nbins=4)
 #for p=p3
 E_Iterp3=2*(1-PMD2)+3*PMD2
 FERp3=FER2iter[2]*(1-PMD2)+FER3iter[2]*PMD2
@@ -210,18 +216,18 @@ TPTANAp3=(NR_p1-np.array(TlistANA))*(1-FERp2)/(N*E_Iterp3)
 #plt.plot(TlistANA[list(TPTANAp3).index(max(TPTANAp3))],max(TPTANAp3),"ko",label="max(TPT-ANA)")
 FERp3=np.multiply(FER2est[2],(1-PMD2))+np.multiply(FER3est[2],PMD2)
 TPTANAp3=(NR_p1-np.array(TlistANA))*(1-FERp2)/(N*E_Iterp3)
-plt.plot(TlistANA,TPTANAp3,"-c^",label="$\eta$, Ana")
+plt.plot(TlistANA,TPTANAp3,"-c^",label="$\eta$, ANA")
 #plt.plot(TlistANA[list(TPTANAp3).index(max(TPTANAp3))],max(TPTANAp3),"yo",label="max(TPT-FER)")
-plt.axvline(x=TlistANA[list(TPTANAp3).index(max(TPTANAp3))], color='c', linestyle='--',label="$argmax_t(\eta)$, Ana")
+plt.axvline(x=TlistANA[list(TPTANAp3).index(max(TPTANAp3))], color='c', linestyle='--',label=r"argmax$_t(\eta)$, ANA")
 plt.xlim([0,82])
-
+#r"$\underset{t}{\operatorname{argmax}}(Analytical \eta)$
 (x,z)=(9,-2)
 lines=ml.getline(TPTfilep3,[x,z])
-plt.plot(lines[0],lines[1],"-bo",label="$\eta$, Sim")
+plt.plot(lines[0],lines[1],"-bo",label="$\eta$, SIM")
 #plt.plot(lines[0][lines[1].index(max(lines[1]))],max(lines[1]),"go",label="max(TPT-sim)")
-plt.axvline(x=lines[0][lines[1].index(max(lines[1]))], color='b', linestyle='-.',label="$argmax_t(\eta)$, Sim")
+plt.axvline(x=lines[0][lines[1].index(max(lines[1]))], color='b', linestyle='-.',label=r"argmax$_t(\eta)$, SIM")
 plt.ylabel('$\eta$ for $p=0.17$')
-plt.xlabel('$t$')
+plt.xlabel('$t$',fontsize=15, fontweight='bold')
 plt.grid(True)
 
 # Shrink current axis's height by 10% on the bottom
@@ -231,10 +237,10 @@ ax.set_position([box.x0, box.y0 + box.height * 0.1,
 
 # Put a legend below current axis
 ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.25),
-          ncol=4, )
+          ncol=4, fontsize=15 )
 
 plt.show()
-
+"""
 #====================================final scheme performance
 
 fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_15-31-33.txt"
@@ -332,3 +338,4 @@ plt.grid(True)
 plt.legend(loc="best")
 
 #~ plt.show()
+"""

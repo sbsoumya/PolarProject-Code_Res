@@ -15,7 +15,9 @@ import polarconstruct as pcon
 import matplotlib.pyplot as plt
 import matlib as ml
 plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
+plt.rc('font', family='serif', size='15', weight='bold')
+#plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+          
 
 #==========================================complete polarization bounds
 def mdcompletepol(Tlist):
