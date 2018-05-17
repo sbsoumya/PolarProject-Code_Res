@@ -5,7 +5,7 @@ complist=[0.03,0.11,0.17]
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
-plt.rc('figure', figsize=[8,4.5]) 
+plt.rc('figure', figsize=[8,3]) 
 
 """
 fig=plt.figure()
@@ -101,10 +101,10 @@ plt.show()
 
 #~ #========================================================
 #512 - 5 iter-----and 3 iter
-
+"""
 fig=plt.figure()
-plt.subplots_adjust(hspace=0.3,top=0.95,bottom=0.15)
-ax=plt.subplot(211)
+plt.subplots_adjust(hspace=0.3,top=0.95,bottom=0.2)
+ax=plt.subplot(111)
 ax.locator_params(axis='y', nbins=5)
 #-----512
 (x,y,z)=(9,10,11)
@@ -116,7 +116,7 @@ T=11
 lines=ml.getline(fileT11,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],3)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar,3-Iter')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='t='+str(T)+',3-Iter')
 
 complist=[0.03,0.11,0.17,0.2,0.23]
 fileT11_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_5I_18-05-08_20-15-47.txt"
@@ -126,7 +126,7 @@ T=11
 lines=ml.getline(fileT11_5_iter,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT11_5_iter,[13])[0],5)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-bx',label='RT-Polar,5-Iter')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-bx',label='t='+str(T)+',5-Iter')
 #~ fig.suptitle("HARQ schemes  ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) 
 #~ +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$,p_4= $"+str(np.round(complist[3],decimals=3))+"$,p_5= $"+str(np.round(complist[4],decimals=3))+"$ \}$")
 
@@ -148,6 +148,7 @@ plt.ylabel('$\eta(p)$')
 #plt.xlabel('BSC(p)')
 plt.grid(True)
 plt.xlim([0.025,0.235])
+plt.xlabel('flipover probability $p$')
 # Shrink current axis by 20%
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
@@ -155,11 +156,13 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 # Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-#plt.show()
+plt.show()
+"""
 #~ #==============================CRC
 #~ #-----512
 
-ax=plt.subplot(212)
+ax=plt.subplot(111)
+plt.subplots_adjust(hspace=0.3,top=0.95,bottom=0.2)
 ax.locator_params(axis='y', nbins=5)
 N=512
 R_p1=246
