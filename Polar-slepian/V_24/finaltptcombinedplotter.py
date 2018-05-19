@@ -5,7 +5,7 @@ complist=[0.03,0.11,0.17]
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
-plt.rc('figure', figsize=[8,4.5]) 
+plt.rc('figure', figsize=[8,3]) 
 
 """
 fig=plt.figure()
@@ -104,29 +104,34 @@ plt.show()
 
 fig=plt.figure()
 plt.subplots_adjust(hspace=0.3,top=0.95,bottom=0.15)
-ax=plt.subplot(211)
+ax=plt.subplot(111)
 ax.locator_params(axis='y', nbins=5)
 #-----512
 (x,y,z)=(9,10,11)
 N=512
 #fig.suptitle("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N), fontsize="20") 
 R_p1=240
-fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_3I_18-05-08_22-58-34.txt"
-T=11
-lines=ml.getline(fileT11,[x,y,z])
+
+fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T9_3I_18-05-19_13-37-50.txt"
+
+#fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_3I_18-05-08_22-58-34.txt"
+T=9
+lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],3)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar,3-Iter')
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],3)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, 3-Iter')
 
 complist=[0.03,0.11,0.17,0.2,0.23]
-fileT11_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_5I_18-05-08_20-15-47.txt"
+
+fileT9_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T9_5I_18-05-16_21-35-04.txt"
+#fileT11_5_iter="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_240in512_T11_5I_18-05-08_20-15-47.txt"
 N=512
 R_p1=240
-T=11
-lines=ml.getline(fileT11_5_iter,[x,y,z])
+T=9
+lines=ml.getline(fileT9_5_iter,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT11_5_iter,[13])[0],5)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-bx',label='RT-Polar,5-Iter')
+MeanIters=pl.getMeanIter(ml.getline(fileT9_5_iter,[13])[0],5)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-bx',label='RT-Polar, 5-Iter')
 #~ fig.suptitle("HARQ schemes  ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) 
 #~ +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$,p_4= $"+str(np.round(complist[3],decimals=3))+"$,p_5= $"+str(np.round(complist[4],decimals=3))+"$ \}$")
 
@@ -155,7 +160,8 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 # Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-#plt.show()
+plt.show()
+"""
 #~ #==============================CRC
 #~ #-----512
 
@@ -210,7 +216,7 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 plt.show()
-
+"""
 
 #==============================================================================Benchmark
 #~ #================================512vs FR 

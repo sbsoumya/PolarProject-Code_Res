@@ -22,7 +22,7 @@ from timeit import default_timer as timer
 #------------Number of good channels = capacity
 start = timer()
 Nlist=[512]
-channel_plist=list(np.linspace(0.01,0.2,20))
+channel_plist=list(np.linspace(0.01,0.25,30))
 print channel_plist
 compound_plist=[0.03,0.11,0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
@@ -36,7 +36,7 @@ start=timer()
 for N in Nlist:
 	
 	stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_"+str(R_p1)+"in"+str(T)+"_"+str(int(maxiters))+"I_"+stamp+".txt"
+	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+str(int(maxiters))+"I_"+stamp+".txt"
 	f1=open(filename,'w')
 	print filename
 	print "RATE Vs FER REPORT Rateless Det Iter retro"
