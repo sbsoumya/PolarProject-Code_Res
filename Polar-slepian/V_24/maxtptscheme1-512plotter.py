@@ -2,6 +2,7 @@ from tbounds import *
 
 
 #=================================================choice of R
+"""
 N=512
 p1=0.03
 p2=0.11
@@ -23,7 +24,7 @@ print pl.CapacityBSC(512,p2)
 print pl.CapacityBSC(512,p3)
 #print pl.Inversecap512(pl.CapacityBSC(512,p1)/3)
 plt.show()
-
+"""
 #=================================================Plot PMD estimates
 # PF is mismatch, pm is match
 
@@ -107,7 +108,7 @@ plt.show()
 #~ plt.grid(True)
 #~ plt.show()
 #========================================================= throughput analysis
-
+"""
 
 complist=[0.03,0.11,0.17]
 p_1=complist[0]
@@ -214,11 +215,11 @@ plt.xlabel('$T$')
 plt.grid(True)
 
 plt.show()
-
+"""
 #====================================final scheme performance
-fileT19="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T19_18-05-06_23-19-32.txt"
+fileT8="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T8_18-05-09_20-15-49.txt"
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T1_18-05-06_23-18-45.txt"
-fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T11_18-05-06_23-19-05.txt"
+fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-05-17_12-19-25.txt"
 complist=[0.03,0.11,0.17]
 N=512
 fig=plt.figure()
@@ -233,18 +234,18 @@ MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 
-T=11
-lines=ml.getline(fileT11,[x,y,z])
+T=8
+lines=ml.getline(fileT8,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],maxiters)
+MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 
 
-T=19
-lines=ml.getline(fileT19,[x,y,z])
+T=9
+lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT19,[13])[0],maxiters)
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 #~ #==================UK

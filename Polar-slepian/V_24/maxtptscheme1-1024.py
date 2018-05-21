@@ -113,7 +113,7 @@ plt.rc('figure', figsize=[8,4.5])
 #~ plt.show()
 #========================================================= throughput analysis
 
-
+"""
 complist=[0.03,0.11,0.17]
 p_1=complist[0]
 p_2=complist[1]
@@ -258,10 +258,15 @@ box = ax.get_position()
 plt.show()
 """
 #====================================final scheme performance
+#./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T17_18-05-17_12-22-16.txt
+#./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T9_18-05-17_12-21-48.txt
 
-fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T32_18-04-28_15-31-33.txt"
+
+
+
+fileT17="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T17_18-05-17_12-22-16.txt"
 fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T1_18-04-28_15-29-44.txt"
-fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T11_18-05-07_15-32-05.txt"
+fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T9_18-05-17_12-21-48.txt"
 #fileT8="/home/smart/Desktop/Project/code/Polar-slepian/V_22/simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_510in1024_T8_18-04-28_15-30-03.txt"
 complist=[0.03,0.11,0.17]
 N=1024
@@ -277,10 +282,10 @@ MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 
-T=11
-lines=ml.getline(fileT11,[x,y,z])
+T=9
+lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],3)
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],3)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 #~ T=8
@@ -296,10 +301,10 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 
 
 
-T=32
-lines=ml.getline(fileT32,[x,y,z])
+T=17
+lines=ml.getline(fileT17,[x,y,z])
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT32,[13])[0],maxiters)
+MeanIters=pl.getMeanIter(ml.getline(fileT17,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 #~ T=1
@@ -324,16 +329,16 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 #~ lines=ml.getline(TPTfilep3,[x,z])
 #~ plt.plot(complist[2],lines[1][lines[0].index(8)],"bo")
 
-#~ T=32
+#~ T=17
 #~ (x,z)=(9,-2)
 #~ lines=ml.getline(TPTfilep1,[x,z])
-#~ plt.plot(complist[0],lines[1][lines[0].index(32)],"go")
+#~ plt.plot(complist[0],lines[1][lines[0].index(17)],"go")
 #~ (x,z)=(9,-2)
 #~ lines=ml.getline(TPTfilep2,[x,z])
-#~ plt.plot(complist[1],lines[1][lines[0].index(32)],"go")
+#~ plt.plot(complist[1],lines[1][lines[0].index(17)],"go")
 #~ (x,z)=(9,-2)
 #~ lines=ml.getline(TPTfilep3,[x,z])
-#~ plt.plot(complist[2],lines[1][lines[0].index(32)],"go")
+#~ plt.plot(complist[2],lines[1][lines[0].index(17)],"go")
 
 #==================UK
 T=0
@@ -353,5 +358,5 @@ plt.xlabel('BSC(p)')
 plt.grid(True)
 plt.legend(loc="best")
 
-#~ plt.show()
-"""
+plt.show()
+

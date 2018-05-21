@@ -106,7 +106,7 @@ from tbounds import *
 #~ plt.grid(True)
 #~ plt.show()
 #========================================================= throughput analysis
-
+"""
 
 complist=[0.03,0.11,0.17]
 p_1=complist[0]
@@ -215,40 +215,41 @@ plt.xlabel('$T$')
 plt.grid(True)
 
 plt.show()
-
+"""
 #====================================final scheme performance
 
-#~ fileT51="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T51_18-05-06_23-00-16.txt"
-#~ fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T1_18-05-06_22-59-13.txt"
-#~ fileT11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T11_18-05-06_22-59-43.txt"
 
-#~ complist=[0.03,0.11,0.17]
-#~ N=2048
-#~ fig=plt.figure()
-#~ fig.suptitle("HARQ schemes  \n N=2048,ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$ \}$")
-#~ R_p1=1020
-#~ maxiters=3
-#~ (x,y,z)=(9,10,11)
-#~ T=1
-#~ lines=ml.getline(fileT1,[x,y,z])
-#~ point=len(lines[0])
-#~ MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
+fileT8="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T8_18-05-17_12-28-05.txt"
+fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T1_18-05-06_22-59-13.txt"
+fileT6="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T6_18-05-17_12-22-59.txt"
 
-
-#~ T=11
-#~ lines=ml.getline(fileT11,[x,y,z])
-#~ point=len(lines[0])
-#~ MeanIters=pl.getMeanIter(ml.getline(fileT11,[13])[0],maxiters)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
+complist=[0.03,0.6,0.17]
+N=2048
+fig=plt.figure()
+fig.suptitle("HARQ schemes  \n N=2048,ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$ \}$")
+R_p1=1020
+maxiters=3
+(x,y,z)=(9,10,11)
+T=1
+lines=ml.getline(fileT1,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 
+T=6
+lines=ml.getline(fileT6,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT6,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
-#~ T=51
-#~ lines=ml.getline(fileT51,[x,y,z])
-#~ point=len(lines[0])
-#~ MeanIters=pl.getMeanIter(ml.getline(fileT51,[13])[0],maxiters)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
+
+
+T=8
+lines=ml.getline(fileT8,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
 #~ T=1
 #~ (x,z)=(9,-2)

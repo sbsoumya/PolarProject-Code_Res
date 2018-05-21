@@ -107,7 +107,7 @@ from tbounds import *
 #~ plt.grid(True)
 #~ plt.show()
 #========================================================= throughput analysis
-
+"""
 
 complist=[0.03,0.11,0.17]
 p_1=complist[0]
@@ -218,50 +218,58 @@ plt.xlabel('$T$')
 plt.grid(True)
 
 plt.show()
-
+"""
 #====================================final scheme performance
 
-#~ fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_42in128_T1_18-05-07_15-12-49.txt"
-#~ fileT7="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_42in128_T7_18-05-07_15-13-18.txt"
-
-
-#~ complist=[0.03,0.11,0.17]
-#~ N=128
-#~ fig=plt.figure()
-#~ fig.suptitle("HARQ schemes  \n N="+str(N)+",ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$ \}$")
-#~ R_p1=42
-#~ maxiters=3
-#~ (x,y,z)=(9,10,11)
-#~ T=1
-#~ lines=ml.getline(fileT1,[x,y,z])
-#~ point=len(lines[0])
-#~ MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
-
-
-#~ T=7
-#~ lines=ml.getline(fileT7,[x,y,z])
-#~ point=len(lines[0])
-#~ MeanIters=pl.getMeanIter(ml.getline(fileT7,[13])[0],maxiters)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
-
-
-#==================UK
-#~ T=0
-#~ fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK42in128_T0_18-05-07_12-39-35.txt"
-#~ lines=ml.getline(fileUK,[x,y,z])
-#~ point=len(lines[0])
-#~ MeanIters=pl.getMeanIter(ml.getline(fileUK,[13])[0],maxiters)
-#~ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-c^',label='Decoding failure, $NR_1=$'+str(R_p1))
-
-#~ channel_plist=list(np.linspace(0.01,0.2,20))
-#~ plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
+fileT1="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_42in128_T1_18-05-07_15-12-49.txt"
+fileT3="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_42in128_T3_18-05-17_12-16-10.txt"
+fileT2="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_42in128_T2_18-05-17_12-15-41.txt"
 
 
 
-#~ plt.ylabel('Throughput=($NR_1-T$)*(1-FER)/N*E[Iterations]')
-#~ plt.xlabel('BSC(p)')
-#~ plt.grid(True)
-#~ plt.legend(loc="best")
+complist=[0.03,0.11,0.17]
+N=128
+fig=plt.figure()
+fig.suptitle("HARQ schemes  \n N="+str(N)+",ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$ \}$")
+R_p1=42
+maxiters=3
+(x,y,z)=(9,10,11)
+T=1
+lines=ml.getline(fileT1,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-r^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
 
-#~ plt.show()
+
+T=2
+lines=ml.getline(fileT2,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT2,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
+
+T=3
+lines=ml.getline(fileT3,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT3,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g^',label='CB '+str(T)+'bits, $NR_1=$'+str(R_p1))
+
+
+#~ #==================UK
+T=0
+fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK42in128_T0_18-05-07_12-39-35.txt"
+lines=ml.getline(fileUK,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileUK,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-c^',label='Decoding failure, $NR_1=$'+str(R_p1))
+
+channel_plist=list(np.linspace(0.01,0.2,20))
+plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
+
+
+
+plt.ylabel('Throughput=($NR_1-T$)*(1-FER)/N*E[Iterations]')
+plt.xlabel('BSC(p)')
+plt.grid(True)
+plt.legend(loc="best")
+
+plt.show()
