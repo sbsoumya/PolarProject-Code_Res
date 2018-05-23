@@ -1,0 +1,18 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+[51, 32, 21]
+"sim ran :1000"
+"N=64"
+"Rate vs Block_error="
+0.03
+[1, 2, 3]
+[0.26562499999999656, 0.25000000000000017, 0.23437500000000297]
+[-Infinity, -Infinity, -Infinity]
+"Iter Probabilities="
+[{"1": 1.0}, {"1": 1.0}, {"1": 1.0}]
+[0.265625, 0.25, 0.234375]
+"Time taken:21.2484400272"
+[0.265625, 0.25, 0.234375]
+"The above tpt is the final tpt. previous one was having maxiters =2, where 3 was required"
