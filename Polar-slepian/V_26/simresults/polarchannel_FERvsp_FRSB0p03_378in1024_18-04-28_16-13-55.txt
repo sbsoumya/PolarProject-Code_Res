@@ -1,0 +1,12 @@
+"P Vs FER REPORT derate"
+"---------------------------"
+"N=1024"
+"sim ran :10000"
+"R_p1:378"
+"Rate vs Block_error="
+0.03
+0.03
+[1, 2, 4, 8, 16, 32, 64, 128]
+[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity]
+[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+"Time taken:13996.933182"

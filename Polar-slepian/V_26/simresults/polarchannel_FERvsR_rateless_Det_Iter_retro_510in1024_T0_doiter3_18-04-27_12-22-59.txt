@@ -1,0 +1,8 @@
+"RATE Vs FER REPORT Rateless Det Iter delta"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+"sim ran :100000"
+"T:0"
+"doiter:3"
+"N=1024"
