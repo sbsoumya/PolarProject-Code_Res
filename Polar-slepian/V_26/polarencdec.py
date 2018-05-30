@@ -317,6 +317,14 @@ def polarSCdecodeG(YN,N,design_p,I,D,llr_needed):
 		return (LL[:,n],np.transpose(UN_decoded[:,0]))
 	else:
 		return np.transpose(UN_decoded[:,0])	
+		
+def polarSCdecodeGlist(YN,N,design_p,I,D,llr_needed,listsize):
+	
+		if llr_needed:
+		return (LL[:,n],np.transpose(UN_decoded[:,0]))
+	else:
+		return np.transpose(UN_decoded[:,0])	
+	
 
 #This could be done by modifying D but patching for now		
 def polarIncFrzSCdecodeG(YN,N,design_p,I,D,IncFreeze_ind,IncFreeze_data,llr_needed):
