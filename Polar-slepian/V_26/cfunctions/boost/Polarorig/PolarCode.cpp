@@ -787,38 +787,3 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> e
     return bler;
 
 }
-//------------------------wrappers
-std::vector<uint8_t> PolarCode::py_list_to_std_vector( const boost::python::object& iterable )
-{
-	return std::vector<uint8_t>( boost::python::stl_input_iterator<uint8_t>( iterable ),
-                            boost::python::stl_input_iterator<uint8_t>( ) );
-}
-	
-boost::python::list PolarCode::std_vector_to_py_list(std::vector<uint8_t> vector) {
-std::vector<uint8_t>::iterator iter;
-typename boost::python::list list;
-for (iter = vector.begin(); iter != vector.end(); ++iter) {
-		list.append(*iter);
-	}
-   return list;
-}
-
-void PolarCode::setvector(boost::python::list binarystring)  
-{
-	vMsg=py_list_to_std_vector(binarystring);
-    for (std::vector<uint8_t>::const_iterator i = vMsg.begin(); i != vMsg.end(); ++i)
-	std::cout << +(*i) << ' ';
-	}
-boost::python::list PolarCode::getvector() { return std_vector_to_py_list(vMsg); }	
-boost::python::list PolarCode::encode_wrapper(boost::python::list info_bits){ return std_vector_to_py_list(encode(py_list_to_std_vector(info_bits)));}
-    
-/*    
-    
-    
-    
-    std::vector<uint8_t> decode_scl_p1(std::vector<double> p1, std::vector<double> p0, uint16_t list_size);
-    std::vector<uint8_t> decode_scl_llr(std::vector<double> llr, uint16_t list_size);
-
-    std::vector<std::vector<double>> get_bler_quick(std::vector<double> ebno_vec, std::vector<uint8_t> list_size);
- 
-*/

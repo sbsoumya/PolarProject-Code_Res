@@ -278,7 +278,7 @@ def polarencodeG(UN,N,I,D,isort):
 	
 	return XN        #XN enters channel
 
-	
+print polarencodeG([1,1,0,1,1,1],8,[7,6,5,4,3,2],[0,0],True)	
 def polarSCdecodeG(YN,N,design_p,I,D,llr_needed):
 	p=design_p
 	n=int(ma.log(N,2))
@@ -316,15 +316,17 @@ def polarSCdecodeG(YN,N,design_p,I,D,llr_needed):
 	if llr_needed:
 		return (LL[:,n],np.transpose(UN_decoded[:,0]))
 	else:
-		return np.transpose(UN_decoded[:,0])	
+		return np.transpose(UN_decoded[:,0])
 		
+
+"""		
 def polarSCdecodeGlist(YN,N,design_p,I,D,llr_needed,listsize):
 	
 		if llr_needed:
 		return (LL[:,n],np.transpose(UN_decoded[:,0]))
 	else:
 		return np.transpose(UN_decoded[:,0])	
-	
+"""	
 
 #This could be done by modifying D but patching for now		
 def polarIncFrzSCdecodeG(YN,N,design_p,I,D,IncFreeze_ind,IncFreeze_data,llr_needed):

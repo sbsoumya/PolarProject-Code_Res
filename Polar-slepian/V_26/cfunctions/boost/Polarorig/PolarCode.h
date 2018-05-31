@@ -11,12 +11,6 @@
 #include <math.h>
 #include <stack>          // std::stack
 
-#include <boost/python.hpp>
-#include <boost/python/list.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/python/stl_iterator.hpp>
-#include <boost/python/extract.hpp>
-
 class PolarCode {
 
 
@@ -38,33 +32,21 @@ public:
     std::vector<uint8_t> decode_scl_llr(std::vector<double> llr, uint16_t list_size);
 
     std::vector<std::vector<double>> get_bler_quick(std::vector<double> ebno_vec, std::vector<uint8_t> list_size);
- 
-    std::vector<uint8_t> py_list_to_std_vector( const boost::python::object& iterable );
-    boost::python::list std_vector_to_py_list(std::vector<uint8_t> vector);
-    void setvector(boost::python::list binarystring);
-    boost::python::list getvector();
-    
-    
-    
-    boost::python::list encode_wrapper(boost::python::list info_bits);
-    
-    std::vector<uint8_t> vMsg;// is a dummy
-    
+
+private:
+
     uint8_t _n;
     uint16_t _info_length;
     uint16_t _block_length;
     uint16_t _crc_size;
 
     double _design_epsilon;
-   
 
-private:
-    
     std::vector<uint8_t> _frozen_bits;
     std::vector<uint16_t> _channel_order_descending;
     std::vector<std::vector<uint8_t>> _crc_matrix;
     std::vector<uint16_t> _bit_rev_order;
-        
+
     void initialize_frozen_bits();
     void create_bit_rev_order();
 
@@ -106,32 +88,6 @@ private:
     bool crc_check(uint8_t * info_bits_padded);
 
 };
-using namespace boost::python;
-
-BOOST_PYTHON_MODULE(PolarCode)
-{
-    class_<PolarCode>("PolarCode", init<uint8_t,uint16_t,double,uint16_t>())
-        .def_readwrite("n", & PolarCode::_n)
-        .def_readwrite("info_length", & PolarCode::_info_length)
-        .def_readwrite("design_p", & PolarCode::_design_epsilon)
-        .def_readwrite("crc_size", & PolarCode::_crc_size)
-        
-        .def("encode", &PolarCode::encode_wrapper)
-        .def("decode_scl_p1",&PolarCode::decode_scl_p1)
-        .def("decode_scl_llr",&PolarCode::decode_scl_llr)
-        .def("get_bler_quick",&PolarCode::get_bler_quick)
-        
-        
-        .def("setvector",&PolarCode::setvector)
-        .def("getvector",&PolarCode::getvector)    
-        
-        .def("py_list_to_std_vector",&PolarCode::py_list_to_std_vector)
-        .def("std_vector_to_py_list",&PolarCode::std_vector_to_py_list)
-
-       ;
-
-}
-
 
 
 #endif //POLARC_POLARCODE_H
