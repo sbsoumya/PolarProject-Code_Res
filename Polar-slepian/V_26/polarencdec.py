@@ -278,7 +278,6 @@ def polarencodeG(UN,N,I,D,isort):
 	
 	return XN        #XN enters channel
 
-print polarencodeG([1,1,0,1,1,1],8,[7,6,5,4,3,2],[0,0],True)	
 def polarSCdecodeG(YN,N,design_p,I,D,llr_needed):
 	p=design_p
 	n=int(ma.log(N,2))

@@ -41,30 +41,43 @@ public:
  
     std::vector<uint8_t> py_list_to_std_vector( const boost::python::object& iterable );
     boost::python::list std_vector_to_py_list(std::vector<uint8_t> vector);
+    
+    std::vector<uint16_t> py_list_to_std_vector16( const boost::python::object& iterable );
+    boost::python::list std_vector_to_py_list16(std::vector<uint16_t> vector);
+    
+    
     void setvector(boost::python::list binarystring);
     boost::python::list getvector();
     
+    void setfrozen_bits(boost::python::list binarystring) ;
+    boost::python::list getfrozen_bits();
+    void setchannel_order_descending(boost::python::list pylist);
+    boost::python::list getchannel_order_descending();
+   
     
     
     boost::python::list encode_wrapper(boost::python::list info_bits);
     
-    std::vector<uint8_t> vMsg;// is a dummy
-    
+      
     uint8_t _n;
     uint16_t _info_length;
     uint16_t _block_length;
     uint16_t _crc_size;
 
     double _design_epsilon;
-   
+ 
+
 
 private:
-    
-    std::vector<uint8_t> _frozen_bits;
+
+	std::vector<uint8_t> vMsg;// is a dummy
+
+	std::vector<uint8_t> _frozen_bits;
     std::vector<uint16_t> _channel_order_descending;
     std::vector<std::vector<uint8_t>> _crc_matrix;
     std::vector<uint16_t> _bit_rev_order;
-        
+   
+    
     void initialize_frozen_bits();
     void create_bit_rev_order();
 
@@ -116,6 +129,7 @@ BOOST_PYTHON_MODULE(PolarCode)
         .def_readwrite("design_p", & PolarCode::_design_epsilon)
         .def_readwrite("crc_size", & PolarCode::_crc_size)
         
+   
         .def("encode", &PolarCode::encode_wrapper)
         .def("decode_scl_p1",&PolarCode::decode_scl_p1)
         .def("decode_scl_llr",&PolarCode::decode_scl_llr)
@@ -127,9 +141,15 @@ BOOST_PYTHON_MODULE(PolarCode)
         
         .def("py_list_to_std_vector",&PolarCode::py_list_to_std_vector)
         .def("std_vector_to_py_list",&PolarCode::std_vector_to_py_list)
+        
+        .add_property("frozen_bits", &PolarCode::getfrozen_bits, &PolarCode:: setfrozen_bits)
+        .add_property("channel_ordering", &PolarCode:: getchannel_order_descending, &PolarCode::  setchannel_order_descending)
+      //  .add_property("crc_matrix", &PolarCode::getcrc_matrix, &PolarCode:: _setcrc_matrix)
+      // .add_property("bit_rev_order", &PolarCode::getbit_rev_order, &PolarCode:: setbit_rev_order)
+        .add_property("vMsg", &PolarCode::getvector, &PolarCode::setvector)
+    ;
 
-       ;
-
+ 
 }
 
 

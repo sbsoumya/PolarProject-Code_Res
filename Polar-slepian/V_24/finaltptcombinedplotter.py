@@ -163,11 +163,12 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.show()
 """
-"""
+
 #~ #==============================CRC
 #~ #-----512
-
-ax=plt.subplot(212)
+fig=plt.figure()
+plt.subplots_adjust(hspace=0.3,top=0.95,bottom=0.2,left=0.09,right=0.97)
+ax=plt.subplot(111)
 ax.locator_params(axis='y', nbins=5)
 N=512
 R_p1=246
@@ -180,11 +181,11 @@ maxiters=3
 lines=ml.getline(fileT8,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-mo',label='RT-Polar,t='+str(T)+'bits')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-mo',label='RT-Polar, t='+str(T)+'bits')
 lines=ml.getline(fileCRCT8,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileCRCT8,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CRC,'+str(T)+'bits')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-b^',label='CRC, '+str(T)+'bits')
 
 fileT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_CRC1020in2048_T32_18-05-09_20-20-08.txt"
 fileCRCT32="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_1020in2048_T32_18-05-09_20-17-57.txt"
@@ -197,11 +198,11 @@ maxiters=3
 lines=ml.getline(fileT32,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT32,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-rx',label='RT-Polar,t='+str(T)+'bits')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-rx',label='RT-Polar, t='+str(T)+'bits')
 lines=ml.getline(fileCRCT32,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileCRCT32,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g>',label='CRC,'+str(T)+'bits')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-g>',label='CRC, '+str(T)+'bits')
 
 
 
@@ -218,8 +219,8 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 plt.show()
-"""
 
+"""
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------calc
@@ -290,6 +291,7 @@ plt.show()
 
 
 #-------------------------plot
+
 fig=plt.figure()
 ax=plt.subplot(111)
 plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
@@ -326,7 +328,7 @@ lines=ml.getline(fileLTPT,[x,y,z])
 point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
 
 
 
@@ -380,7 +382,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 
 plt.show()
-
+"""
 
 #===============================M for 1024
 
@@ -388,7 +390,7 @@ plt.show()
 fig=plt.figure()
 N=1024
 ax=plt.subplot(111)
-plt.subplots_adjust(top=0.95,bottom=0.2,right=0.85,left=0.09)
+plt.subplots_adjust(top=0.95,bottom=0.2,right=0.83,left=0.09)
 #fig.suptitle("HARQ schemes  \n N=1024,ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$ \}$")
 #plt.title("Effect of $\delta$ on $\eta$ for RT-Polar scheme, $n$="+str(N)) 
 

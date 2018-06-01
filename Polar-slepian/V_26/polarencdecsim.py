@@ -15,6 +15,13 @@ import polarconstruct as pcon
 from datetime import datetime
 import json
 
+
+I=pcon.getreliability_order(8)
+print I
+print ec.polarencodeG([1,1,0,1,1,1],8,I[:6],[0,0],False)	
+
+"""
+
 N=8
 K=4
 
@@ -38,7 +45,7 @@ print YN.tolist()
 d=ec.polarSCdecodeG(YN,N,design_p,I,list(FD),False)
 print d
 print ec.getUN(d,I,True).tolist()
-
+"""
 """
 [0 1 1 1 1 1 1 1]
 [0 0 0 0 0 0 0 1]
