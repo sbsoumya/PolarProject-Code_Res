@@ -28,6 +28,9 @@ def adjustG(Glist): #input Glist is sorted
 	lenG=len(Glist)
 	lcm=ml.get_lcm_for(range(1,lenG+1))
 	return [int(MaxG/lcm)*(lcm/(i+1)) for i in range(lenG)]
+	
+def getGlistfile(MaxG,lenG): 
+	return [int(MaxG/(i+1)) for i in range(lenG)]
 		
 #=======================================================================Rx knows channels	
 #decodable if actual rate is greater than present rate
@@ -468,6 +471,98 @@ def send_rateless_file_LTPT_sim(N,compound_plist_u,channel_p,derate,LTPTdict,run
 		return (achievedrate,used_rate,ber_exp,block_error)
 	else:
 		return (achievedrate,used_rate,block_error)
+
+#In Det Iter retro format
+#=======================================================================UK
+def send_rateless_file_LTPT_new(XN,N,LTPTdict,I_ord,channel_p,compound_plist,Glist): 
+	# T < deltaG
+	#compound channel
+    #----------------------------------------------------Iterations start
+	decoded=False
+	maxiter=len(compound_plist)-1
+	#------------------for filing Tx side
+	# reverse arikan :: THIS IS OF SIZE N 
+	UN_N=ec.polarencode(XN,N) 
+	Iter_XN=XN
+	Iter_YN=pl.BSCN(channel_p,Iter_XN)
+	Iter=0
+	#-------------------------------------------Forward decoding	
+  	while not decoded:
+		
+		Iter_p=compound_plist[Iter]
+		Iter_G=Glist[Iter]
+		Iter_I=I_ord[:Iter_G]
+		
+		
+		#data received at Rx over error-free channel
+		#No extra T bits for checking sent over error free channel 
+		#bits frozen sent over errorrfree channel
+		Iter_F=list(set(range(N))-set(Iter_I)) 
+		Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
+		(Iter_llr,Iter_UN_hat)=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),True)	
+					
+		Iter_errorfree=len(Iter_D)
+		
+		Iter_LT=LTPTdict[str(Iter_p)][0]
+		Iter_PT=LTPTdict[str(Iter_p)][1]
+		
+				
+		if Iter<maxiter and not is_decodable_LTPT(Iter_llr,Iter_I,Iter_LT,Iter_PT): #U is known to decoder ( both could have been reverse arikaned for comparison, not required)
+			Iter+=1
+		else:
+			decoded= True
+			
+			
+				
+	final_Iter=Iter	
+	if not is_decodable_LTPT(Iter_llr,Iter_I,Iter_LT,Iter_PT): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+		return_iter=final_Iter+1
+	
+	#print Iter_errorfree
+	final_XN=ec.polarencode(Iter_UN_hat,N)
+	errorfree_ach_rate=float(Iter_errorfree)/N 
+	return (errorfree_ach_rate,return_iter,np.array(final_XN))
+	
+#R R/2 R/3 R/4.....		
+def send_rateless_file_LTPT_new_sim(N,LTPTdict,compound_plist_u,channel_p,error_free_msg_length,runsim):
+	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
+	compound_plist=list(compound_plist_u) #best channel first
+	compound_plist.sort()
+	I_ord=pcon.getreliability_order(N)
+	lenG=len(compound_plist)
+	Glist=getGlistfile(N- (error_free_msg_length),lenG)
+	
+	Fp1=N-Glist[0]
+	print "channel_p:"+str(channel_p)
+	print "error_free_msg:"+str(Fp1)
+	block_errorcnt=0
+	Iter_probdict={}
+	errorfree_ach_rate=0
+	for i in range(runsim):
+		XN=np.random.randint(2,size=N)
+		(errorfreerate_sim,Iter,XN_decoded)=send_rateless_file_LTPT_new(XN,N,LTPTdict,I_ord,channel_p,compound_plist,Glist)
+		errorfree_ach_rate+=float(errorfreerate_sim)/runsim
+						
+		if XN.tolist()!=XN_decoded.tolist():
+			block_errorcnt+=1
+		try:
+			Iter_probdict[Iter]+=1
+		except:
+			Iter_probdict[Iter]=1	
+	
+	
+	for Iter in Iter_probdict:
+		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
+	Fp1=N-Glist[0]	
+	errorfree_used_rate=float(Fp1)/N	
+	block_error=float(block_errorcnt)/runsim
+	
+	
+	
+	return (errorfree_used_rate,errorfree_ach_rate,block_error,Iter_probdict)
+
 #---------------------------------------------------------------------------bin
 def send_rateless_LTPT_sim_bin(ERR_DICT,DP,N,compound_plist_u,channel_p,derate,LTPTdict,runsim):
 	

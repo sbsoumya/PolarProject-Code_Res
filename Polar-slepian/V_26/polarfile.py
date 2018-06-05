@@ -139,3 +139,38 @@ def polarfile_derate_sim(N,channel_p,design_p,derate,runsim,BER_needed):
 		return (float(G)/N,block_error)
 
 
+def polarfilesim_FR(N,channel_p,design_p,msg_length,runsim,BER_needed):
+	p=channel_p
+	I_ord=pcon.getreliability_order(N)
+	G=msg_length
+	I=I_ord[:G]
+	
+	
+	if BER_needed:
+		errcnt=np.zeros(G)
+	
+	block_errorcnt=0
+	#print float(len(I))/N
+	#UN=np.random.randint(2,size=G)
+	#print UN
+	for i in range(runsim):
+		#print i
+		XN=np.random.randint(2,size=N)
+		XN_decoded=polarfile(XN,channel_p,design_p,I)
+			
+		if BER_needed:
+			errcnt=errcnt+np.logical_xor(XN,XN_decoded)
+			
+		if XN.tolist()!=XN_decoded.tolist():
+			block_errorcnt+=1
+				
+	if BER_needed:		
+		berN=errcnt/runsim
+		ber_exp=np.log10(berN).tolist()
+	
+	block_error=float(block_errorcnt)/runsim
+		
+	if BER_needed:
+		return (ber_exp,float(G)/N,block_error)
+	else:
+		return (float(G)/N,block_error)

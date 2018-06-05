@@ -1,0 +1,18 @@
+#512 TPT
+./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-05_16-55-22.txt
+#UK
+./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_UK246in512_UK_18-06-05_22-13-03.txt
+#LTPT
+./simresults/polarfile_FERvsR_rateless_Det_LTPT_246in512_T0_18-06-05_22-41-25.txt
+#FR
+./simresults/polarfile_FERvsp_FR0e005in512_18-06-05_23-42-42.txt
+./simresults/polarfile_FERvsp_FR0e01in512_18-06-05_23-39-39.txt
+./simresults/polarfile_FERvsp_FR0e02in512_18-06-05_23-43-28.txt
+./simresults/polarfile_FERvsp_FR0e05in512_18-06-05_23-44-37.txt
+./simresults/polarfile_FERvsp_FR0e03in512_18-06-05_23-43-05.txt
+./simresults/polarfile_FERvsp_FR0e08in512_18-06-05_23-47-30.txt
+./simresults/polarfile_FERvsp_FR0e1in512_18-06-05_23-47-59.txt
+./simresults/polarfile_FERvsp_FR0e2in512_18-06-05_23-48-45.txt
+./simresults/polarfile_FERvsp_FR0e3in512_18-06-05_23-49-20.txt
+./simresults/polarfile_FERvsp_FR0e4in512_18-06-05_23-50-07.txt
+./simresults/polarfile_FERvsp_FR0e5in512_18-06-05_23-50-33.txt

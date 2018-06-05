@@ -16,9 +16,9 @@ from datetime import datetime
 import json
 
 
-I=pcon.getreliability_order(8)
+I=pcon.getreliability_order(16)
 print I
-print ec.polarencodeG([1,1,0,1,1,1],8,I[:6],[0,0],False)	
+print ec.polarencodeG([1,1,0,1,1,1,0,0,1,1,0],16,I[:11],[1,0,1,1,1],False)	
 
 """
 

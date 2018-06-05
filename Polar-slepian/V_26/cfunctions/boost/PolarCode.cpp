@@ -20,6 +20,7 @@ void PolarCode::initialize_frozen_bits() {
     for (uint16_t i = 0; i < _block_length; ++i) {
         channel_vec.at(i) = _design_epsilon;
     }
+    //CONSTRUCTION _design_epsilon=z
     for (uint8_t iteration = 0; iteration < _n; ++iteration) {
         uint16_t  increment = 1 << iteration;
         for (uint16_t j = 0; j < increment; j +=  1) {
@@ -40,14 +41,15 @@ void PolarCode::initialize_frozen_bits() {
                 [&](int i1, int i2) { return channel_vec[_bit_rev_order.at(i1)] < channel_vec[_bit_rev_order.at(i2)]; } );
 
     uint16_t  effective_info_length = _info_length + _crc_size;
-
+    //frozen bits
+    /*
     for (uint16_t i = 0; i < effective_info_length; ++i) {
         _frozen_bits.at(_channel_order_descending.at(i)) = 0;
     }
     for (uint16_t i = effective_info_length; i < _block_length; ++i) {
-        _frozen_bits.at(_channel_order_descending.at((i))) = 1;
+        _frozen_bits.at(_channel_order_descending.at((i))) = 0;
     }
-
+    */
     _crc_matrix.resize(_crc_size);
     for (uint8_t bit = 0; bit < _crc_size; ++bit) {
         _crc_matrix.at(bit).resize(_info_length);
@@ -62,6 +64,9 @@ std::vector<uint8_t> PolarCode::encode(std::vector<uint8_t> info_bits) {
     std::vector<uint8_t> info_bits_padded(_block_length, 0);
     std::vector<uint8_t> coded_bits(_block_length);
 
+    for (uint16_t i = 0; i < _info_length; ++i) {
+        info_bits_padded.at(_channel_order_descending.at(i)) = info_bits.at(i);
+    }
     for (uint16_t i = 0; i < _info_length; ++i) {
         info_bits_padded.at(_channel_order_descending.at(i)) = info_bits.at(i);
     }
