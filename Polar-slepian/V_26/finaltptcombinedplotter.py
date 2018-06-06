@@ -7,7 +7,7 @@ plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
 plt.rc('figure', figsize=[8,3.5]) 
 
-
+"""
 fig=plt.figure()
 plt.subplots_adjust(top=0.95,bottom=0.15,right=0.8,left=0.09)
 ax=plt.subplot(111)
@@ -98,6 +98,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 plt.show()
 
+"""
 """
 #~ #========================================================
 #512 - 5 iter-----and 3 iter
@@ -286,7 +287,7 @@ plt.show()
 	#~ Rlist=[len(pcon.getGChZCL(p,N,Lexp)[0]) for p in design_plist]
 	#~ print('\t'.join(map(str,Rlist)))
 
-"""
+
 
 #-------------------------plot
 fig=plt.figure()
@@ -380,7 +381,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 plt.show()
 
-"""
+
 #===============================M for 1024
 
 """

@@ -36,7 +36,7 @@ start=timer()
 for N in Nlist:
 	
 	stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-	filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+	filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 	f1=open(filename,'w')
 	print filename
 	print "RATE Vs FER REPORT Rateless Det Iter retro"
@@ -63,7 +63,7 @@ for N in Nlist:
 	
 	for channel_p in channel_plist:
 		#print "channel_p:"+str(channel_p)
-		(u_rate,ach_rate,block_error,Iter_probdict)=rlf.send_rateless_file_Iter_retro_det_sim(N,T,compound_plist,channel_p,error_free_msg_length,runsim)
+		(u_rate,ach_rate,block_error,Iter_probdict)=rlf.send_rateless_file_Iter_retro_det_sim(N,T,compound_plist,channel_p,error_free_msg_length,runsim,False)
 		used_rate.append(u_rate)
 		achieved_rate.append(ach_rate)
 		FER.append(block_error)

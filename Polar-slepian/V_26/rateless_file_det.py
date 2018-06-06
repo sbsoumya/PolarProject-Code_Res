@@ -58,14 +58,17 @@ N-Fp1 is the number of goodchannels needed.
 N-Fp1-T is number of info bits transferred if channel coding is considered.
 this was considered as msg_length in channel coding.
 error free msg_length will be Fp1+T.
-N-(error_free_msg_length-T) should be number of good channels required.#smae as channel coding
+N-(error_free_msg_length-T) should be number of good channels required.#same as channel coding
+THERE IS NO CONCEPT OF TOP HERE.
+THE LOCK IS SENT OVER THE ERROR FREE CHANNEL
+THE KEY IS DECODED AND MATCHED
 """
 
 
 def is_mismatch(lock,key):	
 	return list(lock)!=list(key)
 
-def send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist,Glist,T): 
+def send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist,Glist,T,final_boost): 
 	# T < deltaG
 	#compound channel
     #----------------------------------------------------Iterations start
@@ -86,13 +89,14 @@ def send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist,Glist,T):
 		
 		
 		#data received at Rx over error-free channel
-		#extra T bits for checking sent over error free channel
+		#extra T bits for checking sent over error free channel(this is over and above iter_G)
 		Iter_T=I_ord[Iter_G-T:Iter_G] 	
 		Iter_lock=ec.getUN(UN_N,Iter_T,False)
 		#bits frozen sent over errorrfree channel
 		Iter_F=list(set(range(N))-set(Iter_I)) 
 		Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
 		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
 		Iter_UN_decoded_key=ec.getUN(Iter_UN_hat,Iter_T,False)
 				
 		Iter_errorfree=len(Iter_D)+len(Iter_lock)
@@ -104,10 +108,11 @@ def send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist,Glist,T):
 			#TPT booster
 			#reuse the check bits in final decoding
 			#could have shown including the T-bits as frozen explicitly, this is equivalent for simulation
-			Iter_I=I_ord[:Iter_G-T] # including the T bits as frozen
-			Iter_F=list(set(range(N))-set(Iter_I))
-			Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
-			Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)
+			if final_boost:
+				Iter_I=I_ord[:Iter_G-T] # including the T bits as frozen
+				Iter_F=list(set(range(N))-set(Iter_I))
+				Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
+				Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)
 			
 				
 	final_Iter=Iter	
@@ -122,7 +127,7 @@ def send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist,Glist,T):
 	return (errorfree_ach_rate,return_iter,np.array(final_XN))
 	
 #R R/2 R/3 R/4.....		
-def send_rateless_file_Iter_retro_det_sim(N,T,compound_plist_u,channel_p,error_free_msg_length,runsim):
+def send_rateless_file_Iter_retro_det_sim(N,T,compound_plist_u,channel_p,error_free_msg_length,runsim,final_boost):
 	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
 	compound_plist=list(compound_plist_u) #best channel first
 	compound_plist.sort()
@@ -138,7 +143,7 @@ def send_rateless_file_Iter_retro_det_sim(N,T,compound_plist_u,channel_p,error_f
 	errorfree_ach_rate=0
 	for i in range(runsim):
 		XN=np.random.randint(2,size=N)
-		(errorfreerate_sim,Iter,XN_decoded)=send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist_u,Glist,T)
+		(errorfreerate_sim,Iter,XN_decoded)=send_rateless_file_Iter_retro(XN,N,I_ord,channel_p,compound_plist_u,Glist,T,final_boost)
 		errorfree_ach_rate+=float(errorfreerate_sim)/runsim
 						
 		if XN.tolist()!=XN_decoded.tolist():

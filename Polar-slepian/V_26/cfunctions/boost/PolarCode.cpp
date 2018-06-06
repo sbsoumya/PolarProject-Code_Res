@@ -67,8 +67,8 @@ std::vector<uint8_t> PolarCode::encode(std::vector<uint8_t> info_bits) {
     for (uint16_t i = 0; i < _info_length; ++i) {
         info_bits_padded.at(_channel_order_descending.at(i)) = info_bits.at(i);
     }
-    for (uint16_t i = 0; i < _info_length; ++i) {
-        info_bits_padded.at(_channel_order_descending.at(i)) = info_bits.at(i);
+    for (uint16_t i = _info_length+_crc_size; i < _block_length; ++i) {
+        info_bits_padded.at(_channel_order_descending.at(i)) = _frozen_bits.at(_channel_order_descending.at(i));
     }
     // adding CRC
     for (uint16_t i = _info_length; i < _info_length + _crc_size; ++i) {
@@ -664,7 +664,7 @@ void PolarCode::create_bit_rev_order() {
     }
 }
 
-std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> ebno_vec,
+std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> flipp_vec,
                                                            std::vector<uint8_t> list_size_vec) {
 
     int max_err = 1000;
@@ -679,23 +679,23 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> e
     num_run.resize(list_size_vec.size());
 
     for (unsigned l = 0; l < list_size_vec.size(); ++l) {
-        bler.at(l).resize(ebno_vec.size(), 0);
-        num_err.at(l).resize(ebno_vec.size(), 0);
-        num_run.at(l).resize(ebno_vec.size(), 0);
+        bler.at(l).resize(flipp_vec.size(), 0);
+        num_err.at(l).resize(flipp_vec.size(), 0);
+        num_run.at(l).resize(flipp_vec.size(), 0);
     }
 
     std::vector<uint8_t> coded_bits;
-    std::vector<double> bpsk(_block_length);
+    //std::vector<double> bpsk(_block_length);
     std::vector<double> received_signal(_block_length, 0);
     std::vector<uint8_t> info_bits(_info_length, 0);
 
-    double N_0  = 1.0;
+    //double N_0  = 1.0;
 //    double sigma_sqrt_pi = std::sqrt(N_0 * 3.1415f);
 
-    std::vector<double> noise(_block_length, 0);
+    std::vector<uint8_t> noise(_block_length, 0);
 
-    std::normal_distribution<double> gauss_dist(0.0f, N_0);
-    std::default_random_engine generator;
+    //std::normal_distribution<double> gauss_dist(0.0f, N_0);
+    //std::default_random_engine generator;
 
 //    std::vector<double> p0(_block_length), p1(_block_length);
     std::vector<double> llr(_block_length);
@@ -714,46 +714,49 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> e
                 info_bits.at(i) = (uint8_t) ( rand() % 2);
             }
         }
-        for(uint16_t i = 0; i < _block_length; ++ i ) {
-            noise.at(i) = (double) gauss_dist(generator);
-        }
+        //for(uint16_t i = 0; i < _block_length; ++ i ) {
+          //noise.at(i) = (double) gauss_dist(generator);
+                 
+        //}
 
         coded_bits = encode(info_bits);
 
-        for(uint16_t i = 0; i < _block_length; ++ i ) {
-            bpsk.at(i) = 2.0f * ((double) coded_bits.at(i)) - 1.0f;
-        }
+        //for(uint16_t i = 0; i < _block_length; ++ i ) {
+          //  bpsk.at(i) = 2.0f * ((double) coded_bits.at(i)) - 1.0f;
+        //}
 
         for (unsigned l_index = 0; l_index < list_size_vec.size(); ++l_index) {
 
             std::vector<bool> prev_decoded(0);
-            prev_decoded.resize(ebno_vec.size(), false);
+            prev_decoded.resize(flipp_vec.size(), false);
 
-            for (unsigned i_ebno = 0; i_ebno < ebno_vec.size(); ++i_ebno) {
+            for (unsigned i_flipp = 0; i_flipp < flipp_vec.size(); ++i_flipp) {
 
-                if ( num_err.at(l_index).at(i_ebno) > max_err )
+                if ( num_err.at(l_index).at(i_flipp) > max_err )
                     continue;
 
-                num_run.at(l_index).at(i_ebno)++;
+                num_run.at(l_index).at(i_flipp)++;
 
                 bool run_sim = true;
-
-                for(unsigned i_ebno2 = 0; i_ebno2 < i_ebno; ++i_ebno2) {
+                /*
+                for(unsigned i_flipp2 = 0; i_flipp2 > i_ebno; ++i_ebno2) {
                     if (prev_decoded.at(i_ebno2)) {
                         //  This is a hack to speed up simulations -- it assumes that this run will be decoded
                         // correctly since it was decoded correctly for a lower EbNo
                         run_sim = false;
                     }
-                }
+                }*/
 
                  if (!run_sim) {
                      continue;
                  }
 
-                double snr_sqrt_linear = std::pow(10.0f, ebno_vec.at(i_ebno)/20)
-                                         * std::sqrt( ((double) _info_length )/((double) (_block_length) )) ;
+                //double snr_sqrt_linear = std::pow(10.0f, ebno_vec.at(i_ebno)/20)
+                //                         * std::sqrt( ((double) _info_length )/((double) (_block_length) )) ;
                 for (uint16_t i = 0; i < _block_length; ++i) {
-                    received_signal.at(i) = snr_sqrt_linear * bpsk.at(i) + std::sqrt(N_0 / 2) * noise.at(i);
+                    //received_signal.at(i) =  snr_sqrt_linear * bpsk.at(i) + std::sqrt(N_0 / 2) * noise.at(i);
+                    received_signal.at(i) =  coded_bits.at(i)+(uint8_t) (rand()%100) < (flipp_vec.at(i_flipp)*100)
+                    
                 }
                 for (uint16_t i = 0; i < _block_length; ++i) {
 //                    p0.at(i) = exp(-(received_signal.at(i) + snr_sqrt_linear )*(received_signal.at(i) + snr_sqrt_linear )/N_0)/sigma_sqrt_pi;
@@ -773,9 +776,9 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> e
                 }
 
                 if (err)
-                    num_err.at(l_index).at(i_ebno)++;
+                    num_err.at(l_index).at(i_flipp)++;
                 else
-                    prev_decoded.at(i_ebno) = true;
+                    prev_decoded.at(i_flipp) = true;
 
             } // EbNo Loop End
 
@@ -784,8 +787,8 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> e
     } // run loop end
 
     for (unsigned l_index = 0; l_index < list_size_vec.size(); ++l_index) {
-        for (unsigned i_ebno = 0; i_ebno < ebno_vec.size(); ++i_ebno) {
-            bler.at(l_index).at(i_ebno) = num_err.at(l_index).at(i_ebno)/num_run.at(l_index).at(i_ebno);
+        for (unsigned i_flipp = 0; i_flipp < flipp_vec.size(); ++i_flipp) {
+            bler.at(l_index).at(i_flipp) = num_err.at(l_index).at(i_flipp)/num_run.at(l_index).at(i_flipp);
         }
     }
 
