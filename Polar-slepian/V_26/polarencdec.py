@@ -9,7 +9,9 @@
 # Decoding : following Harish Vangala
 #
 #----------------------------------------
-
+import sys
+sys.path.insert(0, './cfunctions/boost')
+import PolarCode as pc
 import numpy as np
 import matlib as ml
 import math as ma
@@ -412,4 +414,77 @@ def polarSCdecode(YN,N,design_p): #YN is OP of channel
 	#print 	LL
 	#print UN_decoded
 	return np.transpose(UN_decoded[:,0])
+#===================================================encode-decode list using tavildar c++implementations
+def polarcode_init(N,G,design_p,ED_size): #ED_size=crc_size or cb_size right now cb to be kept 0
+	n=int(ma.log(N,2))
+	z=np.sqrt(4*design_p*(1-design_p))
+	pc1=pc.PolarCode(n,G,z,ED_size)
+	return pc1
+
+def polarcode_init_defch(N,G,design_p,I_ord,ED_size): #ED_size=crc_size or cb_size right now cb to be kept 0
+	n=int(ma.log(N,2))
+	z=np.sqrt(4*design_p*(1-design_p))
+	pc1=pc.PolarCode(n,G,z,ED_size)
+	pc1.channel_ordering=bitreverseorder(I_ord,4)
+	return pc1
+
+def polarencodeG_C(pc1,UN,D):
+	#isort is FALSE
+	N=2**pc1.n
+	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
+	frozen_indices=I_ord[pc1.info_length-N:]
+	frozen_indices.sort()
+	frozen_bits=list([0]*N)
+	
+	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
+	for i in Revfrozen_indices:
+		frozen_bits[i]=D.pop(0)
+		
+	pc1.frozen_bits=frozen_bits	
+	return np.array(pc1.encode(UN))
+		
+
+def polarSCdecodeG_C(pc1,YN,decode_p,D,list_size): 
+	# decode_p is not neccessarily design p(should be but not neccessarily), not channel_p either, used for decoding
+	#isort is FALSE
+	N=2**pc1.n
+	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
+	frozen_indices=I_ord[pc1.info_length-N:]
+	frozen_indices.sort()
+	frozen_bits=list([0]*N)
+	
+	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
+	for i in Revfrozen_indices:
+		frozen_bits[i]=D.pop(0)
+	pc1.frozen_bits=frozen_bits
+	llrYN=[pl.LLR(decode_p,y) for y in YN]
+	return np.array(pc1.decode_scl(llrYN,list_size))
+		
+	
+
+def polarIncFrzSCdecodeG_C(pc1,YN,decode_p,D,IncFreeze_ind,IncFreeze_data,list_size):
+	#llr_needed is False
+		# decode_p is not neccessarily design p(should be but not neccessarily), not channel_p either, used for decoding
+	#isort is FALSE
+	N=2**pc1.n
+	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
+	frozen_indices=I_ord[pc1.info_length-N:]
+	frozen_indices.sort()
+	frozen_bits=list([0]*N)
+	print D
+	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
+	for i in Revfrozen_indices:
+		try:
+			frozen_bits[i]=D.pop(0)
+		except:
+			print D
+	
+	#incremental freeze
+	RevIncfrozen_indices=bitreverseorder(IncFreeze_ind,pc1.n)
+	incD=list(IncFreeze_data)
+	for i in Revfrozen_indices:
+		frozen_bits[i]=incD.pop(0)
+	pc1.frozen_bits=frozen_bits
+	llrYN=[pl.LLR(decode_p,y) for y in YN]
+	return np.array(pc1.decode_scl(llrYN,list_size))
 

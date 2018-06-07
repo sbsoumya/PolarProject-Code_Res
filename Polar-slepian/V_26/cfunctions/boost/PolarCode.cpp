@@ -41,15 +41,15 @@ void PolarCode::initialize_frozen_bits() {
                 [&](int i1, int i2) { return channel_vec[_bit_rev_order.at(i1)] < channel_vec[_bit_rev_order.at(i2)]; } );
 
     uint16_t  effective_info_length = _info_length + _crc_size;
-    //frozen bits
-    /*
+    //frozen bits locations?
+    
     for (uint16_t i = 0; i < effective_info_length; ++i) {
         _frozen_bits.at(_channel_order_descending.at(i)) = 0;
     }
     for (uint16_t i = effective_info_length; i < _block_length; ++i) {
-        _frozen_bits.at(_channel_order_descending.at((i))) = 0;
+        _frozen_bits.at(_channel_order_descending.at((i))) = 1;
     }
-    */
+    
     _crc_matrix.resize(_crc_size);
     for (uint8_t bit = 0; bit < _crc_size; ++bit) {
         _crc_matrix.at(bit).resize(_info_length);
@@ -68,7 +68,7 @@ std::vector<uint8_t> PolarCode::encode(std::vector<uint8_t> info_bits) {
         info_bits_padded.at(_channel_order_descending.at(i)) = info_bits.at(i);
     }
     for (uint16_t i = _info_length+_crc_size; i < _block_length; ++i) {
-        info_bits_padded.at(_channel_order_descending.at(i)) = _frozen_bits.at(_channel_order_descending.at(i));
+        info_bits_padded.at(_channel_order_descending.at(i)) = _frozen_bits_values.at(_channel_order_descending.at(i));
     }
     // adding CRC
     for (uint16_t i = _info_length; i < _info_length + _crc_size; ++i) {
@@ -176,7 +176,7 @@ std::vector<uint8_t> PolarCode::decode_scl() {
 
     }
     uint16_t l = findMostProbablePath((bool) _crc_size);
-
+    //std::cout << l;
     uint8_t * c_0 = _arrayPointer_Info.at(l);
     std::vector<uint8_t> deocded_info_bits(_info_length);
     for (uint16_t beta = 0; beta < _info_length; ++beta )
@@ -486,13 +486,13 @@ void PolarCode::continuePaths_FrozenBit(uint16_t phi) {
         if (_activePath.at(l) == 0)
             continue;
         uint8_t  * c_m = getArrayPointer_C(_n, l);
-        c_m[(phi % 2)] = 0; // frozen value assumed to be zero
+        c_m[(phi % 2)] = _frozen_bits_values.at(phi); // frozen value assumed to be zero !!
         if (_llr_based_computation) {
             double *llr_p = getArrayPointer_LLR(_n, l);
             _pathMetric_LLR.at(l) += log(1 + exp(-llr_p[0]));
         }
-        _arrayPointer_Info.at(l)[phi] = 0;
-    }
+        _arrayPointer_Info.at(l)[phi] = _frozen_bits_values.at(phi); //check here for frozen bits
+        }
 }
 
 void PolarCode::continuePaths_UnfrozenBit(uint16_t phi) {
@@ -755,17 +755,26 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> f
                 //                         * std::sqrt( ((double) _info_length )/((double) (_block_length) )) ;
                 for (uint16_t i = 0; i < _block_length; ++i) {
                     //received_signal.at(i) =  snr_sqrt_linear * bpsk.at(i) + std::sqrt(N_0 / 2) * noise.at(i);
-                    received_signal.at(i) =  coded_bits.at(i)+(uint8_t) (rand()%100) < (flipp_vec.at(i_flipp)*100)
+                    received_signal.at(i) =  coded_bits.at(i)+(uint8_t) (rand()%100) < (flipp_vec.at(i_flipp)*100);
                     
                 }
                 for (uint16_t i = 0; i < _block_length; ++i) {
 //                    p0.at(i) = exp(-(received_signal.at(i) + snr_sqrt_linear )*(received_signal.at(i) + snr_sqrt_linear )/N_0)/sigma_sqrt_pi;
 //                    p1.at(i) = exp(-(received_signal.at(i) - snr_sqrt_linear )*(received_signal.at(i) - snr_sqrt_linear )/N_0)/sigma_sqrt_pi;
-                    llr.at(i) = - 4 * received_signal.at(i) * snr_sqrt_linear / N_0;
+                      //llr.at(i) = - 4 * received_signal.at(i) * snr_sqrt_linear / N_0;
+                      //Above indicates p0/p1
+                      if (received_signal.at(i)==1)
+                      {
+						  llr.at(i)= log((flipp_vec.at(i_flipp))/(1-flipp_vec.at(i_flipp)))  ; // p1_0/ p1_1
+					  }
+					  else
+					  {
+						  llr.at(i)= log((1-flipp_vec.at(i_flipp))/flipp_vec.at(i_flipp));//p0_0/p1_1
+					  }
                 }
 
 //                std::vector<uint8_t> decoded_info_bits = polar_code.decode_scl_p1(p1, p0, list_size);
-                std::vector<uint8_t> decoded_info_bits = decode_scl_llr(llr, list_size_vec.at(l_index));
+                std::vector<uint8_t> decoded_info_bits = decode_scl_llr(llr, list_size_vec.at(l_index)); //llr and listsize
 
                 bool err = false;
                 for (uint16_t i = 0; i < _info_length; ++i) {
@@ -796,6 +805,8 @@ std::vector<std::vector<double>> PolarCode::get_bler_quick(std::vector<double> f
 
 }
 //------------------------member wrappers
+
+//pylist to vector converters.
 std::vector<uint8_t> PolarCode::py_list_to_std_vector( const boost::python::object& iterable )
 {
 	return std::vector<uint8_t>( boost::python::stl_input_iterator<uint8_t>( iterable ),
@@ -810,7 +821,7 @@ for (iter = vector.begin(); iter != vector.end(); ++iter) {
 	}
    return list;
 }
-
+//----
 std::vector<uint16_t> PolarCode::py_list_to_std_vector16( const boost::python::object& iterable )
 {
 	return std::vector<uint16_t>( boost::python::stl_input_iterator<uint16_t>( iterable ),
@@ -825,9 +836,24 @@ for (iter = vector.begin(); iter != vector.end(); ++iter) {
 	}
    return list;
 }
+//----
+std::vector<double> PolarCode::py_list_to_std_vector_dbl( const boost::python::object& iterable )
+{
+	return std::vector<double>( boost::python::stl_input_iterator<double>( iterable ),
+                            boost::python::stl_input_iterator<double>( ) );
+}
+	
+boost::python::list PolarCode::std_vector_to_py_list_dbl(std::vector<double> vector) {
+std::vector<double>::iterator iter;
+typename boost::python::list list;
+for (iter = vector.begin(); iter != vector.end(); ++iter) {
+		list.append(*iter);
+	}
+   return list;
+}
 
-
-
+//----------------converters end
+// dummy setvector
 void PolarCode::setvector(boost::python::list binarystring)  
 {
 	vMsg=py_list_to_std_vector(binarystring);
@@ -836,19 +862,20 @@ void PolarCode::setvector(boost::python::list binarystring)
 	}
 boost::python::list PolarCode::getvector() { return std_vector_to_py_list(vMsg); }	
 
+//other params
 void PolarCode::setfrozen_bits(boost::python::list binarystring)  
 {
-	_frozen_bits=py_list_to_std_vector(binarystring);
-    for (std::vector<uint8_t>::const_iterator i = _frozen_bits.begin(); i != _frozen_bits.end(); ++i)
-	std::cout << +(*i) << ' ';
+	_frozen_bits_values=py_list_to_std_vector(binarystring);
+    //for (std::vector<uint8_t>::const_iterator i = _frozen_bits_values.begin(); i != _frozen_bits_values.end(); ++i)
+	//std::cout << +(*i) << ' ';
 	}
-boost::python::list PolarCode::getfrozen_bits() { return std_vector_to_py_list(_frozen_bits); }
+boost::python::list PolarCode::getfrozen_bits() { return std_vector_to_py_list(_frozen_bits_values); }
 	
 void PolarCode::setchannel_order_descending(boost::python::list pylist)  
 {
 	_channel_order_descending=py_list_to_std_vector16(pylist);
-    for (std::vector<uint16_t>::const_iterator i = _channel_order_descending.begin(); i != _channel_order_descending.end(); ++i)
-	std::cout << +(*i) << ' ';
+    //for (std::vector<uint16_t>::const_iterator i = _channel_order_descending.begin(); i != _channel_order_descending.end(); ++i)
+	//std::cout << +(*i) << ' ';
 	}
 boost::python::list PolarCode::getchannel_order_descending() { return std_vector_to_py_list16(_channel_order_descending); }	
 
@@ -856,7 +883,9 @@ boost::python::list PolarCode::getchannel_order_descending() { return std_vector
 
 /*---------------encdec wrappers*/
 boost::python::list PolarCode::encode_wrapper(boost::python::list info_bits){ return std_vector_to_py_list(encode(py_list_to_std_vector(info_bits)));}
-    
+
+boost::python::list PolarCode::decode_wrapper(boost::python::list llr, uint8_t list_size)
+{ return std_vector_to_py_list(decode_scl_llr(py_list_to_std_vector_dbl(llr),list_size));}
 /*    
     
     

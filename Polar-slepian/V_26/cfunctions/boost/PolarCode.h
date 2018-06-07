@@ -45,6 +45,8 @@ public:
     std::vector<uint16_t> py_list_to_std_vector16( const boost::python::object& iterable );
     boost::python::list std_vector_to_py_list16(std::vector<uint16_t> vector);
     
+    std::vector<double> py_list_to_std_vector_dbl( const boost::python::object& iterable );
+    boost::python::list std_vector_to_py_list_dbl(std::vector<double> vector)   ; 
     
     void setvector(boost::python::list binarystring);
     boost::python::list getvector();
@@ -57,6 +59,7 @@ public:
     
     
     boost::python::list encode_wrapper(boost::python::list info_bits);
+    boost::python::list decode_wrapper(boost::python::list llr, uint8_t list_size);
     
       
     uint8_t _n;
@@ -73,6 +76,7 @@ private:
 	std::vector<uint8_t> vMsg;// is a dummy
 
 	std::vector<uint8_t> _frozen_bits;
+	std::vector<uint8_t> _frozen_bits_values;
     std::vector<uint16_t> _channel_order_descending;
     std::vector<std::vector<uint8_t>> _crc_matrix;
     std::vector<uint16_t> _bit_rev_order;
@@ -131,9 +135,9 @@ BOOST_PYTHON_MODULE(PolarCode)
         
    
         .def("encode", &PolarCode::encode_wrapper)
-        .def("decode_scl_p1",&PolarCode::decode_scl_p1)
-        .def("decode_scl_llr",&PolarCode::decode_scl_llr)
-        .def("get_bler_quick",&PolarCode::get_bler_quick)
+        //.def("decode_scl_p1",&PolarCode::decode_scl_p1)
+        .def("decode_scl",&PolarCode::decode_wrapper)
+        //.def("get_bler_quick",&PolarCode::get_bler_quick)
         
         
         .def("setvector",&PolarCode::setvector)
