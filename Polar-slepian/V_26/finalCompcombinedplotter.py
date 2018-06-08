@@ -115,7 +115,7 @@ TPTmax=[]
 for i in range(point):
 	TPTmax.append(1-max([TPTZ[Zmax][i] for Zmax in zlist]))
 	
-plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
+#plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
 
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X/Y)$')

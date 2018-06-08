@@ -29,13 +29,13 @@ compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
 T=9
 R_p1=246
 msg_length=R_p1-T
-runsim=1
-
+runsim=1000
+L=1
 start=timer()
 for N in Nlist:
 	
 	stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+	filename="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_L"+str(L)+stamp+".txt"
 	f1=open(filename,'w')
 	print filename
 	print "RATE Vs FER REPORT Rateless Det Iter retro"
@@ -64,7 +64,7 @@ for N in Nlist:
 	
 	for channel_p in channel_plist:
 		#print "channel_p:"+str(channel_p)
-		(u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_sim(N,T,compound_plist,channel_p,msg_length,runsim,4)
+		(u_rate,ach_rate,block_error,Iter_probdict)=rlc.send_rateless_det_Iter_retro_sim(N,T,compound_plist,channel_p,msg_length,runsim,L)
 		used_rate.append(u_rate)
 		achieved_rate.append(ach_rate)
 		FER.append(block_error)

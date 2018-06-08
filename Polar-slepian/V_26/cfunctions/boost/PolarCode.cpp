@@ -487,6 +487,17 @@ void PolarCode::continuePaths_FrozenBit(uint16_t phi) {
             continue;
         uint8_t  * c_m = getArrayPointer_C(_n, l);
         c_m[(phi % 2)] = _frozen_bits_values.at(phi); // frozen value assumed to be zero !!
+        //c_m[(phi % 2)]=_frozen_bits_values.at(_channel_order_descending.at(phi));
+       
+		//std::cout << phi;
+		//std::cout<< "\n";
+		//std::cout << (phi%2);
+		//std::cout<<"\n";
+		//std::cout<<"value";
+		//std::cout<<"\n";
+		//std::cout << +(_frozen_bits_values.at(phi));
+		//c_m[0] = _frozen_bits_values.at(0);
+		
         if (_llr_based_computation) {
             double *llr_p = getArrayPointer_LLR(_n, l);
             _pathMetric_LLR.at(l) += log(1 + exp(-llr_p[0]));

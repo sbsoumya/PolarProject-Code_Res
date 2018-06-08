@@ -425,7 +425,7 @@ def polarcode_init_defch(N,G,design_p,I_ord,ED_size): #ED_size=crc_size or cb_si
 	n=int(ma.log(N,2))
 	z=np.sqrt(4*design_p*(1-design_p))
 	pc1=pc.PolarCode(n,G,z,ED_size)
-	pc1.channel_ordering=bitreverseorder(I_ord,4)
+	pc1.channel_ordering=bitreverseorder(I_ord,n)
 	return pc1
 
 def polarencodeG_C(pc1,UN,D):
@@ -449,6 +449,7 @@ def polarSCdecodeG_C(pc1,YN,decode_p,D,list_size):
 	#isort is FALSE
 	N=2**pc1.n
 	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
+	#print I_ord
 	frozen_indices=I_ord[pc1.info_length-N:]
 	frozen_indices.sort()
 	frozen_bits=list([0]*N)
@@ -468,22 +469,26 @@ def polarIncFrzSCdecodeG_C(pc1,YN,decode_p,D,IncFreeze_ind,IncFreeze_data,list_s
 	#isort is FALSE
 	N=2**pc1.n
 	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
+	#print I_ord
+	
+	#---The entire set of frozen indices
 	frozen_indices=I_ord[pc1.info_length-N:]
 	frozen_indices.sort()
 	frozen_bits=list([0]*N)
-	print D
-	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
-	for i in Revfrozen_indices:
-		try:
-			frozen_bits[i]=D.pop(0)
-		except:
-			print D
 	
-	#incremental freeze
+	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
 	RevIncfrozen_indices=bitreverseorder(IncFreeze_ind,pc1.n)
-	incD=list(IncFreeze_data)
+	
+	#print Revfrozen_indices,RevIncfrozen_indices
+	
+	#print len(Revfrozen_indices),len(RevIncfrozen_indices),len(D)
+	
 	for i in Revfrozen_indices:
-		frozen_bits[i]=incD.pop(0)
+		if i in RevIncfrozen_indices:
+			frozen_bits[i]=IncFreeze_data.pop(0)
+		else:
+			frozen_bits[i]=D.pop(0)
+				
 	pc1.frozen_bits=frozen_bits
 	llrYN=[pl.LLR(decode_p,y) for y in YN]
 	return np.array(pc1.decode_scl(llrYN,list_size))

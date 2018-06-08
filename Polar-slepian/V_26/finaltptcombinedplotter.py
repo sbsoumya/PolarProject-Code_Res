@@ -328,6 +328,24 @@ maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT')
 
+#--------------L4
+
+
+#./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-08_14-20-13.txt
+N=512
+R_p1=246
+fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-08_14-20-13.txt"
+fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_L118-06-08_14-59-59.txt"
+T=9
+(x,y,z)=(9,10,11)
+maxiters=3
+lines=ml.getline(fileT9,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, L=4, t='+str(T))
+
+
+
 
 
 
