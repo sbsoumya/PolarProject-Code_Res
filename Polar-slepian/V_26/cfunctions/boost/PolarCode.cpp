@@ -167,7 +167,13 @@ std::vector<uint8_t> PolarCode::decode_scl() {
 
 
         if (_frozen_bits.at(phi) == 1)
-            continuePaths_FrozenBit(phi);
+			{
+				/*std::cout << phi;
+				std::cout<< ":";
+				std::cout<< +(_frozen_bits_values.at(phi));
+				std::cout<<",";*/
+                continuePaths_FrozenBit(phi);
+		}
         else
             continuePaths_UnfrozenBit(phi);
 
@@ -486,7 +492,7 @@ void PolarCode::continuePaths_FrozenBit(uint16_t phi) {
         if (_activePath.at(l) == 0)
             continue;
         uint8_t  * c_m = getArrayPointer_C(_n, l);
-        c_m[(phi % 2)] = _frozen_bits_values.at(phi); // frozen value assumed to be zero !!
+        c_m[(phi % 2)] = 0; //_frozen_bits_values.at(phi); // frozen value assumed to be zero !!
         //c_m[(phi % 2)]=_frozen_bits_values.at(_channel_order_descending.at(phi));
        
 		//std::cout << phi;
@@ -502,7 +508,7 @@ void PolarCode::continuePaths_FrozenBit(uint16_t phi) {
             double *llr_p = getArrayPointer_LLR(_n, l);
             _pathMetric_LLR.at(l) += log(1 + exp(-llr_p[0]));
         }
-        _arrayPointer_Info.at(l)[phi] = _frozen_bits_values.at(phi); //check here for frozen bits
+        _arrayPointer_Info.at(l)[phi] =0;// _frozen_bits_values.at(_channel_order_descending.at(phi)); //check here for frozen bits
         }
 }
 

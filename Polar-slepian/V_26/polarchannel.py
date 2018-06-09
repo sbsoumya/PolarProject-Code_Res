@@ -139,6 +139,51 @@ def polarchannelsim_FR(N,channel_p,design_p,msg_length,runsim,BER_needed):
 		return (ber_exp,block_error)
 	else:
 		return block_error	
+
+def polarchannelsim_FR_list(N,channel_p,design_p,msg_length,runsim,BER_needed,list_size):
+	p=channel_p
+	G=msg_length #number of good channels
+	
+	
+	if BER_needed:
+		errcnt=np.zeros(G)
+	
+	block_errorcnt=0
+	#print float(len(I))/N
+	#UN=np.random.randint(2,size=G)
+	#print UN
+	pc1=ec.polarcode_init(N,G,design_p,0)
+	I_ord=pc1.channel_ordering
+	I=I_ord[:G]
+	for i in range(runsim):
+		#print i
+		UN=np.random.randint(2,size=G)
+		FD=np.zeros(N-G,dtype=int).tolist()#frozen data
+		XN=ec.polarencodeG_C(pc1,UN.tolist(),list(FD))
+		
+		YN=pl.BSCN(p,XN)
+		
+		UN_decoded=ec.polarSCdecodeG_C(pc1,YN,channel_p,list(FD),list_size)
+		if BER_needed:
+			errcnt=errcnt+np.logical_xor(UN,UN_decoded)
+						
+		if UN.tolist()!=UN_decoded.tolist():
+			block_errorcnt+=1
+		#print UN,YN,UN_decoded
+	if BER_needed:		
+		berN=errcnt/runsim
+		ber_exp=np.log10(berN).tolist()
+	
+	block_error=float(block_errorcnt)/runsim
+		
+	if BER_needed:
+		return (ber_exp,block_error)
+	else:
+		return block_error	
+
+
+
+
 def polarchannelsim_FR_SB(N,channel_p,design_p,msg_length,runsim,T,BER_needed):
 	p=channel_p
 	G=msg_length #number of good channels

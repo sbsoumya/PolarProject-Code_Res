@@ -5,7 +5,7 @@ complist=[0.03,0.11,0.17]
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
-plt.rc('figure', figsize=[8,3.5]) 
+plt.rc('figure', figsize=[8,3]) 
 
 """
 fig=plt.figure()
@@ -326,7 +326,7 @@ lines=ml.getline(fileLTPT,[x,y,z])
 point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
 
 #--------------L4
 
@@ -342,7 +342,7 @@ maxiters=3
 lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, L=4, t='+str(T))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, L=4, t='+str(T))
 
 
 
@@ -380,12 +380,12 @@ TPTmax=[]
 for i in range(point):
 	TPTmax.append(max([TPTZ[Zmax][i] for Zmax in zlist]))
 	
-plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
+plt.plot(plist,TPTmax,'-.b>',label='Standard Polar')
 
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
 
-plt.ylabel('$\eta(p)$')
+plt.ylabel('Throughput, $\eta(p)$')
 plt.xlabel('flipover probability $p$')
 plt.xlim([0.025,0.175])
 #plt.ylim([0.15,0.9])

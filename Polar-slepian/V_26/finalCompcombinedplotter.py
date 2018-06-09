@@ -5,7 +5,7 @@ complist=[0.03,0.11,0.17]
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
-plt.rc('figure', figsize=[8,3.5]) 
+plt.rc('figure', figsize=[8,3]) 
 
 #==============================================================================Benchmark
 #~ #================================512vs FR 
@@ -29,7 +29,7 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[12])[0],maxiters)
 TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-plt.plot(lines[0],[1-t for t in TPT],'-m^',label='$n=$'+str(N)+', t='+str(T))
+plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 #plt.show()
 
@@ -60,7 +60,7 @@ lines=ml.getline(fileLTPT,[x,y,z])
 point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
-plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT')
+plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
 
 
 
@@ -120,7 +120,7 @@ for i in range(point):
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X/Y)$')
 
-plt.ylabel('$1- \eta(p)$')
+plt.ylabel('Normalised error-free tx')
 plt.xlabel('flipover probability $p$')
 plt.xlim([0.025,0.175])
 #plt.ylim([0.15,0.9])
