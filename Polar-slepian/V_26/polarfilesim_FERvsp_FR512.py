@@ -14,62 +14,66 @@ import polarencdec as ec
 import polarconstruct as pcon
 from datetime import datetime
 import json
-import polarchannel as pch
+import polarfile as pf
 from pprint import pprint
 from timeit import default_timer as timer
 
 #=================================================================simulation		
 #------------Number of good channels = capacity
-N=1024
+start = timer()
+Nlist=[512]
+N=Nlist[0]
+channel_plist=list(np.linspace(0.01,0.2,20))
+design_plist=channel_plist
+L=0.1
+Lexp=np.log10(L)
+Rlist=[len(pcon.getGChZCL(p,N,Lexp)[0]) for p in design_plist]
+print Rlist
+print design_plist
 
-design_plist=list(np.linspace(0.01,0.2,10))
-msg_length=512
-L=1
-runsim=10000
-runsimhigh=100000
+runsim=1000
+
+start=timer()
 
 stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-filename="./simresults/polarchannel_FERvsp_FR"+str(msg_length)+"in"+str(N)+"_"+stamp+".txt"
+filename="./simresults/polarfile_FERvsp_FR"+str(L).replace(".","e")+"in"+str(N)+"_"+stamp+".txt"
 f1=open(filename,'w')
 print filename
 print "P Vs FER REPORT derate"
 print "---------------------------"
 print "N="+str(N)
 print "sim ran :"+str(runsim)
-print "msg_length:"+str(msg_length)
-print "L:"+str(L)
+
 		
 json.dump( "P Vs FER REPORT derate",f1) ;f1.write("\n")
 json.dump( "---------------------------",f1) ;f1.write("\n")
 json.dump( "N="+str(N),f1) ;f1.write("\n")
 json.dump("sim ran :"+str(runsim),f1) ;f1.write("\n")		
-json.dump("msg_length:"+str(msg_length),f1) ;f1.write("\n")	
-json.dump("L:"+str(L),f1) ;f1.write("\n")		
+	
 
 FER=[];
-FERL=[];
 start=timer()
-for design_p in design_plist:
-	print design_p
-	block_error=pch.polarchannelsim_FR(N,design_p,design_p,msg_length,runsim,False)
+for i in range(len(design_plist)):
+	print design_plist[i];
+	print Rlist[i]
+	block_error=pf.polarfilesim_FR(N,design_plist[i],design_plist[i],Rlist[i],runsim,False)
 	#~ if block_error==0:
 		#block_error=pch.polarchannelsim_FR(N,design_p,design_p,msg_length,runsim,False)
-	block_errorL=pch.polarchannelsim_FR_list(N,design_p,design_p,msg_length,runsim,False,L)
 	
 	
 	FER.append(block_error)
-	FERL.append(block_errorL)
-block_error_exp=np.log10(FER).tolist()
-block_error_expL=np.log10(FERL).tolist()
-	
+	    
+print "Z max :"+str(L)
+block_error_exp=np.log10(FER).tolist()	
 print design_plist
+print Rlist
 print block_error_exp
-print block_error_expL
 		
+json.dump("Z max :"+str(L),f1) ;f1.write("\n")
 json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")
 json.dump(design_plist,f1) ;f1.write("\n")
+json.dump(Rlist,f1) ;f1.write("\n")
 json.dump(block_error_exp,f1) ;f1.write("\n")	
-json.dump(block_error_expL,f1) ;f1.write("\n")	
 
 
 end = timer()

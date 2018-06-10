@@ -34,6 +34,7 @@ public:
     }
 
     std::vector<uint8_t> encode(std::vector<uint8_t> info_bits);
+    std::vector<uint8_t> reverse_arikan(std::vector<uint8_t> info_bits_padded);
     std::vector<uint8_t> decode_scl_p1(std::vector<double> p1, std::vector<double> p0, uint16_t list_size);
     std::vector<uint8_t> decode_scl_llr(std::vector<double> llr, uint16_t list_size);
 
@@ -60,6 +61,7 @@ public:
     
     boost::python::list encode_wrapper(boost::python::list info_bits);
     boost::python::list decode_wrapper(boost::python::list llr, uint8_t list_size);
+    boost::python::list reverse_arikan_wrapper(boost::python::list info_bits);
     
       
     uint8_t _n;
@@ -135,6 +137,7 @@ BOOST_PYTHON_MODULE(PolarCode)
         
    
         .def("encode", &PolarCode::encode_wrapper)
+        .def("arikan", &PolarCode::reverse_arikan_wrapper)
         //.def("decode_scl_p1",&PolarCode::decode_scl_p1)
         .def("decode_scl",&PolarCode::decode_wrapper)
         //.def("get_bler_quick",&PolarCode::get_bler_quick)

@@ -19,7 +19,7 @@ plt.rc('font', family='serif')
 complist=[0.08349999999999963, 0.19249999999999973, 0.24549999999999977, 0.2784999999999998, 0.3009999999999998]
 
 #-------------------------------------------polar_channel_FERvsR
-
+"""
 FR4="./simresults/polarchannel_FERvsp_FR103in1024_18-03-31_21-09-17.txt"
 FR3="./simresults/polarchannel_FERvsp_FR148in1024_18-03-31_21-08-39.txt"
 FR2="./simresults/polarchannel_FERvsp_FR238in1024_18-03-31_21-08-06.txt"
@@ -34,26 +34,30 @@ FR8="./simresults/polarchannel_FERvsp_FR540in1024_18-04-22_14-14-31.txt"
 FR9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_540in1024_T0_doiter1_18-04-22_14-17-34.txt"
 FR10="./simresults/polarchannel_FERvsp_FR270in1024_18-04-22_14-15-06.txt"
 FR11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_540in1024_T0_doiter2_18-04-22_14-18-14.txt"
+"""
+FR512L="./simresults/polarchannel_FERvsp_FR512in1024_18-06-10_02-03-30.txt"
+
 fig=plt.figure()
 N=1024
 
 #~ #---------------FR
-(x,z)=(6,7)
-lines=ml.getline(FR8,[x,z])
+#~ (x,z)=(6,7)
+#~ lines=ml.getline(FR8,[x,z])
+#~ point=len(lines[0])
+#~ plt.semilogy(lines[0],[10**i for i in lines[1]],'-^g',label="FR540") 
+#~ (x,z)=(9,11)
+#~ lines=ml.getline(FR9,[x,z])
+#~ point=len(lines[0])
+#~ plt.semilogy(lines[0],[10**i for i in lines[1]],'-^r',label="1-Iter540") 
+#~ (x,z)=(6,7)
+#~ lines=ml.getline(FR10,[x,z])
+#~ point=len(lines[0])
+#~ plt.semilogy(lines[0],[10**i for i in lines[1]],'-^k',label="FR270") 
+(w,x,z)=(7,8,9)
+lines=ml.getline(FR512L,[w,x,z])
 point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^g',label="FR540") 
-(x,z)=(9,11)
-lines=ml.getline(FR9,[x,z])
-point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^r',label="1-Iter540") 
-(x,z)=(6,7)
-lines=ml.getline(FR10,[x,z])
-point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^k',label="FR270") 
-(x,z)=(9,11)
-lines=ml.getline(FR11,[x,z])
-point=len(lines[0])
-plt.semilogy(lines[0],[10**i for i in lines[1]],'-^b',label="2-Iter540") 
+plt.semilogy(lines[0],[10**i for i in lines[1]],'-^b',label="L=1") 
+plt.semilogy(lines[0],[10**i for i in lines[2]],'-^r',label="L=4") 
 #~ lines=ml.getline(FR2,[x,z])
 #~ point=len(lines[0])
 #~ plt.semilogy(lines[0],[10**i for i in lines[1]],':r') 
@@ -66,7 +70,7 @@ plt.semilogy(lines[0],[10**i for i in lines[1]],'-^b',label="2-Iter540")
 #~ lines=ml.getline(FR5,[x,z])
 #~ point=len(lines[0])
 #~ plt.semilogy(lines[0],[10**i for i in lines[1]],':k') 
-msg_length=508
+msg_length=512
 plt.title("FER vs p for N="+str(N)+", $R_{p_1}$="+str(msg_length)) 
 plt.ylabel('FER')
 plt.xlabel('BSC(p)')
