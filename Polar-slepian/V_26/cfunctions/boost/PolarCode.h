@@ -28,6 +28,7 @@ public:
     {
         _block_length = (uint16_t) (1 << _n);
         _frozen_bits.resize(_block_length);
+        _info_bits_padded.resize(_block_length);
         _bit_rev_order.resize(_block_length);
         create_bit_rev_order();
         initialize_frozen_bits();
@@ -56,6 +57,9 @@ public:
     boost::python::list getfrozen_bits();
     void setchannel_order_descending(boost::python::list pylist);
     boost::python::list getchannel_order_descending();
+    
+    void setfrozen_bits_indic(boost::python::list binarystring) ;
+    boost::python::list getfrozen_bits_indic();
    
     
     
@@ -79,6 +83,7 @@ private:
 
 	std::vector<uint8_t> _frozen_bits;
 	std::vector<uint8_t> _frozen_bits_values;
+	std::vector<uint8_t> _info_bits_padded;
     std::vector<uint16_t> _channel_order_descending;
     std::vector<std::vector<uint8_t>> _crc_matrix;
     std::vector<uint16_t> _bit_rev_order;
@@ -150,6 +155,7 @@ BOOST_PYTHON_MODULE(PolarCode)
         .def("std_vector_to_py_list",&PolarCode::std_vector_to_py_list)
         
         .add_property("frozen_bits", &PolarCode::getfrozen_bits, &PolarCode:: setfrozen_bits)
+        .add_property("frozen_bits_indic", &PolarCode::getfrozen_bits_indic, &PolarCode:: setfrozen_bits_indic)
         .add_property("channel_ordering", &PolarCode:: getchannel_order_descending, &PolarCode::  setchannel_order_descending)
       //  .add_property("crc_matrix", &PolarCode::getcrc_matrix, &PolarCode:: _setcrc_matrix)
       // .add_property("bit_rev_order", &PolarCode::getbit_rev_order, &PolarCode:: setbit_rev_order)

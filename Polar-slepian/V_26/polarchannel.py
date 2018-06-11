@@ -117,7 +117,8 @@ def polarchannelsim_FR(N,channel_p,design_p,msg_length,runsim,BER_needed):
 	for i in range(runsim):
 		#print i
 		UN=np.random.randint(2,size=G)
-		FD=np.zeros(N-G,dtype=int).tolist()#frozen data
+		FD=np.random.randint(2,size=N-G)
+		#FD=np.zeros(N-G,dtype=int).tolist()#frozen data
 		XN=ec.polarencodeG(UN,N,I,list(FD),False)
 		
 		YN=pl.BSCN(p,XN)
@@ -155,15 +156,24 @@ def polarchannelsim_FR_list(N,channel_p,design_p,msg_length,runsim,BER_needed,li
 	pc1=ec.polarcode_init(N,G,design_p,0)
 	I_ord=pc1.channel_ordering
 	I=I_ord[:G]
+	print runsim
 	for i in range(runsim):
 		#print i
+		#UN=np.zeros(G,dtype=int)
 		UN=np.random.randint(2,size=G)
-		FD=np.zeros(N-G,dtype=int).tolist()#frozen data
+		#FD=np.zeros(N-G,dtype=int).tolist()#frozen data
+		FD=np.random.randint(2,size=N-G)
+		print I_ord[G:]
+		print FD
 		XN=ec.polarencodeG_C(pc1,UN.tolist(),list(FD))
-		
+		print pc1.frozen_bits
+		#print pc1.frozen_bits_indic
 		YN=pl.BSCN(p,XN)
-		
+		print "\n***"
 		UN_decoded=ec.polarSCdecodeG_C(pc1,YN,channel_p,list(FD),list_size)
+		print "\n***"
+		print UN_decoded
+		print UN,FD
 		if BER_needed:
 			errcnt=errcnt+np.logical_xor(UN,UN_decoded)
 						

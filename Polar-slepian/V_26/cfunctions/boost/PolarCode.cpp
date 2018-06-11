@@ -68,8 +68,14 @@ std::vector<uint8_t> PolarCode::encode(std::vector<uint8_t> info_bits) {
         info_bits_padded.at(_channel_order_descending.at(i)) = info_bits.at(i);
     }
     for (uint16_t i = _info_length+_crc_size; i < _block_length; ++i) {
-        info_bits_padded.at(_channel_order_descending.at(i)) = _frozen_bits_values.at(_channel_order_descending.at(i));
+        info_bits_padded.at(_channel_order_descending.at(i)) = _frozen_bits_values.at(i);
     }
+    std::cout << "info_padded\n";
+    for (uint16_t i = 0; i < _block_length; ++i) {
+		_info_bits_padded.at(i)=info_bits_padded.at(i);
+        std::cout<< +(_info_bits_padded.at(i));
+    }
+    std::cout <<"\n";
     // adding CRC
     for (uint16_t i = _info_length; i < _info_length + _crc_size; ++i) {
         uint8_t  crc_bit = 0;
@@ -89,6 +95,7 @@ std::vector<uint8_t> PolarCode::encode(std::vector<uint8_t> info_bits) {
             }
         }
     }
+
 
     for (uint16_t i = 0; i < _block_length; ++i) {
         coded_bits.at(i) = info_bits_padded.at(_bit_rev_order.at(i));
@@ -205,8 +212,17 @@ std::vector<uint8_t> PolarCode::decode_scl() {
     //std::cout << l;
     uint8_t * c_0 = _arrayPointer_Info.at(l);
     std::vector<uint8_t> deocded_info_bits(_info_length);
+    std::vector<uint8_t> deocded_block(_block_length);
     for (uint16_t beta = 0; beta < _info_length; ++beta )
         deocded_info_bits.at(beta) = c_0[_channel_order_descending.at(beta)];
+    
+    std::cout << "decoded:\n";
+    for (uint16_t beta = 0; beta < _block_length; ++beta )
+        {
+		deocded_block.at(beta) = c_0[_channel_order_descending.at(beta)];        
+        std::cout << +(deocded_block.at(beta));
+        }
+	
 
     for (uint16_t s = 0; s < _list_size; ++s) {
         delete[] _arrayPointer_Info.at(s);
@@ -512,8 +528,8 @@ void PolarCode::continuePaths_FrozenBit(uint16_t phi) {
         if (_activePath.at(l) == 0)
             continue;
         uint8_t  * c_m = getArrayPointer_C(_n, l);
-        c_m[(phi % 2)] = _frozen_bits_values.at(phi); // frozen value assumed to be zero !!
-        //c_m[(phi % 2)]=_frozen_bits_values.at(_channel_order_descending.at(phi));
+        //c_m[(phi % 2)] = _frozen_bits_values.at(phi); // frozen value assumed to be zero !!
+        c_m[(phi % 2)]=_info_bits_padded.at(phi);
        
 		//std::cout << phi;
 		//std::cout<< "\n";
@@ -528,7 +544,8 @@ void PolarCode::continuePaths_FrozenBit(uint16_t phi) {
             double *llr_p = getArrayPointer_LLR(_n, l);
             _pathMetric_LLR.at(l) += log(1 + exp(-llr_p[0]));
         }
-        _arrayPointer_Info.at(l)[phi] =_frozen_bits_values.at(phi); //check here for frozen bits
+        //_arrayPointer_Info.at(l)[phi] =_frozen_bits_values.at(phi); //check here for frozen bits
+        _arrayPointer_Info.at(l)[phi] =_info_bits_padded.at(phi); //check here for frozen bits
         }
 }
 
@@ -907,6 +924,14 @@ void PolarCode::setfrozen_bits(boost::python::list binarystring)
 	//std::cout << +(*i) << ' ';
 	}
 boost::python::list PolarCode::getfrozen_bits() { return std_vector_to_py_list(_frozen_bits_values); }
+
+void PolarCode::setfrozen_bits_indic(boost::python::list binarystring)  
+{
+	_frozen_bits=py_list_to_std_vector(binarystring);
+    //for (std::vector<uint8_t>::const_iterator i = _frozen_bits_values.begin(); i != _frozen_bits_values.end(); ++i)
+	//std::cout << +(*i) << ' ';
+	}
+boost::python::list PolarCode::getfrozen_bits_indic() { return std_vector_to_py_list(_frozen_bits); }
 	
 void PolarCode::setchannel_order_descending(boost::python::list pylist)  
 {
@@ -921,7 +946,7 @@ boost::python::list PolarCode::getchannel_order_descending() { return std_vector
 /*---------------encdec wrappers*/
 boost::python::list PolarCode::encode_wrapper(boost::python::list info_bits){ return std_vector_to_py_list(encode(py_list_to_std_vector(info_bits)));}
 
-boost::python::list PolarCode::reverse_arikan_wrapper(boost::python::list info_bits){ return std_vector_to_py_list(encode(py_list_to_std_vector(info_bits)));}
+boost::python::list PolarCode::reverse_arikan_wrapper(boost::python::list info_bits){ return std_vector_to_py_list(reverse_arikan(py_list_to_std_vector(info_bits)));}
 
 boost::python::list PolarCode::decode_wrapper(boost::python::list llr, uint8_t list_size)
 { return std_vector_to_py_list(decode_scl_llr(py_list_to_std_vector_dbl(llr),list_size));}

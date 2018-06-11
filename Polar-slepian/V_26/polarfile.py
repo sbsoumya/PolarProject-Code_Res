@@ -55,16 +55,19 @@ def polarfile_list(pc1,XN,channel_p,design_p,I,list_size):
 	
 	
 	#Tx side
-	UN=pc1.arikan(XN)
+	UN=pc1.arikan(XN.tolist())
+	
 	#picking data from frozen channels
 	F=pc1.channel_ordering[G:]
+	print F
 	FD=ec.getUN(UN,F,True)
 	
+	print FD
 	YN=pl.BSCN(p,XN)	
 	
 	#rx side	
 	UN_decoded=ec.polarSCdecodeG_C(pc1,YN,channel_p,list(FD),list_size)
-	XN_decoded=pc1.arikan(pc1,UN_decoded,list(FD))
+	XN_decoded=ec.polarencodeG_C(pc1,UN_decoded.tolist(),list(FD))
 	
 	return XN_decoded	
 #------------------------------------------------------------polarfile known pattern	
@@ -196,7 +199,7 @@ def polarfilesim_FR(N,channel_p,design_p,msg_length,runsim,BER_needed):
 	if BER_needed:
 		return (ber_exp,float(G)/N,block_error)
 	else:
-		return (float(G)/N,block_error)
+		return block_error
 		
 def polarfilesim_FR_list(N,channel_p,design_p,msg_length,runsim,BER_needed,list_size):
 	p=channel_p
@@ -217,7 +220,10 @@ def polarfilesim_FR_list(N,channel_p,design_p,msg_length,runsim,BER_needed,list_
 	for i in range(runsim):
 		#print i
 		XN=np.random.randint(2,size=N)
-		XN_decoded=polarfile_list(XN,channel_p,design_p,I,list_size)
+		#AN=np.random.randint(2,size=G)
+		#FD=np.zeros(N-G,dtype=int).tolist()#frozen data
+		#XN=ec.polarencodeG_C(pc1,AN.tolist(),list(FD))
+		XN_decoded=polarfile_list(pc1,XN,channel_p,design_p,I,list_size)
 			
 		if BER_needed:
 			errcnt=errcnt+np.logical_xor(XN,XN_decoded)
@@ -234,4 +240,4 @@ def polarfilesim_FR_list(N,channel_p,design_p,msg_length,runsim,BER_needed,list_
 	if BER_needed:
 		return (ber_exp,float(G)/N,block_error)
 	else:
-		return (float(G)/N,block_error)
+		return block_error

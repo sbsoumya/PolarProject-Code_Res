@@ -431,13 +431,12 @@ def polarcode_init_defch(N,G,design_p,I_ord,ED_size): #ED_size=crc_size or cb_si
 def polarencodeG_C(pc1,UN,D):
 	#isort is FALSE
 	N=2**pc1.n
-	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
-	frozen_indices=I_ord[pc1.info_length-N:]
-	frozen_indices.sort()
+	I_ord=pc1.channel_ordering
+	
+	frozen_indices=I_ord[pc1.info_length-N:] #reverse indexing
 	frozen_bits=list([0]*N)
 	
-	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
-	for i in Revfrozen_indices:
+	for i in range(pc1.info_length,N):
 		frozen_bits[i]=D.pop(0)
 		
 	pc1.frozen_bits=frozen_bits	
@@ -448,16 +447,16 @@ def polarSCdecodeG_C(pc1,YN,decode_p,D,list_size):
 	# decode_p is not neccessarily design p(should be but not neccessarily), not channel_p either, used for decoding
 	#isort is FALSE
 	N=2**pc1.n
-	I_ord=bitreverseorder(pc1.channel_ordering,pc1.n)
-	#print I_ord
+	I_ord=pc1.channel_ordering
+	
 	frozen_indices=I_ord[pc1.info_length-N:]
-	frozen_indices.sort()
 	frozen_bits=list([0]*N)
 	
-	Revfrozen_indices=bitreverseorder(frozen_indices,pc1.n)
-	for i in Revfrozen_indices:
+	for i in frozen_indices:
 		frozen_bits[i]=D.pop(0)
-	pc1.frozen_bits=frozen_bits
+		
+	pc1.frozen_bits=frozen_bits	
+	
 	llrYN=[pl.LLR(decode_p,y) for y in YN]
 	return np.array(pc1.decode_scl(llrYN,list_size))
 		
