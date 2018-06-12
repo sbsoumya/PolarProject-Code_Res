@@ -20,12 +20,12 @@ from timeit import default_timer as timer
 
 #=================================================================simulation		
 #------------Number of good channels = capacity
-N=1024
+N=512
 
 design_plist=list(np.linspace(0.01,0.2,10))
-msg_length=512
-L=1
-runsim=10000
+msg_length=256
+L=4
+runsim=100
 runsimhigh=100000
 
 stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")

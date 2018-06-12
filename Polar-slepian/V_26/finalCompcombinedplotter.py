@@ -29,7 +29,11 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[12])[0],maxiters)
 TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
+#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
+
+
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RE-Polar, t='+str(T))
+
 
 #plt.show()
 
@@ -41,8 +45,8 @@ lines=ml.getline(fileUK,[x,y,z])
 point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileUK,[12])[0],maxiters)
-plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.ro',label='Ideal Detection')
-
+#plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.ro',label='Ideal Detection')
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-.ro',label='Ideal Detection')
 
 #~ (x,y,z)=(9,10,11)
 #~ fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt"
@@ -60,7 +64,9 @@ lines=ml.getline(fileLTPT,[x,y,z])
 point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
-plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
+#plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
+
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar')
 
 
 
@@ -109,16 +115,19 @@ for Zmax in zlist:
 	print Zmax
 	print lines[1]
 	#plt.plot(lines[0],[1-float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)],label='$Z \leq $'+Zmax.replace("e","."))
-	TPTZ[Zmax]=[float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)]
+	#TPTZ[Zmax]=[float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)]
+	TPTZ[Zmax]=[float((N-lines[1][i])/(1-10**lines[2][i][1]))/N for i in range(point)]
 	
 TPTmax=[]		
 for i in range(point):
-	TPTmax.append(1-max([TPTZ[Zmax][i] for Zmax in zlist]))
+	#TPTmax.append(1-max([TPTZ[Zmax][i] for Zmax in zlist]))
+	TPTmax.append(min([TPTZ[Zmax][i] for Zmax in zlist]))
+	
 	
 #plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
 
 channel_plist=list(np.linspace(0.01,0.2,20))
-plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X/Y)$')
+plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
 
 plt.ylabel('Normalised error-free tx')
 plt.xlabel('flipover probability $p$')

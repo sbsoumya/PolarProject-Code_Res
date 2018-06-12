@@ -306,9 +306,20 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, t='+str(T))
-
+#------BAC
+"""
+fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-12_16-00-41.txt"
+T=9
+(x,y,z)=(9,11,12)
+maxiters=3
+lines=ml.getline(fileT9,[x,y,z])
+point=len(lines[0])
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[14])[0],maxiters)
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-y^',label='RT-Polar-BAC $p_1=p_0/2$ , t='+str(T))
+"""
 #-------------------------UK
 T=0
+(x,y,z)=(9,10,11)
 #fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-04_23-31-44.txt"
 fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt"
 lines=ml.getline(fileUK,[x,y,z])
@@ -386,7 +397,7 @@ channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
 
 plt.ylabel('Throughput, $\eta(p)$')
-plt.xlabel('flipover probability $p$')
+plt.xlabel('flipover probability $p_0$')
 plt.xlim([0.025,0.175])
 #plt.ylim([0.15,0.9])
 plt.grid(True)

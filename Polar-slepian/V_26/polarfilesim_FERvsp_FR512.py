@@ -25,7 +25,7 @@ N=16
 design_plist=list(np.linspace(0.01,0.2,10))
 msg_length=8
 L=1
-runsim=1
+runsim=10
 runsimhigh=100000
 
 stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")

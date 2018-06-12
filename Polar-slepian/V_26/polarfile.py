@@ -55,21 +55,34 @@ def polarfile_list(pc1,XN,channel_p,design_p,I,list_size):
 	
 	
 	#Tx side
-	UN=pc1.arikan(XN.tolist())
+	print "Tx side construction"
+	print XN
+	UN=pc1.rev_arikan(XN.tolist())
 	
 	#picking data from frozen channels
-	F=pc1.channel_ordering[G:]
-	print F
-	FD=ec.getUN(UN,F,True)
+	FD=UN[G:]
+	print "ARIKAN"
 	
-	print FD
+	print UN
+	print UN[:G],FD
+	print ec.polarencodeG_C(pc1,UN[:G],list(FD))
+	print pc1.arikan(UN)
+	
+	
 	YN=pl.BSCN(p,XN)	
 	
-	#rx side	
-	UN_decoded=ec.polarSCdecodeG_C(pc1,YN,channel_p,list(FD),list_size)
-	XN_decoded=ec.polarencodeG_C(pc1,UN_decoded.tolist(),list(FD))
 	
-	return XN_decoded	
+	#rx side	
+	print "Rx"
+	print FD
+	UN_hat=ec.polarSCdecodefileG_C(pc1,YN,channel_p,list(FD),list_size).tolist()
+	print UN_hat
+	#print UN_decoded,FD
+	#XN_decoded=ec.polarencodeG_C(pc1,UN,list(FD))
+	#print XN_decoded
+	XN_decoded=pc1.arikan(UN_hat)
+	print XN_decoded
+	return np.array(XN_decoded)	
 #------------------------------------------------------------polarfile known pattern	
 def polarfile_known(XN,p,pattern,I):
 	

@@ -57,6 +57,19 @@ def BSCN(p,inbitarray):
 	flip=np.random.binomial(1,p,N) #generates N ber(p) instances
 	outbitarray=np.logical_xor(inbitarray,flip)
 	return outbitarray
+	
+def BACN(p0,p1,inbitarray):
+	N=np.size(inbitarray)
+	flip0=np.random.binomial(1,p0,N) #generates N ber(p) instances
+	flip1=np.random.binomial(1,p1,N)
+	
+	outbitarray=np.zeros(N,dtype=int)
+	for i in range(N):
+		if inbitarray[i]==1:
+			outbitarray[i]=np.logical_xor(inbitarray[i],flip1[i])
+		else:
+			outbitarray[i]=np.logical_xor(inbitarray[i],flip0[i])
+	return outbitarray
 
 def ZBSC(p):
 	return ma.sqrt(4*p*(1-p))

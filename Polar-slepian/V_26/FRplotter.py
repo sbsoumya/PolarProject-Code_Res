@@ -38,6 +38,8 @@ FR11="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_540in1024_T0_doit
 FR512L="./simresults/polarchannel_FERvsp_FR512in1024_18-06-10_02-03-30.txt" #L=4
 FR512L="./simresults/polarchannel_FERvsp_FR512in1024_18-06-10_09-11-16.txt" #L=1
 FR512L="./simresults/polarchannel_FERvsp_FR512in1024_18-06-11_17-08-23.txt" #L=16
+#FR512L="./simresults/polarchannel_FERvsp_FR512in1024_18-06-11_22-21-29.txt" #L=1, random frozen
+L=16
 
 fig=plt.figure()
 N=1024
@@ -59,7 +61,7 @@ N=1024
 lines=ml.getline(FR512L,[w,x,z])
 point=len(lines[0])
 plt.semilogy(lines[0],[10**i for i in lines[1]],'-^b',label="SC") 
-plt.semilogy(lines[0],[10**i for i in lines[2]],'-^r',label="L=16") 
+plt.semilogy(lines[0],[10**i for i in lines[2]],'-^r',label="L="+str(L)) 
 #~ lines=ml.getline(FR2,[x,z])
 #~ point=len(lines[0])
 #~ plt.semilogy(lines[0],[10**i for i in lines[1]],':r') 

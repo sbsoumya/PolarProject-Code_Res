@@ -459,6 +459,23 @@ def polarSCdecodeG_C(pc1,YN,decode_p,D,list_size):
 	
 	llrYN=[pl.LLR(decode_p,y) for y in YN]
 	return np.array(pc1.decode_scl(llrYN,list_size))
+	
+def polarSCdecodefileG_C(pc1,YN,decode_p,D,list_size): 
+	# decode_p is not neccessarily design p(should be but not neccessarily), not channel_p either, used for decoding
+	#isort is FALSE
+	N=2**pc1.n
+	I_ord=pc1.channel_ordering
+	
+	frozen_indices=I_ord[pc1.info_length-N:]
+	frozen_bits=list([0]*N)
+	
+	for i in frozen_indices:
+		frozen_bits[i]=D.pop(0)
+		
+	pc1.frozen_bits=frozen_bits	
+	
+	llrYN=[pl.LLR(decode_p,y) for y in YN]
+	return np.array(pc1.decode_scl_file(llrYN,list_size))
 		
 	
 
