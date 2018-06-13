@@ -288,7 +288,7 @@ plt.show()
 	#~ print('\t'.join(map(str,Rlist)))
 
 
-
+"""
 #-------------------------plot
 fig=plt.figure()
 ax=plt.subplot(111)
@@ -306,6 +306,7 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, t='+str(T))
+"""
 #------BAC
 """
 fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-12_16-00-41.txt"
@@ -316,6 +317,7 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[14])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-y^',label='RT-Polar-BAC $p_1=p_0/2$ , t='+str(T))
+"""
 """
 #-------------------------UK
 T=0
@@ -410,7 +412,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 plt.show()
 
-
+"""
 #===============================M for 1024
 
 """
@@ -538,13 +540,13 @@ T=1
 lines=ml.getline(fileT1,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':g^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':g^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 
 T=6
 lines=ml.getline(fileT6,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT6,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':g^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':g^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 
 T=10
 lines=ml.getline(fileT10,[x,y,z])
@@ -566,7 +568,7 @@ T=1
 lines=ml.getline(fileT1,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':m^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':m^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 T=9
 lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
@@ -577,7 +579,7 @@ T=8
 lines=ml.getline(fileT8,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.mv',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.mv',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 
 #~ #------------------372
 #fileT10="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_678in1024_T10_18-05-17_12-31-27.txt"
@@ -626,7 +628,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 plt.show()
 """
 #===============================M for 256
-"""
+
 
 fig=plt.figure()
 N=256
@@ -648,7 +650,7 @@ T=1
 lines=ml.getline(fileT1,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':g^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':g^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 
 T=5
 lines=ml.getline(fileT5,[x,y,z])
@@ -670,7 +672,7 @@ T=1
 lines=ml.getline(fileT1,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT1,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':m^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':m^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 T=9
 lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
@@ -681,7 +683,7 @@ T=5
 lines=ml.getline(fileT5,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT5,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.mv',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.mv',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 
 #~ #-----------------186
 fileT7="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_186in256_T7_18-05-17_14-42-53.txt"
@@ -697,7 +699,7 @@ T=7
 lines=ml.getline(fileT7,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT7,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':c^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],':c^',label='CB '+str(T)+', $NR_1=$'+str(R_p1))
 
 
 T=11
@@ -721,4 +723,4 @@ ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 plt.show()
-"""
+

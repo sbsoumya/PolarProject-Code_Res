@@ -20,8 +20,10 @@ import lambdathreshold as lmb
 import math as ma
 import matlib as ml
 
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
+plt.rc('xtick', labelsize=14)
+plt.rc('ytick', labelsize=14)
+plt.rc('savefig',dpi=300) 
+plt.rc('figure', figsize=[8,5]) 
 
 
 #import seaborn as sns
@@ -32,14 +34,16 @@ plt.rc('font', family='serif')
 #to be automated
 #./simresults/llrsgndict-512-0p03-18-05-10_12-50-13.txt
 #./simresults/llrsgndict-512-0p11-18-05-10_12-50-57.txt
+fig=plt.figure()
+plt.subplots_adjust(top=0.95,bottom=0.15)
+ax=plt.subplot(111)
 
-
-filename="./simresults/llrsgndict-512-0p11-18-05-10_12-50-57.txt"
+filename="./simresults/llrsgndict-512-0p03-18-05-10_12-50-13.txt"
 LLRdict=lmb.load_LLRdict(filename)
 N=512
-design_p=0.11
+design_p=0.03
 runsim=1000
-channel_plist=[0.11,0.17]
+channel_plist=[0.03,0.11,0.17]
 skip=0
 C=pl.CapacityBSC(N,design_p)
 G=int(C)
@@ -85,9 +89,9 @@ for channel_p in channel_plist:
 		#RV=[-lmb.f_Irv(-llr,int(sentbit)) for llr,sentbit in zip(LLRchannels,SentBitchannels)]
 		
 		if i==0:
-			plt.scatter(range(N)[::skip+1],RV[::skip+1],marker=marker,color=color[j-1],label='p$_{channel}$='+str(channel_p))
+			plt.scatter(range(N)[::skip+1],RV[::skip+1],marker=marker,color=color[j-1],label='$p=$'+str(channel_p))
 		else:
-			plt.scatter(range(N)[::skip+1],RV[::skip+1],marker=marker,alpha=alpha,color=color[j-1])
+			plt.scatter(range(N)[::skip+1],RV[::skip+1],marker=marker,color=color[j-1])
 			
 		#plt.scatter(range(N)[::skip+1],RV2[::skip+1],marker=marker,alpha=alpha,color='k')
 		#plt.scatter(range(N)[::skip+1],RV3[::skip+1],marker=marker,alpha=alpha,color='g')
@@ -95,7 +99,7 @@ for channel_p in channel_plist:
 		
 
 fnick="absllr"
-f="$|LLR|$"	
+f="$|\Lambda_1(j)|$"	
 
 #~ fnick="f_Irv"
 #~ f="$log 2/(1+e^{-llr*(1-2u)})$"
@@ -109,8 +113,8 @@ f="$|LLR|$"
 #~ fnick="f_Irv_altered"
 #~ f="$-log 2/(1+e^{llr*(1-2u)})$"
 
-plt.title(f+" for p$_{guess}$=0.11,\emph{Compound Channel=$\{$0.03,0.11,0.17$\}$ }")
-plt.xlabel('Polarized bit Channel as per Reliability Ordering.')
+#plt.title(f+" for p$_{guess}$=0.11,\emph{Compound Channel=$\{$0.03,0.11,0.17$\}$ }")
+plt.xlabel('Bit channel $j$')
 plt.ylabel(f)
 plt.legend(loc="upper right")
 plt.grid(True)

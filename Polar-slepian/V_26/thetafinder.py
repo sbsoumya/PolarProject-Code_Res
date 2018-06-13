@@ -19,8 +19,10 @@ from scipy import stats, integrate
 import polarconstruct as pcon
 import lambdathreshold as lmb
 
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
+plt.rc('xtick', labelsize=14)
+plt.rc('ytick', labelsize=14)
+plt.rc('savefig',dpi=300) 
+plt.rc('figure', figsize=[8,5]) 
 
 
 #-------------------------------------------polar_channel_FERvsR
@@ -92,7 +94,7 @@ index= range(runsim)
 j=1
 for channel_p in channel_plist:
 	j+=1
-	plt.scatter(index,Fdict[str(channel_p)],color=color[j-2],label="p$_{channel}=$"+str(channel_p))
+	plt.scatter(index,[i/100 for i in Fdict[str(channel_p)]],color=color[j-2],label="$p=$"+str(channel_p))
 
 
 
@@ -113,10 +115,11 @@ f="$|LLR|"
 #~ f="$-log 2/(1+e^{llr*(1-2u)})"
 	
 plt.legend(loc="best")
-plt.title("Thresholds for PHY-ED \n $\lambda$="+str(LT)+",$\Theta$="+str(PT)+",p$_{guessed}$="+str(design_p))
-plt.xlabel("Simulation number"+"\n"+"P(atleast $\Theta$ \% of goodchannels $\geq\lambda$)="+str(Ppercdict)+"\n"+filename)
+#plt.title("Thresholds for PHY-ED \n $\lambda$="+str(LT)+",$\Theta$="+str(PT)+",p$_{guessed}$="+str(design_p))
+plt.xlabel("Simulation number")#+"\n"+"P(atleast $\Theta$ \% of goodchannels $\geq\lambda$)="+str(Ppercdict)+"\n"+filename)
+print Ppercdict
 plt.grid(True)
-plt.ylabel("\% of good channels with $|LLR| \geq \lambda$")
+plt.ylabel("$S_2$")
 #plt.ylabel("\% of bad channels with "+f+" \geq \lambda$")
 
 #plt.figtext(0.005, 0.03, "P("+str(PT)+"\% of goodchannels $\geq\lambda$)="+str(Ppercdict))#+"\n"+filename)
