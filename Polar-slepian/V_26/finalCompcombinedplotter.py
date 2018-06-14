@@ -32,7 +32,7 @@ TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
 #plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RE-Polar, t='+str(T))
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
 
 
 #plt.show()
@@ -66,7 +66,7 @@ maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
 #plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar')
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
 
 
 
@@ -129,7 +129,7 @@ for i in range(point):
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
 
-plt.ylabel('Normalised error-free tx')
+plt.ylabel('$\l(p)$')
 plt.xlabel('flipover probability $p$')
 plt.xlim([0.025,0.175])
 #plt.ylim([0.15,0.9])
