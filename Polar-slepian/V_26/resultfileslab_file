@@ -20,3 +20,14 @@
 ./simresults/polarfile_FERvsp_FR0e5in512_18-06-05_23-50-33.txt
 ./simresults/polarfile_FERvsp_FR0e25in512_18-06-06_16-08-35.txt
 
+#CRC8
+./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_19-20-25.txt
+
+#./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_18-17-30.txt
+#CRC32
+./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_19-39-52.txt
+#T=8
+./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T8_18-06-15_18-04-37.txt
+#T=32
+./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T32_18-06-15_19-38-19.txt
+

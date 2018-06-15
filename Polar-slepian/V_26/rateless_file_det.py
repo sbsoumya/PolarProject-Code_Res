@@ -250,3 +250,204 @@ def send_rateless_file_Iter_retro_det_UK_sim(N,compound_plist_u,channel_p,error_
 	
 	
 	return (errorfree_used_rate,errorfree_ach_rate,block_error,Iter_probdict)
+	
+#==============================================================================CRC8
+	
+def send_rateless_file_Iter_retro_CRC8(XN,N,I_ord,channel_p,compound_plist,Glist,T,final_boost): 
+	# T < deltaG
+	#compound channel
+    #----------------------------------------------------Iterations start
+	decoded=False
+	maxiter=len(compound_plist)-1
+	#------------------for filing Tx side
+	# reverse arikan :: THIS IS OF SIZE N 
+	UN_N=ec.polarencode(XN,N) 
+	Iter_XN=XN
+	Iter_YN=pl.BSCN(channel_p,Iter_XN)
+	Iter=0
+	#-------------------------------------------Forward decoding	
+  	while not decoded:
+		
+		Iter_p=compound_plist[Iter]
+		Iter_G=Glist[Iter]
+		Iter_I=I_ord[:Iter_G]
+		
+		
+		#data received at Rx over error-free channel
+		#extra T bits for checking sent over error free channel(this is over and above iter_G)
+		Iter_T=I_ord[Iter_G-T:Iter_G] 	
+		Iter_lock=ec.getUN(UN_N,Iter_T,False)
+		UN_N_int=[int(u) for u in UN_N]
+		Iter_lock_CRC=ml.getCRC(list(UN_N_int),8)
+		#bits frozen sent over errorrfree channel
+		Iter_F=list(set(range(N))-set(Iter_I)) 
+		Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
+		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
+		Iter_UN_decoded_key=ec.getUN(Iter_UN_hat,Iter_T,False)
+		Iter_UN_decoded_key_CRC=ml.getCRC(list(Iter_UN_hat),8)	
+		Iter_errorfree=len(Iter_D)+len(Iter_lock_CRC)
+				
+		if Iter<maxiter and is_mismatch(Iter_lock_CRC,Iter_UN_decoded_key_CRC):
+			Iter+=1
+		else:
+			decoded= True
+			#TPT booster
+			#reuse the check bits in final decoding
+			#could have shown including the T-bits as frozen explicitly, this is equivalent for simulation
+			if final_boost:
+				Iter_I=I_ord[:Iter_G-T] # including the T bits as frozen
+				Iter_F=list(set(range(N))-set(Iter_I))
+				Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
+				Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)
+			
+				
+	final_Iter=Iter	
+	if is_mismatch(Iter_lock_CRC,Iter_UN_decoded_key_CRC): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+		return_iter=final_Iter+1
+	
+	#print Iter_errorfree
+	final_XN=ec.polarencode(Iter_UN_hat,N)
+	errorfree_ach_rate=float(Iter_errorfree)/N
+	return (errorfree_ach_rate,return_iter,np.array(final_XN))
+	
+#R R/2 R/3 R/4.....		
+def send_rateless_file_Iter_retro_det_CRC8_sim(N,T,compound_plist_u,channel_p,error_free_msg_length,runsim,final_boost):
+	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
+	compound_plist=list(compound_plist_u) #best channel first
+	compound_plist.sort()
+	I_ord=pcon.getreliability_order(N)
+	lenG=len(compound_plist)
+	Glist=getGlistfile(N- (error_free_msg_length-T),lenG)
+	
+	Fp1=N-Glist[0]
+	print "channel_p:"+str(channel_p)
+	print "error_free_msg:"+str(Fp1+T)
+	block_errorcnt=0
+	Iter_probdict={}
+	errorfree_ach_rate=0
+	for i in range(runsim):
+		XN=np.random.randint(2,size=N)
+		(errorfreerate_sim,Iter,XN_decoded)=send_rateless_file_Iter_retro_CRC8(XN,N,I_ord,channel_p,compound_plist_u,Glist,T,final_boost)
+		errorfree_ach_rate+=float(errorfreerate_sim)/runsim
+						
+		if XN.tolist()!=XN_decoded.tolist():
+			block_errorcnt+=1
+		try:
+			Iter_probdict[Iter]+=1
+		except:
+			Iter_probdict[Iter]=1	
+	
+	
+	for Iter in Iter_probdict:
+		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
+	Fp1=N-Glist[0]	
+	errorfree_used_rate=float(Fp1+T)/N	
+	block_error=float(block_errorcnt)/runsim
+	
+	
+	
+	return (errorfree_used_rate,errorfree_ach_rate,block_error,Iter_probdict)
+	
+#==============================================================================CRC32
+	
+def send_rateless_file_Iter_retro_CRC32(XN,N,I_ord,channel_p,compound_plist,Glist,T,final_boost): 
+	# T < deltaG
+	#compound channel
+    #----------------------------------------------------Iterations start
+	decoded=False
+	maxiter=len(compound_plist)-1
+	#------------------for filing Tx side
+	# reverse arikan :: THIS IS OF SIZE N 
+	UN_N=ec.polarencode(XN,N) 
+	Iter_XN=XN
+	Iter_YN=pl.BSCN(channel_p,Iter_XN)
+	Iter=0
+	#-------------------------------------------Forward decoding	
+  	while not decoded:
+		
+		Iter_p=compound_plist[Iter]
+		Iter_G=Glist[Iter]
+		Iter_I=I_ord[:Iter_G]
+		
+		
+		#data received at Rx over error-free channel
+		#extra T bits for checking sent over error free channel(this is over and above iter_G)
+		Iter_T=I_ord[Iter_G-T:Iter_G] 	
+		Iter_lock=ec.getUN(UN_N,Iter_T,False)
+		UN_N_int=[int(u) for u in UN_N]
+		Iter_lock_CRC=ml.getCRC(list(UN_N_int),32)
+		#bits frozen sent over errorrfree channel
+		Iter_F=list(set(range(N))-set(Iter_I)) 
+		Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
+		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
+		Iter_UN_decoded_key=ec.getUN(Iter_UN_hat,Iter_T,False)
+		Iter_UN_decoded_key_CRC=ml.getCRC(list(Iter_UN_hat),32)	
+		Iter_errorfree=len(Iter_D)+len(Iter_lock_CRC)
+				
+		if Iter<maxiter and is_mismatch(Iter_lock_CRC,Iter_UN_decoded_key_CRC):
+			Iter+=1
+		else:
+			decoded= True
+			#TPT booster
+			#reuse the check bits in final decoding
+			#could have shown including the T-bits as frozen explicitly, this is equivalent for simulation
+			if final_boost:
+				Iter_I=I_ord[:Iter_G-T] # including the T bits as frozen
+				Iter_F=list(set(range(N))-set(Iter_I))
+				Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
+				Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)
+			
+				
+	final_Iter=Iter	
+	if is_mismatch(Iter_lock_CRC,Iter_UN_decoded_key_CRC): # two find the cases where final iter did not send ACK
+		return_iter=0
+	else:
+		return_iter=final_Iter+1
+	
+	#print Iter_errorfree
+	final_XN=ec.polarencode(Iter_UN_hat,N)
+	errorfree_ach_rate=float(Iter_errorfree)/N
+	return (errorfree_ach_rate,return_iter,np.array(final_XN))
+	
+#R R/2 R/3 R/4.....		
+def send_rateless_file_Iter_retro_det_CRC32_sim(N,T,compound_plist_u,channel_p,error_free_msg_length,runsim,final_boost):
+	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
+	compound_plist=list(compound_plist_u) #best channel first
+	compound_plist.sort()
+	I_ord=pcon.getreliability_order(N)
+	lenG=len(compound_plist)
+	Glist=getGlistfile(N- (error_free_msg_length-T),lenG)
+	
+	Fp1=N-Glist[0]
+	print "channel_p:"+str(channel_p)
+	print "error_free_msg:"+str(Fp1+T)
+	block_errorcnt=0
+	Iter_probdict={}
+	errorfree_ach_rate=0
+	for i in range(runsim):
+		XN=np.random.randint(2,size=N)
+		(errorfreerate_sim,Iter,XN_decoded)=send_rateless_file_Iter_retro_CRC32(XN,N,I_ord,channel_p,compound_plist_u,Glist,T,final_boost)
+		errorfree_ach_rate+=float(errorfreerate_sim)/runsim
+						
+		if XN.tolist()!=XN_decoded.tolist():
+			block_errorcnt+=1
+		try:
+			Iter_probdict[Iter]+=1
+		except:
+			Iter_probdict[Iter]=1	
+	
+	
+	for Iter in Iter_probdict:
+		Iter_probdict[Iter]=float(Iter_probdict[Iter])/runsim
+	Fp1=N-Glist[0]	
+	errorfree_used_rate=float(Fp1+T)/N	
+	block_error=float(block_errorcnt)/runsim
+	
+	
+	
+	return (errorfree_used_rate,errorfree_ach_rate,block_error,Iter_probdict)
+	

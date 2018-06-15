@@ -4,30 +4,38 @@ from tbounds import *
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300)
-plt.rc('figure', figsize=[8,4.5]) 
+plt.rc('figure', figsize=[8,3.5]) 
 
 
 #=================================================choice of R
-#~ N=1024
-#~ p1=0.03
-#~ p2=0.11
-#~ p3=0.17
-#~ (I,Z1)=pcon.getreliability_orderZ(N,p1)
-#~ (I,Z2)=pcon.getreliability_orderZ(N,p2)
-#~ (I,Z3)=pcon.getreliability_orderZ(N,p3)
-#~ plt.plot(range(N),[10**Z for Z in Z1],"g",label="$p_1=0.03,R_1=510/1024$")
-#~ plt.plot(range(N),[10**Z for Z in Z2],"r",label="$p_2=0.11,R_2=255/1024$")
-#~ plt.plot(range(N),[10**Z for Z in Z3],"b",label="$p_3=0.17,R_3=170/1024$")
-#~ #plt.plot(range(N),[10**z1-10**z2 for (z1,z2) in zip(Z1,Z2)],"k")
-#~ print pl.CapacityBSC(1024,p1)/3
+fig=plt.figure()
+ax=plt.subplot(111)
+plt.subplots_adjust(top=0.95,bottom=0.2,right=0.85,left=0.09)
+N=1024
+p1=0.03
+p2=0.11
+p3=0.17
+(I,Z1)=pcon.getreliability_orderZ(N,p1)
+(I,Z2)=pcon.getreliability_orderZ(N,p2)
+(I,Z3)=pcon.getreliability_orderZ(N,p3)
+plt.plot(range(N),[10**Z for Z in Z1],"g",label="$p_1=0.03,R_1=510/1024$")
+plt.plot(range(N),[10**Z for Z in Z2],"r",label="$p_2=0.11,R_2=255/1024$")
+plt.plot(range(N),[10**Z for Z in Z3],"b",label="$p_3=0.17,R_3=170/1024$")
+#plt.plot(range(N),[10**z1-10**z2 for (z1,z2) in zip(Z1,Z2)],"k")
+print pl.CapacityBSC(1024,p1)/3
 
-#~ plt.title("Choice of $R$ based on $Z(W) \leq 5*10^{-2}$,N =1024 \nand satisfying $R_2=R_1/2,R_3=R_1/3$ ") 
-#~ plt.legend(loc="best")
-#~ plt.grid(True)
-#~ print pl.CapacityBSC(1024,p2)
-#~ print pl.CapacityBSC(1024,p3)
-#~ print pl.Inversecap1024(pl.CapacityBSC(1024,p1)/3)
-#~ plt.show()
+#plt.title("Choice of $R$ based on $Z(W) \leq 5*10^{-2}$,N =1024 \nand satisfying $R_2=R_1/2,R_3=R_1/3$ ") 
+plt.legend(loc="best")
+plt.grid(True)
+print pl.CapacityBSC(1024,p2)
+print pl.CapacityBSC(1024,p3)
+print pl.Inversecap1024(pl.CapacityBSC(1024,p1)/3)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+# Put a legend to the right of the current axis
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
+plt.show()
 
 #=================================================Plot PMD estimates
 #~ # PF is mismatch, pm is match
