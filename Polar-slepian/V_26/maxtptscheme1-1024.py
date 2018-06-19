@@ -32,6 +32,8 @@ print pl.CapacityBSC(1024,p3)
 print pl.Inversecap1024(pl.CapacityBSC(1024,p1)/3)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+plt.ylabel("$Z(W_N^{(i)})$")
+plt.xlabel("Bit channel $i$")
 
 # Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
