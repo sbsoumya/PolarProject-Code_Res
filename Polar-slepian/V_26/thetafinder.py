@@ -41,7 +41,7 @@ plt.rc('figure', figsize=[8,5])
 #llrdict
 #./simresults/llrsgndict-512-0p03-18-05-10_12-50-13.txt
 #./simresults/llrsgndict-512-0p11-18-05-10_12-50-57.txt
-filename="./simresults/llrsgndict-512-0p11-18-05-10_12-50-57.txt"
+filename="./simresults/llrsgndict-512-0p03-18-05-10_12-50-13.txt"
 
 
 
@@ -53,7 +53,7 @@ channel_plist=LLRdict.keys()
 channel_plist.sort()
 design_p=min(channel_plist)
 print channel_plist
-G=123
+G=246
 
 #------------------------------------LT
 #G=250
@@ -66,7 +66,7 @@ G=123
 #~ E_forTakeClose=list(E[channel_plist[0]])
 #~ E_forTakeClose.sort()
 #~ print ml.takeClosest(E_forTakeClose,LT)
-LT=30
+LT=40
 PT=80
 print LT
 #absllr
