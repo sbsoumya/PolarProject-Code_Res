@@ -163,11 +163,11 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.show()
 """
-"""
+
 #~ #==============================CRC
 #~ #-----512
-
-ax=plt.subplot(212)
+"""
+ax=plt.subplot(111)
 ax.locator_params(axis='y', nbins=5)
 N=512
 R_p1=246
@@ -180,7 +180,7 @@ maxiters=3
 lines=ml.getline(fileT8,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT8,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-mo',label='RT-Polar,t='+str(T)+'bits')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-mo',label='RB-Polar, t='+str(T)+'bits')
 lines=ml.getline(fileCRCT8,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileCRCT8,[13])[0],maxiters)
@@ -197,7 +197,7 @@ maxiters=3
 lines=ml.getline(fileT32,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT32,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-rx',label='RT-Polar,t='+str(T)+'bits')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-rx',label='RB-Polar, t='+str(T)+'bits')
 lines=ml.getline(fileCRCT32,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileCRCT32,[13])[0],maxiters)
@@ -218,8 +218,8 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 plt.show()
-"""
 
+"""
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------calc
@@ -288,7 +288,7 @@ plt.show()
 	#~ print('\t'.join(map(str,Rlist)))
 
 
-"""
+
 #-------------------------plot
 fig=plt.figure()
 ax=plt.subplot(111)
@@ -305,8 +305,8 @@ maxiters=3
 lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, t='+str(T))
-"""
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RB-Polar, t='+str(T))
+
 #------BAC
 """
 fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-12_16-00-41.txt"
@@ -318,7 +318,7 @@ point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[14])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-y^',label='RT-Polar-BAC $p_1=p_0/2$ , t='+str(T))
 """
-"""
+
 #-------------------------UK
 T=0
 (x,y,z)=(9,10,11)
@@ -340,7 +340,7 @@ point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
-
+"""
 #--------------L4
 
 
@@ -355,9 +355,9 @@ maxiters=3
 lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
-#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, L=4, t='+str(T))
+#plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RB-Polar, L=4, t='+str(T))
 
-
+"""
 
 
 
@@ -398,8 +398,8 @@ plt.plot(plist,TPTmax,'-.b>',label='Standard Polar')
 channel_plist=list(np.linspace(0.01,0.2,20))
 plt.plot(channel_plist,[pl.CapacityBSC(1,p) for p in channel_plist],"k",label="Capacity")
 
-plt.ylabel('Throughput, $\eta(p)$')
-plt.xlabel('flipover probability $p_0$')
+plt.ylabel('$\eta(p)$')
+plt.xlabel('flipover probability $p$')
 plt.xlim([0.025,0.175])
 #plt.ylim([0.15,0.9])
 plt.grid(True)
@@ -412,7 +412,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 plt.show()
 
-"""
+
 #===============================M for 1024
 
 """
@@ -628,7 +628,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 plt.show()
 """
 #===============================M for 256
-
+"""
 
 fig=plt.figure()
 N=256
@@ -723,4 +723,4 @@ ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 plt.show()
-
+"""
