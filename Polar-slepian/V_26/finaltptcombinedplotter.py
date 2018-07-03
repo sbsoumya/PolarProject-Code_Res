@@ -99,7 +99,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 plt.show()
 
 """
-"""
+
 #~ #========================================================
 #512 - 5 iter-----and 3 iter
 
@@ -120,7 +120,7 @@ T=9
 lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],3)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RT-Polar, 3-Iter')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='$r=3$')
 
 complist=[0.03,0.11,0.17,0.2,0.23]
 
@@ -132,7 +132,7 @@ T=9
 lines=ml.getline(fileT9_5_iter,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9_5_iter,[13])[0],5)
-plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-bx',label='RT-Polar, 5-Iter')
+plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-bx',label='$r=5$')
 #~ fig.suptitle("HARQ schemes  ED for $\{p_1=$"+str(np.round(complist[0],decimals=3)) 
 #~ +"$,p_2=$"+str(np.round(complist[1],decimals=3)) +"$,p_3= $"+str(np.round(complist[2],decimals=3))+"$,p_4= $"+str(np.round(complist[3],decimals=3))+"$,p_5= $"+str(np.round(complist[4],decimals=3))+"$ \}$")
 
@@ -160,9 +160,9 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 
 # Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
+plt.xlabel('flipover probability $p$')
 plt.show()
-"""
+
 
 #~ #==============================CRC
 #~ #-----512
@@ -218,8 +218,8 @@ ax.set_position([box.x0, box.y0, box.width * 0.6, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 plt.show()
-
 """
+
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------calc
@@ -288,7 +288,7 @@ plt.show()
 	#~ print('\t'.join(map(str,Rlist)))
 
 
-
+"""
 #-------------------------plot
 fig=plt.figure()
 ax=plt.subplot(111)
@@ -306,7 +306,7 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RB-Polar, t='+str(T))
-
+"""
 #------BAC
 """
 fileT9="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-12_16-00-41.txt"
@@ -318,7 +318,7 @@ point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[14])[0],maxiters)
 plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-y^',label='RT-Polar-BAC $p_1=p_0/2$ , t='+str(T))
 """
-
+"""
 #-------------------------UK
 T=0
 (x,y,z)=(9,10,11)
@@ -343,7 +343,7 @@ plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in r
 """
 #--------------L4
 
-
+"""
 #./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-08_14-20-13.txt
 N=512
 R_p1=246
@@ -356,7 +356,7 @@ lines=ml.getline(fileT9,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT9,[13])[0],maxiters)
 #plt.plot(lines[0],[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-m^',label='RB-Polar, L=4, t='+str(T))
-
+"""
 """
 
 
@@ -411,7 +411,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 
 plt.show()
-
+"""
 
 #===============================M for 1024
 
