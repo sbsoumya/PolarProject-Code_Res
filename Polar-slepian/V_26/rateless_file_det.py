@@ -170,17 +170,21 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	# T < deltaG
 	#compound channel
     #----------------------------------------------------Iterations start
-	decoded=False
+	decodedX=False
 	maxiter=len(compound_plist)-1
 	#------------------for filing Tx side
 	# reverse arikan :: THIS IS OF SIZE N 
 	UN_N=ec.polarencode(XN,N) 
 	Iter_XN=XN
 	Iter_YN=pl.BSCN(channel_p1,Iter_XN)
-	Iter_ZN=pl.BSCN(channel_p2,Iter_ZN)
+	VN_N=ec.polarencode(Iter_YN,N)
+	Iter_ZN=pl.BSCN(channel_p2,Iter_YN)
+	WN_N=ec.polarencode(Iter_ZN,N)
 	Iter=0
+	#Y decoding X
 	#-------------------------------------------Forward decoding	
-  	while not decoded:
+	 
+  	while not decodedX:
 		
 		Iter_p=compound_plist[Iter]
 		Iter_G=Glist[Iter]
@@ -203,7 +207,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 		if Iter<maxiter and is_mismatch(Iter_lock,Iter_UN_decoded_key):
 			Iter+=1
 		else:
-			decoded= True
+			decodedX= True
 			#TPT booster
 			#reuse the check bits in final decoding
 			#could have shown including the T-bits as frozen explicitly, this is equivalent for simulation
@@ -215,6 +219,13 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 			
 				
 	final_Iter=Iter	
+	final_Iter_F=Iter_F
+	
+	#X decoding Y(lock key checking not required)
+	reverse_D_Y=ec.getUN(VN_N,final_Iter_F,True)
+	reverse_VN_hat=
+	
+	
 	if is_mismatch(Iter_lock,Iter_UN_decoded_key): # two find the cases where final iter did not send ACK
 		return_iter=0
 	else:
