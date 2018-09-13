@@ -15,6 +15,7 @@ import polarconstruct as pcon
 from datetime import datetime
 import json
 import polarfile as pch
+
 from pprint import pprint
 import rateless_file_det as rlf
 from timeit import default_timer as timer
@@ -27,28 +28,34 @@ channel_p1list=list(np.linspace(0.01,0.2,points))
 print channel_p1list
 compound_plist=[0.03,0.11,0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
-T=0
+T=9
 R_p1=246
 F_p1=Nlist[0]-R_p1
 error_free_msg_length=F_p1+T #msg to be sent error free
 runsim=1000
 chp1_i=points
 start=timer()
+print "RATE Vs FER REPORT Rateless Det Iter retro"
+print "------------------------------------------"
+print "Compound_plist:"
+print compound_plist
+print "sim ran :"+str(runsim)
+print "T:"+str(T)
+
+fc=0
+filenames=[]
+achieved_rates=[]
+block_errors=[]
 for N in Nlist:
+	print "N="+str(N)
 	for channel_p1 in channel_p1list:
-		channel_p2list=list(np.linspace(channel_p1,0.2,chp1_i)
-		chp1_i-=1
+		channel_p2list=list(np.linspace(channel_p1,0.2,chp1_i))
+		chp1_i -=1
+		fc+=1
 		stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_"+str(channel_p1).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		f1=open(filename,'w')
-		print filename
-		print "RATE Vs FER REPORT Rateless Det Iter retro"
-		print "------------------------------------------"
-		print "Compound_plist:"
-		print compound_plist
-		print "sim ran :"+str(runsim)
-		print "T:"+str(T)
-		
+		filenames.append(filename)
 		json.dump( "RATE Vs FER REPORT Rateless Det Iter retro",f1) ;f1.write("\n")
 		json.dump( "------------------------------------------",f1) ;f1.write("\n")
 		json.dump( "Compound_plist:",f1) ;f1.write("\n")
@@ -56,7 +63,7 @@ for N in Nlist:
 		json.dump("sim ran :"+str(runsim),f1) ;f1.write("\n")
 		json.dump("T:"+str(T),f1);f1.write("\n")
 		
-		print "N="+str(N)
+		
 		json.dump( "N="+str(N),f1) ;f1.write("\n")
 	
 		achieved_rate=[]
@@ -71,17 +78,18 @@ for N in Nlist:
 		
 
 		block_error_exp=np.log10(FER).tolist()	
-		print channel_p1    
-		print channel_p2list
-		print achieved_rate
-		print block_error_exp
-		
-		
+		block_errors.append(block_error_exp)
+		achieved_rates.append(achieved_rate)		
 		json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")
 		json.dump(channel_p1,f1);f1.write("\n")
 		json.dump(channel_p2list,f1) ;f1.write("\n")
 		json.dump(achieved_rate,f1) ;f1.write("\n")
 		json.dump(block_error_exp,f1) ;f1.write("\n")
+
+print filenames		
+print channel_p1list    
+print achieved_rates
+print block_errors
 	
 
 end = timer()

@@ -236,7 +236,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	final_X2Y=ec.polarencode(Iter_UN_hat,N) # should match XN at Y
 	
 	Iter_errorfree_X2Y=len(D_X2Y)
-	err_X2Y = (final_X2Y != XN)
+	err_X2Y = (final_X2Y.tolist() != XN.tolist())
 	
 	#X decoding Y(lock key checking not required)(channel symmetry is used)
 	D_Y2X=ec.getUN(VN_N,final_Iter_F_X2Y,True) # this is transmitted to X and Z
@@ -244,7 +244,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	final_Y2X=ec.polarencode(Y2X_VN_hat,N)
 	
 	Iter_errorfree_Y2X=len(D_Y2X)
-	err_Y2X = (final_Y2X != YN)
+	err_Y2X = (final_Y2X.tolist() != YN.tolist())
 	
 	decodedY2X=True
 	
@@ -267,7 +267,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 		Iter_D=ec.getUN(VN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
 		Iter_VN_hat=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(Iter_D),False)		
 		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
-		Iter_VN_decoded_key=ec.getVN(Iter_VN_hat,Iter_T,False)
+		Iter_VN_decoded_key=ec.getUN(Iter_VN_hat,Iter_T,False)
 				
 		Iter_errorfree=len(Iter_D)+len(Iter_lock)
 				
@@ -291,15 +291,15 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	D_Y2Z=Iter_D
 	final_Y2Z=ec.polarencode(Iter_VN_hat,N) # should match YN at Z
 	
-	Iter_errorfree_Y2Z=len(D_Y2Z)-len(DY2X) # only the extra bits transmitted, i.e, in the loop above all bits frozen for z is considered, here we subtract the bits sent from y to X
-	err_Y2Z = (final_Y2Z != YN)
+	Iter_errorfree_Y2Z=len(D_Y2Z)-len(D_Y2X) # only the extra bits transmitted, i.e, in the loop above all bits frozen for z is considered, here we subtract the bits sent from y to X
+	err_Y2Z = (final_Y2Z.tolist() != YN.tolist())
 	
 	#Z decoding X(lock key checking not required)(it has Y now, also has previous communication from X)
 	X2Z_UN_hat=ec.polarSCdecodeG(final_Y2Z,N,final_Iter_p_X2Y,final_Iter_I_X2Y,list(D_X2Y),False)
 	final_X2Z=ec.polarencode(X2Z_UN_hat,N)
 	
 	Iter_errorfree_X2Z=0 #Nothing new is communicated , decoding uses final estimation of Y from Z and error free com sent by X for decoding at Y
-	err_X2Z = (final_X2Z != XN)
+	err_X2Z = (final_X2Z.tolist() != XN.tolist())
 	
 	decodedX2Z=True
 	
@@ -311,7 +311,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	final_Z2Y=ec.polarencode(Z2Y_WN_hat,N)
 	
 	Iter_errorfree_Z2Y=len(D_Z2Y)
-	err_Z2Y = (final_Z2Y != WN)
+	err_Z2Y = (final_Z2Y.tolist() != ZN.tolist())
 	
 	#Decoding at Y over-------------------------------------------------------
 	
@@ -320,7 +320,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	final_Z2X=ec.polarencode(Z2X_WN_hat,N)
 	
 	Iter_errorfree_Z2X=0 #Nothing new is communicated , decoding uses final estimation of Y from X and error free com sent by Z for decoding at Y
-	err_Z2X = (final_Z2X != WN)
+	err_Z2X = (final_Z2X.tolist() != ZN.tolist())
 	
 	decodedZ2X=True
 	
@@ -330,6 +330,7 @@ def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_pl
 	# decoding of X and Y, decoding at Z, decoding OF Z at X and Y)
 	error=0
 	error= (err_X2Y+err_Y2X+err_Y2Z+err_X2Z+err_Z2Y+err_Z2X) >0 
+	#print error
 	
 	
 	return (Total_error_free,error)
@@ -350,12 +351,12 @@ def send_rateless_file_Iter_retro_det_3_sim(N,T,compound_plist_u,channel_p1,chan
 	errorfree_ach_rate=0
 	for i in range(runsim):
 		XN=np.random.randint(2,size=N)
-		(Total_error_free,error)=send_rateless_file_Iter_retro(XN,N,I_ord,channel_p1,channel_p2,compound_plist_u,Glist,T,final_boost)
+		(Total_error_free,error)=send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_plist_u,Glist,T,final_boost)
 		errorfree_ach_rate+=float(Total_error_free)/(N*runsim) # calculates E{D}/N
 						
 		block_errorcnt+=error
 		
-	
+	#print block_errorcnt
 	block_error=float(block_errorcnt)/runsim
 		
 	return (errorfree_ach_rate,block_error)
