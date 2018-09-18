@@ -53,7 +53,7 @@ for N in Nlist:
 		chp1_i -=1
 		fc+=1
 		stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3_NB_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		f1=open(filename,'w')
 		filenames.append(filename)
 		json.dump( "RATE Vs FER REPORT Rateless Det Iter retro",f1) ;f1.write("\n")

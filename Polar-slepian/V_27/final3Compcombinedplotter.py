@@ -1,11 +1,43 @@
 from tbounds import *
 from pprint import pprint
+
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import numpy as np
+
+
+
 complist=[0.03,0.11,0.17]
 
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
 plt.rc('figure', figsize=[8,3]) 
+
+files=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_1_246in512_T9_18-09-13_18-49-17.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_2_246in512_T9_18-09-13_20-32-12.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_3_246in512_T9_18-09-13_22-11-34.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_4_246in512_T9_18-09-13_23-47-22.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_5_246in512_T9_18-09-14_01-17-25.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_6_246in512_T9_18-09-14_02-41-42.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_7_246in512_T9_18-09-14_04-01-30.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_8_246in512_T9_18-09-14_05-16-47.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_9_246in512_T9_18-09-14_06-27-18.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_10_246in512_T9_18-09-14_07-33-01.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_11_246in512_T9_18-09-14_08-33-38.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_12_246in512_T9_18-09-14_09-28-53.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_13_246in512_T9_18-09-14_10-19-40.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_14_246in512_T9_18-09-14_11-04-55.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_15_246in512_T9_18-09-14_11-44-50.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_16_246in512_T9_18-09-14_12-19-30.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_17_246in512_T9_18-09-14_12-48-34.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_18_246in512_T9_18-09-14_13-11-56.txt',\
+ './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_19_246in512_T9_18-09-14_13-29-38.txt', \
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_20_246in512_T9_18-09-14_13-41-32.txt']
+
+#print files
 
 #==============================================================================Benchmark
 #~ #================================512vs FR 
@@ -15,353 +47,68 @@ fig=plt.figure()
 ax=plt.subplot(111)
 plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
 N=512
-#plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
-#-----512
-maxiters=3
-N=512
-R_p1=246
-fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_246in512_T9_18-06-05_16-55-22.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=9
+c=0
+m=["o","^",">"]
+(w,x,y,z)=(8,9,10,11)
+for thisfile in files:
+	lines=ml.getline(thisfile,[w,x,y,z])
+	point=len(lines[1])
+	p2=lines[1]
+	p1=lines[0]
+	c+=1
+	plt.plot(p2,[float(lines[2][i])/(1-10**lines[3][i]) for i in range(point) ],color=(np.random.rand(1)[0], np.random.rand(1)[0], np.random.rand(1)[0]),marker=m[c%3],\
+	 label="$p_1$="+str(lines[0]))
 
-(x,y,z)=(8,9,10)
-lines=ml.getline(fileT9,[x,y,z])
-#print lines
-point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT9,[12])[0],maxiters)
-TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
-
-
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
-
-
-#plt.show()
-
-#-------------------------UK
-T=0
-
-fileUK="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_UK246in512_UK_18-06-05_22-13-03.txt"
-lines=ml.getline(fileUK,[x,y,z])
-point=len(lines[0])
-maxiters=3
-MeanIters=pl.getMeanIter(ml.getline(fileUK,[12])[0],maxiters)
-#plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.ro',label='Ideal Detection')
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-.ro',label='Ideal Detection')
-
-#~ (x,y,z)=(9,10,11)
-#~ fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt"
-#~ lines=ml.getline(fileUK,[x,y,z])
-#~ point=len(lines[0])
-#~ maxiters=3
-#~ MeanIters=pl.getMeanIter(ml.getline(fileUK,[13])[0],maxiters)
-#~ plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.bo',label='Ideal Detection ch')
-
-#-------------------------LTPT
-T=0
-(x,y,z)=(10,11,12)
-fileLTPT="./simresults/polarfile_FERvsR_rateless_Det_LTPT_246in512_T0_18-06-05_22-41-25.txt"
-lines=ml.getline(fileLTPT,[x,y,z])
-point=len(lines[0])
-maxiters=3
-MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
-#plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
-
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
-
-
-
-
-#---------------------------------cp=dp
-N=512
-fileFR={}
-fileFR["0e005"]="./simresults/polarfile_FERvsp_FR0e005in512_18-06-05_23-42-42.txt"
-fileFR["0e1"]="./simresults/polarfile_FERvsp_FR0e1in512_18-06-05_23-47-59.txt"
-fileFR["0e05"]="./simresults/polarfile_FERvsp_FR0e05in512_18-06-05_23-44-37.txt"
-fileFR["0e5"]="./simresults/polarfile_FERvsp_FR0e5in512_18-06-05_23-50-33.txt"
-fileFR["0e4"]="./simresults/polarfile_FERvsp_FR0e4in512_18-06-05_23-50-07.txt"
-fileFR["0e3"]="./simresults/polarfile_FERvsp_FR0e3in512_18-06-05_23-49-20.txt"
-fileFR["0e2"]="./simresults/polarfile_FERvsp_FR0e2in512_18-06-05_23-48-45.txt"
-fileFR["0e08"]="./simresults/polarfile_FERvsp_FR0e08in512_18-06-05_23-47-30.txt"
-fileFR["0e03"]="./simresults/polarfile_FERvsp_FR0e03in512_18-06-05_23-43-05.txt"
-fileFR["0e02"]="./simresults/polarfile_FERvsp_FR0e02in512_18-06-05_23-43-28.txt"
-fileFR["0e25"]="./simresults/polarfile_FERvsp_FR0e25in512_18-06-06_16-08-35.txt"
-"""
-"""
-fileFR["0e005"]="./simresults/polarchannel_FERvsp_FR0e005in512_18-05-08_23-47-09.txt"
-fileFR["0e1"]="./simresults/polarchannel_FERvsp_FR0e1in512_18-05-08_23-53-00.txt"
-fileFR["0e05"]="./simresults/polarchannel_FERvsp_FR0e05in512_18-05-08_23-46-32.txt"
-fileFR["0e5"]="./simresults/polarchannel_FERvsp_FR0e5in512_18-05-09_00-43-29.txt"
-fileFR["0e4"]="./simresults/polarchannel_FERvsp_FR0e4in512_18-05-09_14-25-53.txt"
-fileFR["0e3"]="./simresults/polarchannel_FERvsp_FR0e3in512_18-05-09_14-25-30.txt"
-fileFR["0e2"]="./simresults/polarchannel_FERvsp_FR0e2in512_18-05-09_14-25-08.txt"
-fileFR["0e08"]="./simresults/polarchannel_FERvsp_FR0e08in512_18-05-09_14-24-36.txt"
-fileFR["0e03"]="./simresults/polarchannel_FERvsp_FR0e03in512_18-05-09_14-23-04.txt"
-fileFR["0e02"]="./simresults/polarchannel_FERvsp_FR0e02in512_18-05-09_14-17-33.txt"
-fileFR["0e25"]="./simresults/polarchannel_FERvsp_FR0e25in512_18-05-09_15-21-47.txt"
-"""
-
-
-"""
-#print fileFR
-
-(x,y,z)=(-4,-3,-2)
-
-zlist=fileFR.keys()
-TPTZ={}
-for Zmax in zlist:
-	lines=ml.getline(fileFR[Zmax],[x,y,z])
-	#print lines
-	point=len(lines[0])
-	plist=lines[0]
-	print Zmax
-	print lines[1]
-	#plt.plot(lines[0],[1-float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)],label='$Z \leq $'+Zmax.replace("e","."))
-	#TPTZ[Zmax]=[float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)]
-	TPTZ[Zmax]=[float((N-lines[1][i])/(1-10**lines[2][i][1]))/N for i in range(point)]
-	
-TPTmax=[]		
-for i in range(point):
-	#TPTmax.append(1-max([TPTZ[Zmax][i] for Zmax in zlist]))
-	TPTmax.append(min([TPTZ[Zmax][i] for Zmax in zlist]))
-	
-	
-#plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
-
-channel_plist=list(np.linspace(0.01,0.2,20))
-plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
 
 plt.ylabel('$\l(p)$')
-plt.xlabel('flipover probability $p$')
-plt.xlim([0.025,0.175])
+plt.xlabel('flipover probability $p_2$')
+plt.xlim([0.01,0.2])
 #plt.ylim([0.15,0.9])
 plt.grid(True)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-
-# Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
-
-
-plt.show()
-"""
-#===================================CRC
-"""
-#CRC
-./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_18-17-30.txt
-./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_19-20-25.txt
-#T=8
-./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T8_18-06-15_18-04-37.txt
-
-#CRC32
-./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_19-39-52.txt
-#T=8
-./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T8_18-06-15_18-04-37.txt
-#T=32
-./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T32_18-06-15_19-38-19.txt
-
-
-"""
-#~ #================================512vs FR 
-#-------------------------plot
-fig=plt.figure()
-ax=plt.subplot(111)
-plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
-N=512
-#plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
-#-----512
-maxiters=3
-N=512
-R_p1=246
-fileT8="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T8_18-06-15_18-04-37.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=8
-
-(x,y,z)=(8,9,10)
-lines=ml.getline(fileT8,[x,y,z])
-#print lines
-point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT8,[12])[0],maxiters)
-TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
-
-
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
-
-N=512
-#plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
-#-----512
-maxiters=3
-N=512
-R_p1=246
-fileT32="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T32_18-06-15_19-38-19.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=32
-
-(x,y,z)=(8,9,10)
-lines=ml.getline(fileT32,[x,y,z])
-#print lines
-point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT32,[12])[0],maxiters)
-TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
-
-
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-g>',label='RB-Polar DE, t='+str(T))
-
-#-------------------------CRC
-#~ fig=plt.figure()
-#~ ax=plt.subplot(111)
-#~ plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
-N=512
-#plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
-#-----512
-maxiters=3
-N=512
-R_p1=246
-fileT32="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_19-39-52.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=0
-
-(x,y,z)=(8,9,10)
-lines=ml.getline(fileT32,[x,y,z])
-#print lines
-point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT32,[12])[0],maxiters)
-#TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
-
-
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-bo',label='CRC, 32bits')
-
-#~ fig=plt.figure()
-#~ ax=plt.subplot(111)
-#~ plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
-N=512
-#plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
-#-----512
-maxiters=3
-N=512
-R_p1=246
-fileT8="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_18-17-30.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=8
-
-(x,y,z)=(8,9,10)
-lines=ml.getline(fileT8,[x,y,z])
-#print lines
-point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT8,[12])[0],maxiters)
-#TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
-
-
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-kx',label='CRC, 8bits')
-
-#plt.show()
-
-#-------------------------UK
-T=0
-
-fileUK="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_UK246in512_UK_18-06-05_22-13-03.txt"
-lines=ml.getline(fileUK,[x,y,z])
-point=len(lines[0])
-maxiters=3
-MeanIters=pl.getMeanIter(ml.getline(fileUK,[12])[0],maxiters)
-#plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.ro',label='Ideal Detection')
-#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-.ro',label='Ideal Detection')
-
-#~ (x,y,z)=(9,10,11)
-#~ fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt"
-#~ lines=ml.getline(fileUK,[x,y,z])
-#~ point=len(lines[0])
-#~ maxiters=3
-#~ MeanIters=pl.getMeanIter(ml.getline(fileUK,[13])[0],maxiters)
-#~ plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.bo',label='Ideal Detection ch')
-
-#-------------------------LTPT
-T=0
-(x,y,z)=(10,11,12)
-fileLTPT="./simresults/polarfile_FERvsR_rateless_Det_LTPT_246in512_T0_18-06-05_22-41-25.txt"
-lines=ml.getline(fileLTPT,[x,y,z])
-point=len(lines[0])
-maxiters=3
-MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
-#plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
-
-#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
-
-
-
-
-#---------------------------------cp=dp
-N=512
-fileFR={}
-fileFR["0e005"]="./simresults/polarfile_FERvsp_FR0e005in512_18-06-05_23-42-42.txt"
-fileFR["0e1"]="./simresults/polarfile_FERvsp_FR0e1in512_18-06-05_23-47-59.txt"
-fileFR["0e05"]="./simresults/polarfile_FERvsp_FR0e05in512_18-06-05_23-44-37.txt"
-fileFR["0e5"]="./simresults/polarfile_FERvsp_FR0e5in512_18-06-05_23-50-33.txt"
-fileFR["0e4"]="./simresults/polarfile_FERvsp_FR0e4in512_18-06-05_23-50-07.txt"
-fileFR["0e3"]="./simresults/polarfile_FERvsp_FR0e3in512_18-06-05_23-49-20.txt"
-fileFR["0e2"]="./simresults/polarfile_FERvsp_FR0e2in512_18-06-05_23-48-45.txt"
-fileFR["0e08"]="./simresults/polarfile_FERvsp_FR0e08in512_18-06-05_23-47-30.txt"
-fileFR["0e03"]="./simresults/polarfile_FERvsp_FR0e03in512_18-06-05_23-43-05.txt"
-fileFR["0e02"]="./simresults/polarfile_FERvsp_FR0e02in512_18-06-05_23-43-28.txt"
-fileFR["0e25"]="./simresults/polarfile_FERvsp_FR0e25in512_18-06-06_16-08-35.txt"
-"""
-fileFR["0e005"]="./simresults/polarchannel_FERvsp_FR0e005in512_18-05-08_23-47-09.txt"
-fileFR["0e1"]="./simresults/polarchannel_FERvsp_FR0e1in512_18-05-08_23-53-00.txt"
-fileFR["0e05"]="./simresults/polarchannel_FERvsp_FR0e05in512_18-05-08_23-46-32.txt"
-fileFR["0e5"]="./simresults/polarchannel_FERvsp_FR0e5in512_18-05-09_00-43-29.txt"
-fileFR["0e4"]="./simresults/polarchannel_FERvsp_FR0e4in512_18-05-09_14-25-53.txt"
-fileFR["0e3"]="./simresults/polarchannel_FERvsp_FR0e3in512_18-05-09_14-25-30.txt"
-fileFR["0e2"]="./simresults/polarchannel_FERvsp_FR0e2in512_18-05-09_14-25-08.txt"
-fileFR["0e08"]="./simresults/polarchannel_FERvsp_FR0e08in512_18-05-09_14-24-36.txt"
-fileFR["0e03"]="./simresults/polarchannel_FERvsp_FR0e03in512_18-05-09_14-23-04.txt"
-fileFR["0e02"]="./simresults/polarchannel_FERvsp_FR0e02in512_18-05-09_14-17-33.txt"
-fileFR["0e25"]="./simresults/polarchannel_FERvsp_FR0e25in512_18-05-09_15-21-47.txt"
+plt.title("$X-p_1-Y-p_2-Z$,\n $p_1 \leq p_2$, $t$=9, $n$=512, $\delta$=0.05 ")
 """
 
+#----surface plot
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+p1=list(np.linspace(0.01,0.2,20))
+p2=list(np.linspace(0.01,0.2,20))
+p1,p2=np.meshgrid(p1,p2)
+#print p1
+#print p2
 
-
-#print fileFR
-
-(x,y,z)=(-4,-3,-2)
-
-zlist=fileFR.keys()
-TPTZ={}
-for Zmax in zlist:
-	lines=ml.getline(fileFR[Zmax],[x,y,z])
-	#print lines
-	point=len(lines[0])
-	plist=lines[0]
-	print Zmax
-	print lines[1]
-	#plt.plot(lines[0],[1-float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)],label='$Z \leq $'+Zmax.replace("e","."))
-	#TPTZ[Zmax]=[float(lines[1][i]*(1-10**lines[2][i][1]))/N for i in range(point)]
-	TPTZ[Zmax]=[float((N-lines[1][i])/(1-10**lines[2][i][1]))/N for i in range(point)]
+(w,x,y,s)=(8,9,10,11)
+z=np.zeros([20,20])
+for i in range(20):
+	thisfile=files[i]
+	print thisfile
+	lines=ml.getline(thisfile,[w,x,y,s])
+	point=len(lines[1])
+	#p2=lines[1]
+	#p1=lines[0]
+	for j in range(point):
+		#z[i][j]=float(lines[2][j])/(1-10**lines[3][j])
+		z[i][j+i]=float(lines[2][j])/(1-10**lines[3][j])
+		z[j+i][i]=z[i][j+i]
 	
-TPTmax=[]		
-for i in range(point):
-	#TPTmax.append(1-max([TPTZ[Zmax][i] for Zmax in zlist]))
-	TPTmax.append(min([TPTZ[Zmax][i] for Zmax in zlist]))
-	
-	
-#plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
 
-channel_plist=list(np.linspace(0.01,0.2,20))
-#plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
+#print z
+surf = ax.plot_surface(p1,p2,z, cmap=cm.coolwarm, linewidth=0, antialiased=True)
 
-plt.ylabel('$\l(p)$')
-plt.xlabel('flipover probability $p$')
-plt.xlim([0.025,0.175])
-#plt.ylim([0.15,0.9])
-plt.grid(True)
-box = ax.get_position()
-ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+# Customize the z axis.
+#ax.set_zlim(0, 4)
+ax.zaxis.set_major_locator(LinearLocator(10))
+ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+#surf(p1,'FaceColor','interp')
 
-# Put a legend to the right of the current axis
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
+# Add a color bar which maps values to colors.
+#fig.colorbar(surf, shrink=0.5, aspect=5)
 
-
+plt.title("$X-p_1-Y-p_2-Z$,\n $p_1 \leq p_2$, $t$=9, $n$=512, $\delta$=0.05 ")
+#plt.zlabel('$\l(p)$')
+plt.xlabel('flipover probability $p_1$')
+plt.ylabel('flipover probability $p_2$')
 plt.show()

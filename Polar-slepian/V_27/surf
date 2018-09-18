@@ -18,20 +18,6 @@ import numpy as np
 
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-# Make data.
-X = [1,1,1,1,2,2,2,3,3,4]
-Y = [1,2,3,4,2,3,4,3,4,4]
-Z=  [0.1,0.2,0.1,0.1,0.2,0.3,-.4,0.5,0.5,0.2]
-for i in range(len(X)):
-	ax.scatter(X[i],Y[i],Z[i])
-ax.surface(X,Y,Z)
-
-plt.show()
-
-#----------------------------------
-fig = plt.figure()
 ax = fig.gca(projection='3d')
 
 # Make data.
