@@ -650,16 +650,22 @@ def send_rateless_file_Iter_retro_det_3_sim(N,T,compound_plist_u,channel_p1,chan
 	return (errorfree_ach_rate,block_error)
 	
 #=======================================================================3 party general
-def send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_plist,Glist,T,final_boost): 
+def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist,Glist,T,final_boost): 
 	# T < deltaG
 	#compound channel
     #----------------------------------------------------Iterations start
-	decodedX2Y=False
+    #The 
+    decoded={}
+    decodedX2Y=False
 	decodedY2X=False
 	decodedX2Z=False
 	decodedZ2X=False
 	decodedY2Z=False
 	decodedZ2Y=False
+    decoded["atX"]=[decodedY2X,decodedZ2X]
+    decoded["atY"]=[decodedX2Y,decodedZ2Y]
+    decoded["atZ"]=[decodedX2Z,decodedY2Z]
+
 	maxiter=len(compound_plist)-1
 	#------------------for filing Tx side
 	# reverse arikan :: THIS IS OF SIZE N 
