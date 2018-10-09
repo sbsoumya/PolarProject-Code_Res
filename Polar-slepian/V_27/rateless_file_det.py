@@ -650,6 +650,15 @@ def send_rateless_file_Iter_retro_det_3_sim(N,T,compound_plist_u,channel_p1,chan
 	return (errorfree_ach_rate,block_error)
 	
 #=======================================================================3 party general
+def anydecoded(decoded):
+    anydecode=0 
+    for key in decoded:
+		anydecode+=sum(decoded[key])
+    return anydecode
+
+def anydecodedat(decoded,at):
+	return sum(decoded[key])
+	
 def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist,Glist,T,final_boost): 
 	# T < deltaG
 	#compound channel
@@ -662,9 +671,9 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	decodedZ2X=False
 	decodedY2Z=False
 	decodedZ2Y=False
-    decoded["atX"]=[decodedY2X,decodedZ2X]
-    decoded["atY"]=[decodedX2Y,decodedZ2Y]
-    decoded["atZ"]=[decodedX2Z,decodedY2Z]
+    decoded["atA"]=[decodedY2X,decodedZ2X]
+    decoded["atB"]=[decodedX2Y,decodedZ2Y]
+    decoded["atC"]=[decodedX2Z,decodedY2Z]
 
 	maxiter=len(compound_plist)-1
 	#------------------for filing Tx side
@@ -680,47 +689,220 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	Iter_ZN=ZN
 	WN_N=ec.polarencode(Iter_ZN,N)
 	
-	Iter=0
-	#Y decoding X
-	#-------------------------------------------Forward decoding	
-	 
-  	while not decodedX2Y:
+	Iter=-1
+	#-------------------------------------------Forward decoding all try to decode each other
+	 #Step 1
+  	while not anydecoded(decoded):
+		if Iter<maxiter:
+		   Iter+=1
 		
 		Iter_p=compound_plist[Iter]
 		Iter_G=Glist[Iter]
 		Iter_I=I_ord[:Iter_G]
-		
-		
+		Iter_T=I_ord[Iter_G-T:Iter_G] 
+		Iter_F=list(set(range(N))-set(Iter_I)) 
 		#data received at Rx over error-free channel
 		#extra T bits for checking sent over error free channel(this is over and above iter_G)
-		Iter_T=I_ord[Iter_G-T:Iter_G] 	
-		Iter_lock=ec.getUN(UN_N,Iter_T,False)
-		#bits frozen sent over errorrfree channel
-		Iter_F=list(set(range(N))-set(Iter_I)) 
-		Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
-		Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)		
-		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
-		Iter_UN_decoded_key=ec.getUN(Iter_UN_hat,Iter_T,False)
-				
-		Iter_errorfree=len(Iter_D)+len(Iter_lock)
-				
-		if Iter<maxiter and is_mismatch(Iter_lock,Iter_UN_decoded_key):
-			Iter+=1
-		else:
-			decodedX2Y= True
-			#TPT booster
-			#reuse the check bits in final decoding
-			#could have shown including the T-bits as frozen explicitly, this is equivalent for simulation
-			if final_boost:
-				Iter_I=I_ord[:Iter_G-T] # including the T bits as frozen
-				Iter_F=list(set(range(N))-set(Iter_I))
-				Iter_D=ec.getUN(UN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
-				Iter_UN_hat=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(Iter_D),False)
 			
+		Iter_lock_U=ec.getUN(UN_N,Iter_T,False)
+		Iter_lock_V=ec.getUN(VN_N,Iter_T,False)
+		Iter_lock_W=ec.getUN(WN_N,Iter_T,False)
+		
+		#bits frozen sent over errorrfree channel
+		# Note while decoding the data is assumed to be in sorted order
+		D1_X=ec.getUN(UN_N,Iter_F,True)
+		D1_Y=ec.getUN(VN_N,Iter_F,True)
+		D1_Z=ec.getUN(WN_N,Iter_F,True)
+					
+		# at A
+		Iter_Y2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D1_Y),False)
+		Iter_Z2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D1_Z),False)
+		#at B
+		Iter_X2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D1_X),False)
+		Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D1_Z),False)
+		#at C
+		Iter_X2Z=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(D1_X),False)
+		Iter_Y2Z=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(D1_Y),False)
 				
-	final_Iter_X2Y=Iter	
-	final_Iter_F_X2Y=Iter_F
-	final_Iter_p_X2Y=Iter_p
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
+		Iter_Y2X_decoded_key=ec.getUN(Iter_Y2X,Iter_T,False)
+		Iter_Z2X_decoded_key=ec.getUN(Iter_Z2X,Iter_T,False)
+		
+		Iter_X2Y_decoded_key=ec.getUN(Iter_X2Y,Iter_T,False)
+		Iter_Z2Y_decoded_key=ec.getUN(Iter_Z2Y,Iter_T,False)
+		
+		Iter_X2Z_decoded_key=ec.getUN(Iter_X2Z,Iter_T,False)
+		Iter_Y2Z_decoded_key=ec.getUN(Iter_Y2Z,Iter_T,False)
+						
+		Iter_errorfree_1=len(D1_X)+len(D1_Y)+len(D1_Z)+len(Iter_lock_U)+len(Iter_lock_V)+len(Iter_lock_W)
+				
+		if not is_mismatch(Iter_lock_V,Iter_Y2X_decoded_key):
+			decoded["atA"][0]=True
+			decoded["atB"][0]=True #reverse 
+		if not is_mismatch(Iter_lock_W,Iter_Z2X_decoded_key):
+			decoded["atA"][1]=True
+			decoded["atC"][0]=True
+			
+		if not is_mismatch(Iter_lock_U,Iter_X2Y_decoded_key):
+			decoded["atB"][0]=True
+			decoded["atA"][0]=True
+		if not is_mismatch(Iter_lock_W,Iter_Z2Y_decoded_key):
+			decoded["atB"][1]=True
+			decoded["atC"][1]=True
+					
+		if not is_mismatch(Iter_lock_U,Iter_X2Z_decoded_key):
+			decoded["atC"][0]=True
+			decoded["atA"][1]=True
+		if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
+			decoded["atC"][1]=True
+			decoded["atB"][1]=True
+			
+    final_Iter_1=Iter
+    final_Iter_F_1=Iter_F
+	final_Iter_p_1=Iter_p
+    
+    if not anydecoded(decoded): # deal with this
+		if final_Iter_1=maxiter:
+			for key in decoded:
+				for i in range(2):
+					decoded[key][i]=True
+		
+			
+	#Step 2  one side communications-------------------------------------------------------------
+	#Only one of the following while loops will execute			
+	#At A only A communicates This is over and above prev com so Iterlock not required
+	Iter=final_Iter_1
+	while not anydecodedat(decoded,"atA"): 		
+		if Iter<maxiter:
+		   Iter+=1
+		
+		Iter_p=compound_plist[Iter]
+		Iter_G=Glist[Iter]
+		Iter_I=I_ord[:Iter_G]
+		Iter_T=I_ord[Iter_G-T:Iter_G] 
+		Iter_F=list(set(range(N))-set(Iter_I)) 
+		#data received at Rx over error-free channel
+		#extra T bits for checking sent over error free channel(this is over and above iter_G)
+		Iter_lock_U=ec.getUN(UN_N,Iter_T,False)
+
+		#bits frozen sent over errorrfree channel
+		# Note while decoding the data is assumed to be in sorted order
+		D2_X=ec.getUN(UN_N,Iter_F,True)
+    	#at B
+		Iter_X2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_X),False)
+		#at C
+		Iter_X2Z=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(D2_X),False)
+		
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
+		Iter_X2Y_decoded_key=ec.getUN(Iter_X2Y,Iter_T,False)
+		Iter_X2Z_decoded_key=ec.getUN(Iter_X2Z,Iter_T,False)
+		
+		if not is_mismatch(Iter_lock_U,Iter_X2Y_decoded_key):
+			decoded["atB"][0]=True
+			D2_Y=ec.getUN(VN_N,Iter_F,True)
+			Iter_Y2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D2_Y),False)
+			decoded["atA"][0]=True
+             Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
+        else:					
+		  if not is_mismatch(Iter_lock_U,Iter_X2Z_decoded_key):
+			  decoded["atC"][0]=True
+			  D2_Z=ec.getUN(VN_N,Iter_F,True)
+			  Iter_Z2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D2_Z),False)
+			  decoded["atA"][1]=True
+			  Iter_errorfree_2=len(D2_X)+len(D2_Z)-len(D1_X)-len(D1_Z) 
+		
+	
+	#At B only B communicates This is over and above prev com 
+	Iter=final_Iter_1
+	while not anydecodedat(decoded,"atB"): 		
+		if Iter<maxiter:
+		   Iter+=1
+		
+		Iter_p=compound_plist[Iter]
+		Iter_G=Glist[Iter]
+		Iter_I=I_ord[:Iter_G]
+		Iter_T=I_ord[Iter_G-T:Iter_G] 
+		Iter_F=list(set(range(N))-set(Iter_I)) 
+		#data received at Rx over error-free channel
+		#extra T bits for checking sent over error free channel(this is over and above iter_G)
+		Iter_lock_V=ec.getUN(VN_N,Iter_T,False)
+
+		#bits frozen sent over errorrfree channel
+		# Note while decoding the data is assumed to be in sorted order
+		D2_Y=ec.getUN(VN_N,Iter_F,True)
+    	#at A
+		Iter_Y2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D2_Y),False)
+		#at C
+		Iter_Y2Z=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(D2_Y),False)
+	
+				
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
+		
+		Iter_Y2X_decoded_key=ec.getUN(Iter_Y2X,Iter_T,False)
+		Iter_Y2Z_decoded_key=ec.getUN(Iter_Y2Z,Iter_T,False)
+
+		if not is_mismatch(Iter_lock_V,Iter_Y2X_decoded_key):
+			decoded["atA"][0]=True
+			D2_X=ec.getUN(UN_N,Iter_F,True)
+			Iter_X2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_X),False)
+			decoded["atB"][0]=True
+             Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
+        else:					
+		  if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
+			  decoded["atC"][0]=True
+			  D2_Z=ec.getUN(VN_N,Iter_F,True)
+			  Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_Z),False)
+			  decoded["atB"][1]=True
+			  Iter_errorfree_2=len(D2_Y)+len(D2_Z)-len(D1_Y)-len(D1_Z) 
+
+	#At C only C communicates This is over and above prev com 
+	while not anydecodedat(decoded,"atC"): 		
+		if Iter<maxiter:
+		   Iter+=1
+		
+		Iter_p=compound_plist[Iter]
+		Iter_G=Glist[Iter]
+		Iter_I=I_ord[:Iter_G]
+		Iter_T=I_ord[Iter_G-T:Iter_G] 
+		Iter_F=list(set(range(N))-set(Iter_I)) 
+		#data received at Rx over error-free channel
+		#extra T bits for checking sent over error free channel(this is over and above iter_G)
+		Iter_lock_W=ec.getUN(WN_N,Iter_T,False)
+
+		#bits frozen sent over errorrfree channel
+		# Note while decoding the data is assumed to be in sorted order
+		D2_Z=ec.getUN(WN_N,Iter_F,True)
+    	#at A
+		Iter_Z2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D2_Z),False)
+		#at B
+		Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_Z),False)
+	
+				
+		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
+		
+		Iter_Z2X_decoded_key=ec.getUN(Iter_Z2X,Iter_T,False)
+		Iter_Z2Y_decoded_key=ec.getUN(Iter_Z2Y,Iter_T,False)
+
+		if not is_mismatch(Iter_lock_W,Iter_Z2X_decoded_key):
+			decoded["atA"][1]=True
+			D2_X=ec.getUN(UN_N,Iter_F,True)
+			Iter_X2Z=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(D2_X),False)
+			decoded["atC"][0]=True
+             Iter_errorfree_2=len(D2_X)+len(D2_Z)-len(D1_X)-len(D1_Z)
+        else:					
+		  if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
+			  decoded["atC"][0]=True
+			  D2_Z=ec.getUN(VN_N,Iter_F,True)
+			  Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_Z),False)
+			  decoded["atA"][1]=True
+			  Iter_errorfree_2=len(D2_Y)+len(D2_Z)-len(D1_Y)-len(D1_Z) 	  
+    
+    
+    final_Iter_2=Iter
+    final_Iter_F_2=Iter_F
+	final_Iter_p_2=Iter_p
+		
+
 	final_Iter_I_X2Y=Iter_I
 	D_X2Y=ec.getUN(UN_N,Iter_F,True) # this is transmitted to Y and Z
 	final_X2Y=ec.polarencode(Iter_UN_hat,N) # should match XN at Y
