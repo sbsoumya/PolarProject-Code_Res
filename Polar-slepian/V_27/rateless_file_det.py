@@ -761,7 +761,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
     final_Iter_F_1=Iter_F
 	final_Iter_p_1=Iter_p
     
-    if not anydecoded(decoded): # deal with this
+    if not anydecoded(decoded): # deal with this in this case final iter will be maxiter
 		if final_Iter_1=maxiter:
 			for key in decoded:
 				for i in range(2):
@@ -769,10 +769,14 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		
 			
 	#Step 2  one side communications-------------------------------------------------------------
-	#Only one of the following while loops will execute			
+	#Only one of the following while loops will execute
+	tryatA=0
+	tryatB=0
+	tryatC=0			
 	#At A only A communicates This is over and above prev com so Iterlock not required
 	Iter=final_Iter_1
-	while not anydecodedat(decoded,"atA"): 		
+	while not anydecodedat(decoded,"atA"): 
+		tryatA=1		
 		if Iter<maxiter:
 		   Iter+=1
 		
@@ -814,7 +818,8 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	
 	#At B only B communicates This is over and above prev com 
 	Iter=final_Iter_1
-	while not anydecodedat(decoded,"atB"): 		
+	while not anydecodedat(decoded,"atB"):
+		tryatB=1 		
 		if Iter<maxiter:
 		   Iter+=1
 		
@@ -856,7 +861,8 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 			  Iter_errorfree_2=len(D2_Y)+len(D2_Z)-len(D1_Y)-len(D1_Z) 
 
 	#At C only C communicates This is over and above prev com 
-	while not anydecodedat(decoded,"atC"): 		
+	while not anydecodedat(decoded,"atC"): 
+		tryatC=1		
 		if Iter<maxiter:
 		   Iter+=1
 		
@@ -901,113 +907,40 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
     final_Iter_2=Iter
     final_Iter_F_2=Iter_F
 	final_Iter_p_2=Iter_p
+	
+	if anydecodedat(decoded,"atA")==0 and anydecodedat(decoded,"atB")==0 and anydecodedat(decoded,"atC")==0 : # deal with this
+		#in this case final iter is maxiter.also all the cases lead to FT being fully filled
+		if final_Iter_1=maxiter:
+			for key in decoded:
+				for i in range(2):
+					decoded[key][i]=True
+					
+	#final decoding
 		
 
-	final_Iter_I_X2Y=Iter_I
 	D_X2Y=ec.getUN(UN_N,Iter_F,True) # this is transmitted to Y and Z
 	final_X2Y=ec.polarencode(Iter_UN_hat,N) # should match XN at Y
 	
-	Iter_errorfree_X2Y=len(D_X2Y)
-	err_X2Y = (final_X2Y.tolist() != XN.tolist())
-	
-	#X decoding Y(lock key checking not required)(channel symmetry is used)
-	D_Y2X=ec.getUN(VN_N,final_Iter_F_X2Y,True) # this is transmitted to X and Z
-	Y2X_VN_hat=ec.polarSCdecodeG(XN,N,final_Iter_p_X2Y,final_Iter_I_X2Y,list(D_Y2X),False)
-	final_Y2X=ec.polarencode(Y2X_VN_hat,N)
-	
-	Iter_errorfree_Y2X=len(D_Y2X)
+
+	#errors
 	err_Y2X = (final_Y2X.tolist() != YN.tolist())
-	
-	decodedY2X=True
-	
-	#Z decoding Y 
-	Iter=final_Iter_X2Y 
-	#-------------------------------------------Forward decoding	 
-  	while not decodedY2Z:
-		
-		Iter_p=compound_plist[Iter]
-		Iter_G=Glist[Iter]
-		Iter_I=I_ord[:Iter_G]
-		
-		
-		#data received at Rx over error-free channel
-		#extra T bits for checking sent over error free channel(this is over and above iter_G)
-		Iter_T=I_ord[Iter_G-T:Iter_G] 	
-		Iter_lock=ec.getUN(VN_N,Iter_T,False)
-		#bits frozen sent over errorrfree channel
-		Iter_F=list(set(range(N))-set(Iter_I)) 
-		Iter_D=ec.getUN(VN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
-		Iter_VN_hat=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(Iter_D),False)		
-		#Note iterative retrodecode is not required as the frozen bits are transferred over error free channel
-		Iter_VN_decoded_key=ec.getUN(Iter_VN_hat,Iter_T,False)
-				
-		Iter_errorfree=len(Iter_D)+len(Iter_lock)
-				
-		if Iter<maxiter and is_mismatch(Iter_lock,Iter_VN_decoded_key):
-			Iter+=1
-		else:
-			decodedY2Z= True
-			#TPT booster
-			#reuse the check bits in final decoding
-			#could have shown including the T-bits as frozen explicitly, this is equivalent for simulation
-			if final_boost:
-				Iter_I=I_ord[:Iter_G-T] # including the T bits as frozen
-				Iter_F=list(set(range(N))-set(Iter_I))
-				Iter_D=ec.getUN(VN_N,Iter_F,True) # Note while decoding the data is assumed to be in sorted order
-				Iter_VN_hat=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(Iter_D),False)
-				
-	final_Iter_Y2Z=Iter	
-	final_Iter_F_Y2Z=Iter_F
-	final_Iter_p_Y2Z=Iter_p
-	final_Iter_I_Y2Z=Iter_I
-	D_Y2Z=Iter_D
-	final_Y2Z=ec.polarencode(Iter_VN_hat,N) # should match YN at Z
-	
-	Iter_errorfree_Y2Z=len(D_Y2Z)-len(D_Y2X) # only the extra bits transmitted, i.e, in the loop above all bits frozen for z is considered, here we subtract the bits sent from y to X
-	err_Y2Z = (final_Y2Z.tolist() != YN.tolist())
-	
-	#Z decoding X(lock key checking not required)(it has Y now, also has previous communication from X)
-	X2Z_UN_hat=ec.polarSCdecodeG(final_Y2Z,N,final_Iter_p_X2Y,final_Iter_I_X2Y,list(D_X2Y),False)
-	final_X2Z=ec.polarencode(X2Z_UN_hat,N)
-	
-	Iter_errorfree_X2Z=0 #Nothing new is communicated , decoding uses final estimation of Y from Z and error free com sent by X for decoding at Y
-	err_X2Z = (final_X2Z.tolist() != XN.tolist())
-	
-	decodedX2Z=True
-	
-	#Decoding at Z over -------------------------------------------------------
-	
-	#Y decoding Z(lock key checking not required)(channel symmetry is used)
-	D_Z2Y=ec.getUN(WN_N,final_Iter_F_Y2Z,True) # this is transmitted to X and Y
-	Z2Y_WN_hat=ec.polarSCdecodeG(YN,N,final_Iter_p_Y2Z,final_Iter_I_Y2Z,list(D_Z2Y),False)
-	final_Z2Y=ec.polarencode(Z2Y_WN_hat,N)
-	
-	Iter_errorfree_Z2Y=len(D_Z2Y)
-	err_Z2Y = (final_Z2Y.tolist() != ZN.tolist())
-	
-	#Decoding at Y over-------------------------------------------------------
-	
-	#X decoding Z
-	Z2X_WN_hat=ec.polarSCdecodeG(final_Y2X,N,final_Iter_p_Y2Z,final_Iter_I_Y2Z,list(D_Z2Y),False)
-	final_Z2X=ec.polarencode(Z2X_WN_hat,N)
-	
-	Iter_errorfree_Z2X=0 #Nothing new is communicated , decoding uses final estimation of Y from X and error free com sent by Z for decoding at Y
 	err_Z2X = (final_Z2X.tolist() != ZN.tolist())
 	
-	decodedZ2X=True
+	err_X2Y = (Iter_X2Y.tolist() != XN.tolist())
+	err_Z2Y = (final_Z2Y.tolist() != ZN.tolist())
 	
+	err_Y2Z = (final_Y2Z.tolist() != YN.tolist())
+	err_X2Z = (final_X2Z.tolist() != XN.tolist())
 	
-	
-	Total_error_free= (Iter_errorfree_X2Y+Iter_errorfree_Y2X)+(Iter_errorfree_Y2Z+Iter_errorfree_X2Z)+(Iter_errorfree_Z2Y+Iter_errorfree_Z2X)
+	Total_error_free= Iter_errorfre_1+Iter_errorfree_2
 	# decoding of X and Y, decoding at Z, decoding OF Z at X and Y)
 	error=0
 	error= (err_X2Y+err_Y2X+err_Y2Z+err_X2Z+err_Z2Y+err_Z2X) >0 
 	#print error
 	
-	
 	return (Total_error_free,error)
 	
-def send_rateless_file_Iter_retro_det_3_sim(N,T,compound_plist_u,channel_p1,channel_p2,error_free_msg_length,runsim,final_boost):
+def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,channel_p2,error_free_msg_length,runsim,final_boost):
 	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
 	compound_plist=list(compound_plist_u) #best channel first
 	compound_plist.sort()
