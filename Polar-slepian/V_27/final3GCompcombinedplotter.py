@@ -106,11 +106,8 @@ for i in range(20):
 	
 
 #print z
-#surf1 = ax.plot_surface(p1m,p2m,z, linewidth=0, antialiased=True)
-#surf2 = ax.plot_surface(p1m,p2m,theory, cmap=cm.coolwarm, linewidth=0, antialiased=False)
-
-surf1 = ax.plot_wireframe(p1m,p2m,z,color="green")
-surf2 = ax.plot_wireframe(p1m,p2m,theory,color='red')
+surf1 = ax.plot_surface(p1m,p2m,z, cmap=cm.coolwarm, linewidth=0, antialiased=True)
+surf2 = ax.plot_surface(p1m,p2m,theory, cmap=cm.coolwarm, linewidth=0, antialiased=True)
 
 
 

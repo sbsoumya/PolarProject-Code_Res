@@ -657,23 +657,23 @@ def anydecoded(decoded):
     return anydecode
 
 def anydecodedat(decoded,at):
-	return sum(decoded[key])
+	return sum(decoded[at])
 	
-def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist,Glist,T,final_boost): 
+def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist,Glist,T,printFT): 
 	# T < deltaG
 	#compound channel
     #----------------------------------------------------Iterations start
     #The 
-    decoded={}
-    decodedX2Y=False
-	decodedY2X=False
-	decodedX2Z=False
-	decodedZ2X=False
-	decodedY2Z=False
-	decodedZ2Y=False
-    decoded["atA"]=[decodedY2X,decodedZ2X]
-    decoded["atB"]=[decodedX2Y,decodedZ2Y]
-    decoded["atC"]=[decodedX2Z,decodedY2Z]
+	decoded={}
+	decodedX2Y=0
+	decodedY2X=0
+	decodedX2Z=0
+	decodedZ2X=0
+	decodedY2Z=0
+	decodedZ2Y=0
+	decoded["atA"]=[decodedY2X,decodedZ2X]
+	decoded["atB"]=[decodedX2Y,decodedZ2Y]
+	decoded["atC"]=[decodedX2Z,decodedY2Z]
 
 	maxiter=len(compound_plist)-1
 	#------------------for filing Tx side
@@ -690,11 +690,13 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	WN_N=ec.polarencode(Iter_ZN,N)
 	
 	Iter=-1
+	Iter_errorfree_1=0
+	Iter_errorfree_2=0
 	#-------------------------------------------Forward decoding all try to decode each other
 	 #Step 1
-  	while not anydecoded(decoded):
-		if Iter<maxiter:
-		   Iter+=1
+  	while anydecoded(decoded)==0 and Iter<maxiter:
+		#if Iter<maxiter:
+		Iter+=1
 		
 		Iter_p=compound_plist[Iter]
 		Iter_G=Glist[Iter]
@@ -737,37 +739,39 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		Iter_errorfree_1=len(D1_X)+len(D1_Y)+len(D1_Z)+len(Iter_lock_U)+len(Iter_lock_V)+len(Iter_lock_W)
 				
 		if not is_mismatch(Iter_lock_V,Iter_Y2X_decoded_key):
-			decoded["atA"][0]=True
-			decoded["atB"][0]=True #reverse 
+			decoded["atA"][0]=1
+			decoded["atB"][0]=1 #reverse 
 		if not is_mismatch(Iter_lock_W,Iter_Z2X_decoded_key):
-			decoded["atA"][1]=True
-			decoded["atC"][0]=True
+			decoded["atA"][1]=1
+			decoded["atC"][0]=1
 			
 		if not is_mismatch(Iter_lock_U,Iter_X2Y_decoded_key):
-			decoded["atB"][0]=True
-			decoded["atA"][0]=True
+			decoded["atB"][0]=1
+			decoded["atA"][0]=1
 		if not is_mismatch(Iter_lock_W,Iter_Z2Y_decoded_key):
-			decoded["atB"][1]=True
-			decoded["atC"][1]=True
+			decoded["atB"][1]=1
+			decoded["atC"][1]=1
 					
 		if not is_mismatch(Iter_lock_U,Iter_X2Z_decoded_key):
-			decoded["atC"][0]=True
-			decoded["atA"][1]=True
+			decoded["atC"][0]=1
+			decoded["atA"][1]=1
 		if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
-			decoded["atC"][1]=True
-			decoded["atB"][1]=True
+			decoded["atC"][1]=1
+			decoded["atB"][1]=1
+
 			
-    final_Iter_1=Iter
-    final_Iter_F_1=Iter_F
+	final_Iter_1=Iter
+	final_Iter_F_1=Iter_F
 	final_Iter_p_1=Iter_p
-    
-    if not anydecoded(decoded): # deal with this in this case final iter will be maxiter
-		if final_Iter_1=maxiter:
+	final_Iter_I_1=Iter_I
+	#print decoded
+	if not anydecoded(decoded): # deal with this in this case final iter will be maxiter
+		if final_Iter_1==maxiter:
 			for key in decoded:
 				for i in range(2):
-					decoded[key][i]=True
+					decoded[key][i]=1
 		
-			
+	#print decoded		
 	#Step 2  one side communications-------------------------------------------------------------
 	#Only one of the following while loops will execute
 	tryatA=0
@@ -775,7 +779,8 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	tryatC=0			
 	#At A only A communicates This is over and above prev com so Iterlock not required
 	Iter=final_Iter_1
-	while not anydecodedat(decoded,"atA"): 
+	#print anydecodedat(decoded,"atA")
+	while anydecodedat(decoded,"atA")==0 and Iter<maxiter: 
 		tryatA=1		
 		if Iter<maxiter:
 		   Iter+=1
@@ -802,23 +807,23 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		Iter_X2Z_decoded_key=ec.getUN(Iter_X2Z,Iter_T,False)
 		
 		if not is_mismatch(Iter_lock_U,Iter_X2Y_decoded_key):
-			decoded["atB"][0]=True
+			decoded["atB"][0]=2
 			D2_Y=ec.getUN(VN_N,Iter_F,True)
 			Iter_Y2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D2_Y),False)
-			decoded["atA"][0]=True
-             Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
-        else:					
+			decoded["atA"][0]=2
+			Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
+		else:					
 		  if not is_mismatch(Iter_lock_U,Iter_X2Z_decoded_key):
-			  decoded["atC"][0]=True
+			  decoded["atC"][0]=2
 			  D2_Z=ec.getUN(VN_N,Iter_F,True)
 			  Iter_Z2X=ec.polarSCdecodeG(Iter_XN,N,Iter_p,Iter_I,list(D2_Z),False)
-			  decoded["atA"][1]=True
+			  decoded["atA"][1]=2
 			  Iter_errorfree_2=len(D2_X)+len(D2_Z)-len(D1_X)-len(D1_Z) 
 		
 	
 	#At B only B communicates This is over and above prev com 
 	Iter=final_Iter_1
-	while not anydecodedat(decoded,"atB"):
+	while anydecodedat(decoded,"atB")==0 and Iter<maxiter: 
 		tryatB=1 		
 		if Iter<maxiter:
 		   Iter+=1
@@ -847,21 +852,21 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		Iter_Y2Z_decoded_key=ec.getUN(Iter_Y2Z,Iter_T,False)
 
 		if not is_mismatch(Iter_lock_V,Iter_Y2X_decoded_key):
-			decoded["atA"][0]=True
+			decoded["atA"][0]=2
 			D2_X=ec.getUN(UN_N,Iter_F,True)
 			Iter_X2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_X),False)
-			decoded["atB"][0]=True
-             Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
-        else:					
+			decoded["atB"][0]=2
+			Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
+		else:					
 		  if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
-			  decoded["atC"][0]=True
+			  decoded["atC"][0]=2
 			  D2_Z=ec.getUN(VN_N,Iter_F,True)
 			  Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_Z),False)
-			  decoded["atB"][1]=True
+			  decoded["atB"][1]=2
 			  Iter_errorfree_2=len(D2_Y)+len(D2_Z)-len(D1_Y)-len(D1_Z) 
 
 	#At C only C communicates This is over and above prev com 
-	while not anydecodedat(decoded,"atC"): 
+	while anydecodedat(decoded,"atC")==0 and Iter<maxiter: 
 		tryatC=1		
 		if Iter<maxiter:
 		   Iter+=1
@@ -890,57 +895,153 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		Iter_Z2Y_decoded_key=ec.getUN(Iter_Z2Y,Iter_T,False)
 
 		if not is_mismatch(Iter_lock_W,Iter_Z2X_decoded_key):
-			decoded["atA"][1]=True
+			decoded["atA"][1]=2
 			D2_X=ec.getUN(UN_N,Iter_F,True)
 			Iter_X2Z=ec.polarSCdecodeG(Iter_ZN,N,Iter_p,Iter_I,list(D2_X),False)
-			decoded["atC"][0]=True
-             Iter_errorfree_2=len(D2_X)+len(D2_Z)-len(D1_X)-len(D1_Z)
-        else:					
+			decoded["atC"][0]=2
+			Iter_errorfree_2=len(D2_X)+len(D2_Z)-len(D1_X)-len(D1_Z)
+		else:					
 		  if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
-			  decoded["atC"][0]=True
+			  decoded["atC"][0]=2
 			  D2_Z=ec.getUN(VN_N,Iter_F,True)
 			  Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_Z),False)
-			  decoded["atA"][1]=True
+			  decoded["atA"][1]=2
 			  Iter_errorfree_2=len(D2_Y)+len(D2_Z)-len(D1_Y)-len(D1_Z) 	  
     
     
-    final_Iter_2=Iter
-    final_Iter_F_2=Iter_F
+	final_Iter_2=Iter
+	final_Iter_F_2=Iter_F
 	final_Iter_p_2=Iter_p
-	
-	if anydecodedat(decoded,"atA")==0 and anydecodedat(decoded,"atB")==0 and anydecodedat(decoded,"atC")==0 : # deal with this
+	final_Iter_I_2=Iter_I
+	#print decoded
+	# In case after the step 2 ny of the nodes have still not decoded anything
+	if anydecodedat(decoded,"atA")==0 or anydecodedat(decoded,"atB")==0 or anydecodedat(decoded,"atC")==0 : # deal with this
 		#in this case final iter is maxiter.also all the cases lead to FT being fully filled
-		if final_Iter_1=maxiter:
+		if final_Iter_2==maxiter:
 			for key in decoded:
 				for i in range(2):
-					decoded[key][i]=True
-					
-	#final decoding
-		
-
-	D_X2Y=ec.getUN(UN_N,Iter_F,True) # this is transmitted to Y and Z
-	final_X2Y=ec.polarencode(Iter_UN_hat,N) # should match XN at Y
+					if decoded[key][i]==0:
+					   decoded[key][i]=2
+	#print decoded				
+	#final decoding-----------------------------------------------------------------
+	#atA
+	# Y not decoded (Z must have been decoded)
+	if decoded["atA"][0]==0:
+		estimate_Z2X=ec.polarencode(Iter_Z2X,N)	
+		if decoded["atC"][1]==1:
+			D_needed=D1_Y
+			p_needed=final_Iter_p_1
+			I_needed=final_Iter_I_1
+		else:
+			D_needed=D2_Y
+			p_needed=final_Iter_p_2
+			I_needed=final_Iter_I_2
+		Iter_Y2X=ec.polarSCdecodeG(estimate_Z2X,N,p_needed,I_needed,list(D_needed),False)
+		decoded["atA"][0]="F"
+	    
+	#Z not decoded (Y must have been)		
+	if decoded["atA"][1]==0:
+		estimate_Y2X=ec.polarencode(Iter_Y2X,N)
+		if decoded["atB"][1]==1:
+			D_needed=D1_Z
+			p_needed=final_Iter_p_1
+			I_needed=final_Iter_I_1
+		else:
+			D_needed=D2_Z
+			p_needed=final_Iter_p_2
+			I_needed=final_Iter_I_2
+		Iter_Z2X=ec.polarSCdecodeG(estimate_Y2X,N,p_needed,I_needed,list(D_needed),False)
+		decoded["atA"][1]="F"
+	
+	#atB
+	# X not decoded (Z must have been decoded)
+	if decoded["atB"][0]==0:
+		estimate_Z2Y=ec.polarencode(Iter_Z2Y,N)
+		if decoded["atC"][0]==1:
+			D_needed=D1_X
+			p_needed=final_Iter_p_1
+			I_needed=final_Iter_I_1
+		else:
+			D_needed=D2_X
+			p_needed=final_Iter_p_2
+			I_needed=final_Iter_I_2
+		Iter_X2Y=ec.polarSCdecodeG(estimate_Z2Y,N,p_needed,I_needed,list(D_needed),False)
+		decoded["atB"][0]="F"
+	    
+	#Z not decoded (X must have been)		
+	if decoded["atB"][1]==0:
+		estimate_X2Y=ec.polarencode(Iter_X2Y,N)
+		if decoded["atA"][1]==1:
+			D_needed=D1_Z
+			p_needed=final_Iter_p_1
+			I_needed=final_Iter_I_1
+		else:
+			D_needed=D2_Z
+			p_needed=final_Iter_p_2
+			I_needed=final_Iter_I_2
+		Iter_Z2Y=ec.polarSCdecodeG(estimate_X2Y,N,p_needed,I_needed,list(D_needed),False)
+		decoded["atB"][1]="F"
+	    
+    #atC
+	# X not decoded (Y must have been decoded)
+	if decoded["atC"][0]==0:
+		estimate_Y2Z=ec.polarencode(Iter_Y2Z,N)
+		if decoded["atB"][0]==1:
+			D_needed=D1_X
+			p_needed=final_Iter_p_1
+			I_needed=final_Iter_I_1
+		else:
+			D_needed=D2_X
+			p_needed=final_Iter_p_2
+			I_needed=final_Iter_I_2
+		Iter_X2Z=ec.polarSCdecodeG(estimate_Y2Z,N,p_needed,I_needed,list(D_needed),False)
+		decoded["atC"][0]="F"
+	    
+	#Y not decoded (X must have been)		
+	if decoded["atC"][1]==0:
+		estimate_X2Z=ec.polarencode(Iter_X2Z,N)
+		if decoded["atA"][0]==1:
+			D_needed=D1_Y
+			p_needed=final_Iter_p_1
+			I_needed=final_Iter_I_1
+		else:
+			D_needed=D2_Y
+			p_needed=final_Iter_p_2
+			I_needed=final_Iter_I_2
+		Iter_Y2Z=ec.polarSCdecodeG(estimate_X2Z,N,p_needed,I_needed,list(D_needed),False)
+		decoded["atC"][1]="F"
+	
+	  
+	#final reverse arikan
+	final_Y2X=ec.polarencode(Iter_Y2X,N)	
+	final_Z2X=ec.polarencode(Iter_Z2X,N)    
+	final_X2Y=ec.polarencode(Iter_X2Y,N)	
+	final_Z2Y=ec.polarencode(Iter_Z2Y,N) 
+	final_X2Z=ec.polarencode(Iter_X2Z,N)	
+	final_Y2Z=ec.polarencode(Iter_Y2Z,N) 
 	
 
 	#errors
 	err_Y2X = (final_Y2X.tolist() != YN.tolist())
 	err_Z2X = (final_Z2X.tolist() != ZN.tolist())
 	
-	err_X2Y = (Iter_X2Y.tolist() != XN.tolist())
+	err_X2Y = (final_X2Y.tolist() != XN.tolist())
 	err_Z2Y = (final_Z2Y.tolist() != ZN.tolist())
 	
 	err_Y2Z = (final_Y2Z.tolist() != YN.tolist())
 	err_X2Z = (final_X2Z.tolist() != XN.tolist())
 	
-	Total_error_free= Iter_errorfre_1+Iter_errorfree_2
+	Total_error_free= Iter_errorfree_1+Iter_errorfree_2
 	# decoding of X and Y, decoding at Z, decoding OF Z at X and Y)
 	error=0
 	error= (err_X2Y+err_Y2X+err_Y2Z+err_X2Z+err_Z2Y+err_Z2X) >0 
 	#print error
+	if printFT:
+		print decoded
+		
+	return (Total_error_free,error,decoded)
 	
-	return (Total_error_free,error)
-	
-def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,channel_p2,error_free_msg_length,runsim,final_boost):
+def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,channel_p2,error_free_msg_length,runsim,printFT):
 	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
 	compound_plist=list(compound_plist_u) #best channel first
 	compound_plist.sort()
@@ -956,13 +1057,13 @@ def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,cha
 	errorfree_ach_rate=0
 	for i in range(runsim):
 		XN=np.random.randint(2,size=N)
-		(Total_error_free,error)=send_rateless_file_Iter_retro_3(XN,N,I_ord,channel_p1,channel_p2,compound_plist_u,Glist,T,final_boost)
+		(Total_error_free,error,decoded)=send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist_u,Glist,T,printFT)
 		errorfree_ach_rate+=float(Total_error_free)/(N*runsim) # calculates E{D}/N
 						
 		block_errorcnt+=error
 		
 	#print block_errorcnt
 	block_error=float(block_errorcnt)/runsim
-		
-	return (errorfree_ach_rate,block_error)
+	# the last simulation decoded is returned	
+	return (errorfree_ach_rate,block_error,decoded)
 	
