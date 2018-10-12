@@ -859,7 +859,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 			Iter_errorfree_2=len(D2_X)+len(D2_Y)-len(D1_X)-len(D1_Y)
 		else:					
 		  if not is_mismatch(Iter_lock_V,Iter_Y2Z_decoded_key):
-			  decoded["atC"][0]=2
+			  decoded["atC"][1]=2
 			  D2_Z=ec.getUN(VN_N,Iter_F,True)
 			  Iter_Z2Y=ec.polarSCdecodeG(Iter_YN,N,Iter_p,Iter_I,list(D2_Z),False)
 			  decoded["atB"][1]=2
@@ -955,18 +955,23 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	
 	#atB
 	# X not decoded (Z must have been decoded)
-	if decoded["atB"][0]==0:
-		estimate_Z2Y=ec.polarencode(Iter_Z2Y,N)
-		if decoded["atC"][0]==1:
-			D_needed=D1_X
-			p_needed=final_Iter_p_1
-			I_needed=final_Iter_I_1
-		else:
-			D_needed=D2_X
-			p_needed=final_Iter_p_2
-			I_needed=final_Iter_I_2
-		Iter_X2Y=ec.polarSCdecodeG(estimate_Z2Y,N,p_needed,I_needed,list(D_needed),False)
-		decoded["atB"][0]="F"
+	try:
+		if decoded["atB"][0]==0:
+			estimate_Z2Y=ec.polarencode(Iter_Z2Y,N)
+			if decoded["atC"][0]==1:
+				D_needed=D1_X
+				p_needed=final_Iter_p_1
+				I_needed=final_Iter_I_1
+			else:
+				D_needed=D2_X
+				p_needed=final_Iter_p_2
+				I_needed=final_Iter_I_2
+			Iter_X2Y=ec.polarSCdecodeG(estimate_Z2Y,N,p_needed,I_needed,list(D_needed),False)
+			decoded["atB"][0]="F"
+			
+	except:
+		print "FINAl decoding error----------------------"
+		print decoded
 	    
 	#Z not decoded (X must have been)		
 	if decoded["atB"][1]==0:

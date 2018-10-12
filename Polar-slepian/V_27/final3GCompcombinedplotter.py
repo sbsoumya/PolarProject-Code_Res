@@ -17,6 +17,16 @@ plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
 plt.rc('figure', figsize=[8,3]) 
 
+
+
+/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_6_246in512_T9_18-10-11_23-19-03.txt
+/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_5_246in512_T9_18-10-11_21-52-55.txt
+/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_4_246in512_T9_18-10-11_20-35-03.txt
+/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_18-10-11_19-20-42.txt
+/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_18-10-11_18-08-44.txt
+/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-11_16-57-14.txt
+
+
 files=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_1_246in512_T9_18-09-13_18-49-17.txt',\
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_2_246in512_T9_18-09-13_20-32-12.txt', \
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_3_246in512_T9_18-09-13_22-11-34.txt',\

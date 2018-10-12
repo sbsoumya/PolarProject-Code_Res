@@ -23,8 +23,10 @@ from timeit import default_timer as timer
 #------------Number of good channels = capacity
 start = timer()
 Nlist=[512] #keep this singleton
-points=10
-channel_p1list=list(np.linspace(0.01,0.2,points))
+points1=4
+points2=10
+channel_p1list=list(np.linspace(0.1366,0.2,points1))
+channel_p2list=list(np.linspace(0.01,0.2,points2))
 print channel_p1list
 compound_plist=[0.03,0.11,0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
@@ -33,7 +35,7 @@ R_p1=246
 F_p1=Nlist[0]-R_p1
 error_free_msg_length=F_p1+T #msg to be sent error free
 runsim=1000
-chp1_i=points
+#\=points
 start=timer()
 print "RATE Vs FER REPORT Rateless Det Iter retro"
 print "------------------------------------------"
@@ -42,15 +44,15 @@ print compound_plist
 print "sim ran :"+str(runsim)
 print "T:"+str(T)
 
-fc=0
+fc=6
 filenames=[]
 achieved_rates=[]
 block_errors=[]
 for N in Nlist:
 	print "N="+str(N)
 	for channel_p1 in channel_p1list:
-		channel_p2list=list(channel_p1list)
-		chp1_i -=1
+		#channel_p2list=list(channel_p1list)
+		
 		fc+=1
 		stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
 		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
