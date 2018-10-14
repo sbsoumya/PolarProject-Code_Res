@@ -18,16 +18,19 @@ plt.rc('savefig',dpi=300)
 plt.rc('figure', figsize=[8,3]) 
 
 
+files=['/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_10_246in512_T9_18-10-13_04-55-08.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_9_246in512_T9_18-10-13_03-06-56.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_8_246in512_T9_18-10-13_01-25-38.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_7_246in512_T9_18-10-12_23-47-47.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_6_246in512_T9_18-10-11_23-19-03.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_5_246in512_T9_18-10-11_21-52-55.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_4_246in512_T9_18-10-11_20-35-03.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_18-10-11_19-20-42.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_18-10-11_18-08-44.txt',
+'/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-11_16-57-14.txt']
 
-/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_6_246in512_T9_18-10-11_23-19-03.txt
-/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_5_246in512_T9_18-10-11_21-52-55.txt
-/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_4_246in512_T9_18-10-11_20-35-03.txt
-/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_18-10-11_19-20-42.txt
-/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_18-10-11_18-08-44.txt
-/home/smart/Project/code/Polar-slepian/V_27/simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-11_16-57-14.txt
 
-
-files=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_1_246in512_T9_18-09-13_18-49-17.txt',\
+files2=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_1_246in512_T9_18-09-13_18-49-17.txt',\
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_2_246in512_T9_18-09-13_20-32-12.txt', \
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_3_246in512_T9_18-09-13_22-11-34.txt',\
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_4_246in512_T9_18-09-13_23-47-22.txt', \
@@ -85,29 +88,29 @@ plt.title("$X-p_1-Y-p_2-Z$,\n $p_1 \leq p_2$, $t$=9, $n$=512, $\delta$=0.05 ")
 #----surface plot
 fig = plt.figure()
 ax = fig.gca(projection='3d')
-p1=list(np.linspace(0.01,0.2,20))
-p2=list(np.linspace(0.01,0.2,20))
+p1=list(np.linspace(0.01,0.2,10))[:8]
+p2=list(np.linspace(0.01,0.2,10))[:8]
 p1m,p2m=np.meshgrid(p1,p2)
 #print p1
 #print p2
 
 (w,x,y,s)=(8,9,10,11)
-z=np.zeros([20,20])
-theory=np.zeros([20,20])
-for i in range(20):
-	thisfile=files[i]
+z=np.zeros([8,8])
+theory=np.zeros([8,8])
+for i in range(8):
+	thisfile=files[9-i]
 	print thisfile
 	lines=ml.getline(thisfile,[w,x,y,s])
 	point=len(lines[1])
 	#p2=lines[1]
 	#p1=lines[0]
-	for j in range(point):
-		#z[i][j]=float(lines[2][j])/(1-10**lines[3][j])
-		z[i][j+i]=float(lines[2][j])/(1-10**lines[3][j])
-		z[j+i][i]=z[i][j+i]
+	for j in range(8):
+		z[i][j]=float(lines[2][j])/(1-10**lines[3][j])
+		#z[i][j+i]=float(lines[2][j])/(1-10**lines[3][j])
+		#z[j+i][i]=z[i][j+i]
 		
-for i in range(20):
-	for  j in range(20):
+for i in range(8):
+	for  j in range(8):
 		
 		if p1[i]>p2[j]:
 			theory[i][j]=2*h(p1[i])+h(p2[j])
@@ -116,9 +119,42 @@ for i in range(20):
 	
 
 #print z
-surf1 = ax.plot_surface(p1m,p2m,z, cmap=cm.coolwarm, linewidth=0, antialiased=True)
-surf2 = ax.plot_surface(p1m,p2m,theory, cmap=cm.coolwarm, linewidth=0, antialiased=True)
+surf1 = ax.plot_wireframe(p1m,p2m,z,color="green",label="General")
 
+#----surface plot known
+
+p1=list(np.linspace(0.01,0.2,20))[:16]
+p2=list(np.linspace(0.01,0.2,20))[:16]
+p1m,p2m=np.meshgrid(p1,p2)
+#print p1
+#print p2
+
+(w,x,y,s)=(8,9,10,11)
+z=np.zeros([16,16])
+theory=np.zeros([16,16])
+for i in range(16):
+	thisfile=files2[i]
+	print thisfile
+	lines=ml.getline(thisfile,[w,x,y,s])
+	point=len(lines[1])
+	print point
+	#p2=lines[1]
+	#p1=lines[0]
+	for j in range(point -4):
+		#z[i][j]=float(lines[2][j])/(1-10**lines[3][j])
+		z[i][j+i]=float(lines[2][j])/(1-10**lines[3][j])
+		z[j+i][i]=z[i][j+i]
+		
+for i in range(16):
+	for  j in range(16):
+		
+		if p1[i]>p2[j]:
+			theory[i][j]=2*h(p1[i])+h(p2[j])
+		else:
+			theory[i][j]=2*h(p2[j])+h(p1[i])
+
+surf2 = ax.plot_wireframe(p1m,p2m,z,color='blue',label="Order known")
+surf2 = ax.plot_wireframe(p1m,p2m,theory,color='red',label="Theory")
 
 
 # Customize the z axis.
@@ -130,8 +166,9 @@ ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 # Add a color bar which maps values to colors.
 #fig.colorbar(surf, shrink=0.5, aspect=5)
 
-plt.title("$X-p_1-Y-p_2-Z$,\n $p_1 \leq p_2$, $t$=9, $n$=512, $\delta$=0.05 ")
+plt.title("$X-p_1-Y-p_2-Z$, $t$=9, $n$=512, $\delta$=0.05 ")
 #plt.zlabel('$\l(p)$')
 plt.xlabel('flipover probability $p_1$')
 plt.ylabel('flipover probability $p_2$')
+plt.legend(loc='best')
 plt.show()

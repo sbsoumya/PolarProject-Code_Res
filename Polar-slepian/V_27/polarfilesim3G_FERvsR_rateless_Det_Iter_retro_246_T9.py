@@ -23,9 +23,9 @@ from timeit import default_timer as timer
 #------------Number of good channels = capacity
 start = timer()
 Nlist=[512] #keep this singleton
-points1=4
-points2=10
-channel_p1list=list(np.linspace(0.1366,0.2,points1))
+points1=20
+points2=20
+channel_p1list=list(np.linspace(0.01,0.2,points1))
 channel_p2list=list(np.linspace(0.01,0.2,points2))
 print channel_p1list
 compound_plist=[0.03,0.11,0.17]
