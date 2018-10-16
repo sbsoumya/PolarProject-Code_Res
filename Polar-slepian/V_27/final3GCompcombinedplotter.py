@@ -87,7 +87,14 @@ plt.title("$X-p_1-Y-p_2-Z$,\n $p_1 \leq p_2$, $t$=9, $n$=512, $\delta$=0.05 ")
 
 #----surface plot
 fig = plt.figure()
-ax = fig.gca(projection='3d')
+#ax = fig.gca(projection='3d')
+
+
+ax=plt.subplot(111)
+plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
+
+
+
 p1=list(np.linspace(0.01,0.2,10))[:8]
 p2=list(np.linspace(0.01,0.2,10))[:8]
 p1m,p2m=np.meshgrid(p1,p2)
@@ -97,11 +104,49 @@ p1m,p2m=np.meshgrid(p1,p2)
 (w,x,y,s)=(8,9,10,11)
 z=np.zeros([8,8])
 theory=np.zeros([8,8])
-for i in range(8):
+start=4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end=5
+for i in range(start,end):
 	thisfile=files[9-i]
 	print thisfile
 	lines=ml.getline(thisfile,[w,x,y,s])
 	point=len(lines[1])
+	print lines[0]
 	#p2=lines[1]
 	#p1=lines[0]
 	for j in range(8):
@@ -109,7 +154,7 @@ for i in range(8):
 		#z[i][j+i]=float(lines[2][j])/(1-10**lines[3][j])
 		#z[j+i][i]=z[i][j+i]
 		
-for i in range(8):
+for i in range(start,end):
 	for  j in range(8):
 		
 		if p1[i]>p2[j]:
@@ -119,10 +164,11 @@ for i in range(8):
 	
 
 #print z
-surf1 = ax.plot_wireframe(p1m,p2m,z,color="green",label="General")
-
+#surf1 = ax.plot_wireframe(p1m,p2m,z,color="green",label="General")
+plt.plot(p2,z[start],label="General,$p_1=$"+str(lines[0]),color="blue",marker="^")
+plt.plot(p2,theory[start],label="Sum Capacity,$p_1=$"+str(lines[0]),color="black",marker=">")
 #----surface plot known
-
+"""
 p1=list(np.linspace(0.01,0.2,20))[:16]
 p2=list(np.linspace(0.01,0.2,20))[:16]
 p1m,p2m=np.meshgrid(p1,p2)
@@ -138,6 +184,7 @@ for i in range(16):
 	lines=ml.getline(thisfile,[w,x,y,s])
 	point=len(lines[1])
 	print point
+	print lines[0]
 	#p2=lines[1]
 	#p1=lines[0]
 	for j in range(point -4):
@@ -153,14 +200,16 @@ for i in range(16):
 		else:
 			theory[i][j]=2*h(p2[j])+h(p1[i])
 
-surf2 = ax.plot_wireframe(p1m,p2m,z,color='blue',label="Order known")
-surf2 = ax.plot_wireframe(p1m,p2m,theory,color='red',label="Theory")
+#surf2 = ax.plot_wireframe(p1m,p2m,z,color='blue',label="Order known")
+#surf2 = ax.plot_wireframe(p1m,p2m,theory,color='red',label="Theory")
 
-
+"""
 # Customize the z axis.
 #ax.set_zlim(0, 4)
-ax.zaxis.set_major_locator(LinearLocator(10))
-ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+#ax.zaxis.set_major_locator(LinearLocator(10))
+#ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
 #surf(p1,'FaceColor','interp')
 
 # Add a color bar which maps values to colors.
@@ -168,7 +217,14 @@ ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
 plt.title("$X-p_1-Y-p_2-Z$, $t$=9, $n$=512, $\delta$=0.05 ")
 #plt.zlabel('$\l(p)$')
-plt.xlabel('flipover probability $p_1$')
-plt.ylabel('flipover probability $p_2$')
-plt.legend(loc='best')
+plt.xlabel('flipover probability $p_2$')
+#plt.ylabel('flipover probability $p_2$')
+
+plt.grid(True)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
+
+
+#plt.legend(loc='best')
 plt.show()
