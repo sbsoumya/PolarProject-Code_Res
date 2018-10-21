@@ -29,6 +29,7 @@ channel_p1list=list(np.linspace(0.01,0.2,points1))
 channel_p2list=list(np.linspace(0.01,0.2,points2))
 print channel_p1list
 compound_plist=[0.03,0.11,0.17]
+#channel_p1list=compound_plist
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
 T=9
 R_p1=246
@@ -72,13 +73,16 @@ for N in Nlist:
 	
 		achieved_rate=[]
 		FER=[];
-		
+		error_array_exp=[]
+		Iter_prob_tot=[]
 	
 		for channel_p2 in channel_p2list:
 		#print "channel_p:"+str(channel_p)
-			(ach_rate,block_error,decoded)=rlf.send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist,channel_p1,channel_p2,error_free_msg_length,runsim,False)
+			(ach_rate,block_error,decoded,error_array,Iter_prob)=rlf.send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist,channel_p1,channel_p2,error_free_msg_length,runsim,False)
 			achieved_rate.append(ach_rate) # E{D}/N
 			FER.append(block_error) # ep
+			error_array_exp.append(np.log10(error_array).tolist())
+			Iter_prob_tot.append(Iter_prob)			
 			json.dump("channel:"+str(channel_p1)+","+str(channel_p2),f2);f2.write("\n")
 			json.dump("Sample FT",f2) ;f2.write("\n")
 			json.dump(decoded,f2);f2.write("\n")
@@ -93,6 +97,10 @@ for N in Nlist:
 		json.dump(channel_p2list,f1) ;f1.write("\n")
 		json.dump(achieved_rate,f1) ;f1.write("\n")
 		json.dump(block_error_exp,f1) ;f1.write("\n")
+		json.dump("errorarray=[err_Y2X,err_Z2X,err_X2Y,err_Z2Y,err_Y2Z,err_X2Z]",f1);f1.write("\n")
+		json.dump(error_array_exp,f1) ;f1.write("\n")
+		json.dump("Iter=[Iter_step_1,Iter_step_2 (continued)]",f1);f1.write("\n")
+		json.dump(Iter_prob_tot,f1) ;f1.write("\n")
 
 
 	
