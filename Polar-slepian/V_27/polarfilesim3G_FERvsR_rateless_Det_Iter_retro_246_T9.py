@@ -27,7 +27,7 @@ points1=20
 points2=20
 channel_p1list=list(np.linspace(0.01,0.2,points1))
 channel_p2list=list(np.linspace(0.01,0.2,points2))
-print channel_p1list
+print channel_p2list
 compound_plist=[0.03,0.11,0.17]
 #channel_p1list=compound_plist
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
@@ -81,6 +81,7 @@ for N in Nlist:
 			(ach_rate,block_error,decoded,error_array,Iter_prob)=rlf.send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist,channel_p1,channel_p2,error_free_msg_length,runsim,False)
 			achieved_rate.append(ach_rate) # E{D}/N
 			FER.append(block_error) # ep
+			print error_array
 			error_array_exp.append(np.log10(error_array).tolist())
 			Iter_prob_tot.append(Iter_prob)			
 			json.dump("channel:"+str(channel_p1)+","+str(channel_p2),f2);f2.write("\n")

@@ -837,7 +837,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		
 	
 	#At B only B communicates This is over and above prev com 
-	Iter=final_Iter_1
+	
 	while anydecodedat(decoded,"atB")==0 and Iter<maxiter: 
 		tryatB=1 		
 		if Iter<maxiter:
@@ -941,7 +941,8 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 			#transfer complete vectors
 			#between trying party and any one of the parties
 			
-			if tryatA==1:
+			if anydecodedat(decoded,"atA")==0:
+				#print "in A"
 				#Y and Z are symmetric choosing Y
 				decoded["atA"][0]=2
 				decoded["atB"][0]=2
@@ -954,7 +955,8 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 				
 				Iter_errorfree_2=2*N-len(D1_X)-len(D1_Y)-2*T
 				
-			if tryatB==1:
+			if anydecodedat(decoded,"atB")==0:
+				#print "in B"
 				#X and Z symmetric choosing Z
 				decoded["atB"][1]=2
 				decoded["atC"][1]=2
@@ -966,8 +968,8 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 				
 				Iter_errorfree_2=2*N-len(D1_Y)-len(D1_Z)-2*T
 				
-			if tryatC==1:
-				
+			if anydecodedat(decoded,"atC")==0:
+				#print "in C"
 				#X and Y symmetric choosing X
 				decoded["atC"][0]=2
 				decoded["atA"][1]=2
@@ -978,25 +980,36 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 				decoded["atB"][1]=2
 				
 				Iter_errorfree_2=2*N-len(D1_X)-len(D1_Z)-2*T
+				
+	if anydecodedat(decoded,"atA")==0 or anydecodedat(decoded,"atB")==0 or anydecodedat(decoded,"atC")==0 : # trouble
+		print "trouble"
+		print decoded
+		print final_Iter_2,maxiter
+		print tryatA,tryatB,tryatC
+		print anydecodedat(decoded,"atA"),anydecodedat(decoded,"atB"),anydecodedat(decoded,"atC"),
+
+
+
 	#print decoded				
 	#final decoding-----------------------------------------------------------------
 	#atA
 	# Y not decoded (Z must have been decoded)
-	if decoded["atA"][0]==0:
-		estimate_Z2X=ec.polarencode(Iter_Z2X,N)	
-		if decoded["atC"][1]==1:
-			D_needed=D1_Y
-			p_needed=final_Iter_p_1
-			I_needed=final_Iter_I_1
-		else:
-			D_needed=D2_Y
-			p_needed=final_Iter_p_2
-			I_needed=final_Iter_I_2
-		Iter_Y2X=ec.polarSCdecodeG(estimate_Z2X,N,p_needed,I_needed,list(D_needed),False)
-		decoded["atA"][0]="F"
+	try:
+		if decoded["atA"][0]==0:
+			estimate_Z2X=ec.polarencode(Iter_Z2X,N)	
+			if decoded["atC"][1]==1:
+				D_needed=D1_Y
+				p_needed=final_Iter_p_1
+				I_needed=final_Iter_I_1
+			else:
+				D_needed=D2_Y
+				p_needed=final_Iter_p_2
+				I_needed=final_Iter_I_2
+			Iter_Y2X=ec.polarSCdecodeG(estimate_Z2X,N,p_needed,I_needed,list(D_needed),False)
+			decoded["atA"][0]="F"
 	    
 	#Z not decoded (Y must have been)	
-	try:	
+	
 		if decoded["atA"][1]==0:
 			estimate_Y2X=ec.polarencode(Iter_Y2X,N)
 			if decoded["atB"][1]==1:
@@ -1100,6 +1113,9 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	Iter_prob=[final_Iter_1,final_Iter_2]
 	if printFT:
 		print decoded
+	#if float(Total_error_free)/N >= 3:
+	#	print "here"
+	#	print errorarray
 		
 	return (Total_error_free,error,decoded,errorarray,Iter_prob)
 	
