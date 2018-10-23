@@ -72,15 +72,15 @@ files2=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_1_246in512_T9_
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_18_246in512_T9_18-09-14_13-11-56.txt',\
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_19_246in512_T9_18-09-14_13-29-38.txt', \
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_20_246in512_T9_18-09-14_13-41-32.txt']
-
+#
 #print files
-N=1024
+#N=1024
 T=64
 files3=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_7_512in1024_T64_18-10-22_22-03-48.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_8_512in1024_T64_18-10-23_03-49-50.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_9_512in1024_T64_18-10-23_11-20-52.txt']
-N=1024
-T=128
+#N=1024
+#T=128
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_7_512in1024_T128_18-10-22_22-04-10.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_8_512in1024_T128_18-10-23_03-53-46.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_9_512in1024_T128_18-10-23_11-29-08.txt']
@@ -117,49 +117,91 @@ ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 plt.title("$X-p_1-Y-p_2-Z$,\n $p_1 \leq p_2$, $t$=9, $n$=512, $\delta$=0.05 ")
 """
-"""
+
 #----given p_1
 fig = plt.figure()
 #ax = fig.gca(projection='3d')
-ax=plt.subplot(111)
+ax=plt.subplot(211)
 plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
-p1=list(np.linspace(0.01,0.2,10))[:8]
-p2=list(np.linspace(0.01,0.2,10))[:8]
+p1=list(np.linspace(0.01,0.2,20))
+p2=list(np.linspace(0.01,0.2,20))
 p1m,p2m=np.meshgrid(p1,p2)
 #print p1
 #print p2
 (w,x,y,s)=(8,9,10,11)
-z=np.zeros([8,8])
-theory=np.zeros([8,8])
-start=4
-end=5
+z=np.zeros([20,20])
+theory=np.zeros([20,20])
+start=2
+end=3
 for i in range(start,end):
-	thisfile=files[9-i]
+	thisfile=files4[i]
 	print thisfile
 	lines=ml.getline(thisfile,[w,x,y,s])
 	point=len(lines[1])
 	print lines[0]
 	#p2=lines[1]
 	#p1=lines[0]
-	for j in range(8):
+	for j in range(20):
 		z[i][j]=float(lines[2][j])/(1-10**lines[3][j])
 		#z[i][j+i]=float(lines[2][j])/(1-10**lines[3][j])
 		#z[j+i][i]=z[i][j+i]
 		
 for i in range(start,end):
-	for  j in range(8):
+	for  j in range(20):
 		
 		if p1[i]>p2[j]:
 			theory[i][j]=2*h(p1[i])+h(p2[j])
 		else:
 			theory[i][j]=2*h(p2[j])+h(p1[i])
-	
+			
 
 #print z
 #surf1 = ax.plot_wireframe(p1m,p2m,z,color="green",label="General")
 plt.plot(p2,z[start],label="General,$p_1=$"+str(lines[0]),color="blue",marker="^")
 plt.plot(p2,theory[start],label="Sum Capacity,$p_1=$"+str(lines[0]),color="black",marker=">")
-"""
+plt.ylabel('$\l(p)$')
+plt.xlabel('flipover probability $p_2$')
+plt.title("$X-p_1-Y-p_2-Z$,\n $t$=128, $n$=1024, $\delta$=0.05 ")
+plt.grid(True)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
+
+
+#error array
+errorarray=	ml.getline(thisfile,[13])[0]
+err_Y2X=[]
+err_Z2X=[]
+err_X2Y=[]
+err_Z2Y=[]
+err_X2Z=[]
+err_Y2Z=[]
+print errorarray
+for i in range(20):
+	err_Y2X.append(10**errorarray[i][0])
+	err_Z2X.append(10**errorarray[i][1])
+	err_X2Y.append(10**errorarray[i][2])
+	err_Z2Y.append(10**errorarray[i][3])
+	err_X2Z.append(10**errorarray[i][4])
+	err_Y2Z.append(10**errorarray[i][5])
+
+print len(err_Y2X)
+print len(err_Z2X)
+ax=plt.subplot(212)
+#plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
+plt.plot(p2,[10**lines[3][j] for j in range(20)],'ro-',label="total error")
+plt.plot(p2,err_Y2X,label="Y at X")
+plt.plot(p2,err_Z2X,label="Z at X")
+plt.plot(p2,err_X2Y,label="X at Y")
+plt.plot(p2,err_Z2Y,label="Z at Y")
+plt.plot(p2,err_X2Z,label="X at Z")
+plt.plot(p2,err_Y2Z,label="Y at Z")
+plt.xlabel('flipover probability $p_2$')
+plt.ylabel('error')
+
+
+
+
 """
 #----surface plot
 fig = plt.figure()
@@ -227,15 +269,15 @@ for i in range(16):
 surf2 = ax.plot_wireframe(p1m,p2m,z,color='blue',label="Order known")
 surf3 = ax.plot_wireframe(p1m,p2m,theory,color='red',label="Theory")
 
-plt.title("$X-p_1-Y-p_2-Z$, $t$=9, $n$=512, $\delta$=0.05 ")
+plt.title("$X-p_1-Y-p_2-Z$, $t=9, $n$=512, $\delta$=0.05 ")
 #plt.zlabel('$\l(p)$')
 plt.xlabel('flipover probability $p_1$')
 plt.ylabel('flipover probability $p_2$')
-
+"""
 plt.grid(True)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 #plt.legend(loc='best')
 plt.show()
-"""
+

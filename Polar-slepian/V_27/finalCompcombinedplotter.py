@@ -187,6 +187,7 @@ TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
 
 
 plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
+plt.plot(lines[0],[10**x for x in lines[2]])
 
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 

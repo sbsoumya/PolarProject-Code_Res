@@ -9,7 +9,7 @@
 {"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
 "channel:0.03,0.04"
 "Sample FT"
-{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+{"atB": [1, 1], "atC": ["F", 1], "atA": [1, "F"]}
 "channel:0.03,0.05"
 "Sample FT"
 {"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
@@ -18,7 +18,7 @@
 {"atB": [1, 1], "atC": ["F", 1], "atA": [1, "F"]}
 "channel:0.03,0.06999999999999999"
 "Sample FT"
-{"atB": [1, 1], "atC": ["F", 1], "atA": [1, "F"]}
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
 "channel:0.03,0.08"
 "Sample FT"
 {"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
@@ -27,7 +27,7 @@
 {"atB": [1, 1], "atC": ["F", 1], "atA": [1, "F"]}
 "channel:0.03,0.09999999999999999"
 "Sample FT"
-{"atB": [1, 1], "atC": ["F", 1], "atA": [1, "F"]}
+{"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
 "channel:0.03,0.11"
 "Sample FT"
 {"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
@@ -45,13 +45,13 @@
 {"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
 "channel:0.03,0.16"
 "Sample FT"
-{"atB": [1, 2], "atC": [2, "F"], "atA": [1, 2]}
+{"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
 "channel:0.03,0.17"
 "Sample FT"
 {"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
 "channel:0.03,0.18000000000000002"
 "Sample FT"
-{"atB": [1, 2], "atC": [2, "F"], "atA": [1, 2]}
+{"atB": [1, "F"], "atC": [2, "F"], "atA": [1, 2]}
 "channel:0.03,0.19"
 "Sample FT"
 {"atB": [1, 2], "atC": [2, "F"], "atA": [1, 2]}
