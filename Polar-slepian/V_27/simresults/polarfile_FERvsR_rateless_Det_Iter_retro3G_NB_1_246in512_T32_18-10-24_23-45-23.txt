@@ -1,0 +1,17 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+"sim ran :10"
+"T:32"
+"N=512"
+"Rate vs Block_error="
+0.2
+[0.2]
+[2.7185546874999997]
+[-0.6989700043360187]
+"errorarray=[err_Y2X,err_Z2X,err_X2Y,err_Z2Y,err_Y2Z,err_X2Z]"
+[[-1.0, -0.6989700043360187, -Infinity, -1.0, -Infinity, -Infinity]]
+"Iter=[Iter_step_1,Iter_step_2 (continued)]"
+[[1.9, 2.0]]
+"Time taken:8.81782007217"

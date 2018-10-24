@@ -86,6 +86,7 @@ files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_7_512in1024_
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_9_512in1024_T128_18-10-23_11-29-08.txt']
 
 
+files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-24_22-19-11.txt']
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------------plot
@@ -131,8 +132,8 @@ p1m,p2m=np.meshgrid(p1,p2)
 (w,x,y,s)=(8,9,10,11)
 z=np.zeros([20,20])
 theory=np.zeros([20,20])
-start=2
-end=3
+start=0
+end=1
 for i in range(start,end):
 	thisfile=files4[i]
 	print thisfile
@@ -170,6 +171,7 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 #error array
 errorarray=	ml.getline(thisfile,[13])[0]
+comp=[]
 err_Y2X=[]
 err_Z2X=[]
 err_X2Y=[]
@@ -182,8 +184,10 @@ for i in range(20):
 	err_Z2X.append(10**errorarray[i][1])
 	err_X2Y.append(10**errorarray[i][2])
 	err_Z2Y.append(10**errorarray[i][3])
-	err_X2Z.append(10**errorarray[i][4])
-	err_Y2Z.append(10**errorarray[i][5])
+	err_Y2Z.append(10**errorarray[i][4])
+	err_X2Z.append(10**errorarray[i][5])
+	comp.append(float(lines[2][i])/(1-10**errorarray[i][4]))
+
 
 print len(err_Y2X)
 print len(err_Z2X)
@@ -196,6 +200,7 @@ plt.plot(p2,err_X2Y,label="X at Y")
 plt.plot(p2,err_Z2Y,label="Z at Y")
 plt.plot(p2,err_X2Z,label="X at Z")
 plt.plot(p2,err_Y2Z,label="Y at Z")
+#plt.plot(p2,comp)
 plt.xlabel('flipover probability $p_2$')
 plt.ylabel('error')
 

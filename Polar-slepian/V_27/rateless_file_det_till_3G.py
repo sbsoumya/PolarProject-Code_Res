@@ -765,11 +765,9 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	final_Iter_p_1=Iter_p
 	final_Iter_I_1=Iter_I
 	#print decoded
-	#print Iter
 	#Not if the following happens the second step does not happen 
 	#only last step happens
 	if not anydecoded(decoded): # deal with this in this case final iter will be maxiter
-		print "all exhaust"
 		if final_Iter_1==maxiter:
 			for key in decoded:
 				for i in range(2):
@@ -786,7 +784,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 			
 			Iter_errorfree_1=3*N
 			
-	#print decoded	
+			
 		
 	#print decoded		
 	#Step 2  one side communications-------------------------------------------------------------
