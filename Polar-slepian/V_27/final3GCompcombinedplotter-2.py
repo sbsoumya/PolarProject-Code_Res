@@ -85,8 +85,17 @@ files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_7_512in1024_
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_8_512in1024_T128_18-10-23_03-53-46.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_9_512in1024_T128_18-10-23_11-29-08.txt']
 
-
+#512-9
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-24_22-19-11.txt']
+
+#1024-128
+files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_512in1024_T128_18-10-24_22-17-27.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_512in1024_T128_18-10-25_04-00-13.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_512in1024_T128_18-10-25_11-32-29.txt']
+#1024-128 5 -iter
+files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_512in1024_T128_18-10-25_01-54-51.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_512in1024_T128_18-10-25_07-38-07.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_512in1024_T128_18-10-25_15-12-28.txt']
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------------plot
@@ -132,8 +141,8 @@ p1m,p2m=np.meshgrid(p1,p2)
 (w,x,y,s)=(8,9,10,11)
 z=np.zeros([20,20])
 theory=np.zeros([20,20])
-start=0
-end=1
+start=2
+end=3
 for i in range(start,end):
 	thisfile=files4[i]
 	print thisfile
