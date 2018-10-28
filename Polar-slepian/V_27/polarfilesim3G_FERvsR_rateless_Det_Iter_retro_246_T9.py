@@ -28,8 +28,8 @@ points2=20
 channel_p1list=list(np.linspace(0.01,0.2,points1))
 channel_p2list=list(np.linspace(0.01,0.2,points2))
 print channel_p2list
-compound_plist=[0.03,0.11,0.19]
-channel_p1list=[0.03,0.11,0.19]
+compound_plist=[0.03,0.11,0.17]
+channel_p1list=[0.03,0.11,0.17]
 #channel_p2list=[0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
 T=9

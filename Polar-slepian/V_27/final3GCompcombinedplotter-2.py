@@ -74,7 +74,7 @@ files2=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_1_246in512_T9_
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_20_246in512_T9_18-09-14_13-41-32.txt']
 #
 #print files
-#N=1024
+N=1024
 T=64
 files3=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_7_512in1024_T64_18-10-22_22-03-48.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_8_512in1024_T64_18-10-23_03-49-50.txt', 
@@ -96,6 +96,13 @@ files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_512in1024_
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_512in1024_T128_18-10-25_01-54-51.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_512in1024_T128_18-10-25_07-38-07.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_512in1024_T128_18-10-25_15-12-28.txt']
+#
+files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-26_00-50-41.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_18-10-26_03-27-03.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_18-10-26_06-51-46.txt']
+N=512
+T=9
+
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------------plot
@@ -141,8 +148,8 @@ p1m,p2m=np.meshgrid(p1,p2)
 (w,x,y,s)=(8,9,10,11)
 z=np.zeros([20,20])
 theory=np.zeros([20,20])
-start=2
-end=3
+start=1
+end=2
 for i in range(start,end):
 	thisfile=files4[i]
 	print thisfile
@@ -171,7 +178,7 @@ plt.plot(p2,z[start],label="General,$p_1=$"+str(lines[0]),color="blue",marker="^
 plt.plot(p2,theory[start],label="Sum Capacity,$p_1=$"+str(lines[0]),color="black",marker=">")
 plt.ylabel('$\l(p)$')
 plt.xlabel('flipover probability $p_2$')
-plt.title("$X-p_1-Y-p_2-Z$,\n $t$=128, $n$=1024, $\delta$=0.05 ")
+plt.title("$X-p_1-Y-p_2-Z$,\n $t$9, $n$=512, $\delta$=0.05 ")
 plt.grid(True)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
@@ -180,7 +187,11 @@ ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletex
 
 #error array
 errorarray=	ml.getline(thisfile,[13])[0]
-comp=[]
+Darray=ml.getline(thisfile,[16])[0]
+compA=[]
+compB=[]
+compC=[]
+compSum=[]
 err_Y2X=[]
 err_Z2X=[]
 err_X2Y=[]
@@ -195,8 +206,19 @@ for i in range(20):
 	err_Z2Y.append(10**errorarray[i][3])
 	err_Y2Z.append(10**errorarray[i][4])
 	err_X2Z.append(10**errorarray[i][5])
-	comp.append(float(lines[2][i])/(1-10**errorarray[i][4]))
+	
+	compA.append(float(Darray[i][0])/N/(1-10**errorarray[i][2]-10**errorarray[i][5]))	
+	compB.append(float(Darray[i][1])/N/(1-10**errorarray[i][0]-10**errorarray[i][4]))
+	compC.append(float(Darray[i][2])/N/(1-10**errorarray[i][1]-10**errorarray[i][3]))
+	compSum.append(float(Darray[i][0])/N/(1-10**errorarray[i][2]-10**errorarray[i][5])+float(Darray[i][1])/N/(1-10**errorarray[i][0]-10**errorarray[i][4])+float(Darray[i][2])/N/(1-10**errorarray[i][1]-10**errorarray[i][3]))
 
+
+plt.plot(p2,compA,label="l for A")
+plt.plot(p2,compB,label="l for B")
+plt.plot(p2,compC,label="l for C")
+plt.plot(p2,compSum,label="sum l")
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
 
 print len(err_Y2X)
 print len(err_Z2X)
