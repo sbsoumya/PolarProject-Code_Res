@@ -22,7 +22,7 @@ from timeit import default_timer as timer
 #=================================================================simulation		
 #------------Number of good channels = capacity
 start = timer()
-Nlist=[512] #keep this singleton
+Nlist=[8192] #keep this singleton
 points1=20
 points2=20
 channel_p1list=list(np.linspace(0.01,0.2,points1))
@@ -32,11 +32,11 @@ compound_plist=[0.03,0.11,0.17]
 channel_p1list=[0.03,0.11,0.17]
 #channel_p2list=[0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
-T=9
-R_p1=246
+T=150
+R_p1=4096
 F_p1=Nlist[0]-R_p1
 error_free_msg_length=F_p1+T #msg to be sent error free
-runsim=1
+runsim=1000
 #\=points
 start=timer()
 print "RATE Vs FER REPORT Rateless Det Iter retro"
