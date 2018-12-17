@@ -1106,7 +1106,18 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	
 	err_Y2Z = (final_Y2Z.tolist() != YN.tolist())
 	err_X2Z = (final_X2Z.tolist() != XN.tolist())
+	#correctbits
+	CRB_Y2X = sum(final_Y2X== YN)
+	CRB_Z2X = sum(final_Z2X== ZN)
 	
+	CRB_X2Y = sum(final_X2Y== XN)
+	CRB_Z2Y = sum(final_Z2Y== ZN)
+	
+	CRB_Y2Z = sum(final_Y2Z== YN)
+	CRB_X2Z = sum(final_X2Z== XN)
+	
+	CRB=	CRB_Y2X+CRB_Z2X+CRB_X2Y+CRB_Z2Y+CRB_Y2Z+CRB_X2Z
+
 	
 	Total_error_free= Iter_errorfree_1+Iter_errorfree_2
 	# decoding of X and Y, decoding at Z, decoding OF Z at X and Y)
@@ -1136,7 +1147,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 		D_Z=len(D1_Z)+T
 
 		
-	return (Total_error_free,error,decoded,errorarray,Iter_prob,[D_X,D_Y,D_Z])
+	return (Total_error_free,error,decoded,errorarray,Iter_prob,[D_X,D_Y,D_Z],CRB)
 	
 def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,channel_p2,error_free_msg_length,runsim,printFT):
 	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
@@ -1157,7 +1168,7 @@ def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,cha
 	D_array_cnt=[0,0,0]
 	for i in range(runsim):
 		XN=np.random.randint(2,size=N)
-		(Total_error_free,error,decoded,errorarray,Iter_prob,Darray)=send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist_u,Glist,T,printFT)
+		(Total_error_free,error,decoded,errorarray,Iter_prob,Darray,CRB)=send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_plist_u,Glist,T,printFT)
 		errorfree_ach_rate+=float(Total_error_free)/(N*runsim) # calculates E{D}/N
 		error_array_cnt=[float(sum(x)) for x in zip(error_array_cnt, errorarray)]
 		Iter_prob_cnt=[float(sum(x)) for x in zip(Iter_prob, Iter_prob_cnt)]
@@ -1167,7 +1178,7 @@ def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,cha
 		block_errorcnt+=error
 		
 	#print block_errorcnt
-	block_error=float(block_errorcnt)
+	block_error=float(block_errorcnt
 	error_array=[float(i)/runsim for i in error_array_cnt]
 	Iter_probab=[float(i)/runsim for i in Iter_prob_cnt]
 	D_array=[float(i)/runsim for i in D_array_cnt]

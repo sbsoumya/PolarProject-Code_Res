@@ -103,6 +103,13 @@ files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T
 N=512
 T=9
 
+#8192
+files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_4096in8192_T150_18-11-24_22-11-07.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_4096in8192_T150_18-11-27_20-26-02.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_4096in8192_T150_18-12-01_19-30-14.txt']
+N=8192
+t=150
+
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------------plot
@@ -148,8 +155,8 @@ p1m,p2m=np.meshgrid(p1,p2)
 (w,x,y,s)=(8,9,10,11)
 z=np.zeros([20,20])
 theory=np.zeros([20,20])
-start=1
-end=2
+start=2
+end=3
 for i in range(start,end):
 	thisfile=files4[i]
 	print thisfile
@@ -175,10 +182,10 @@ for i in range(start,end):
 #print z
 #surf1 = ax.plot_wireframe(p1m,p2m,z,color="green",label="General")
 plt.plot(p2,z[start],label="General,$p_1=$"+str(lines[0]),color="blue",marker="^")
-plt.plot(p2,theory[start],label="Sum Capacity,$p_1=$"+str(lines[0]),color="black",marker=">")
+plt.plot(p2,theory[start],label="Theory Sum Capacity,$p_1=$"+str(lines[0]),color="black",marker=">")
 plt.ylabel('$\l(p)$')
 plt.xlabel('flipover probability $p_2$')
-plt.title("$X-p_1-Y-p_2-Z$,\n $t$9, $n$=512, $\delta$=0.05 ")
+plt.title("$X-p_1-Y-p_2-Z$,\n $t$="+str(t)+", $n$="+str(N))
 plt.grid(True)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
