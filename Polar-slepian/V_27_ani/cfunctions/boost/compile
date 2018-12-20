@@ -1,0 +1,4 @@
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/python2.7/"
+g++ -c -fPIC hello.cpp -o hello.o
+g++ -shared -Wl,-soname,hello.so -o hello.so  hello.o -lpython2.7 -lboost_python
+

@@ -1,0 +1,228 @@
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{latexsym}
+\usepackage{setspace}
+\usepackage{bbm}
+\usepackage{flushend}
+\usepackage{dsfont}
+\usepackage{xspace}
+%\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+
+%% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\dP}{\mathrm{P}}
+\newcommand{\dQ}{\mathrm{Q}}
+\newcommand{\bPP}[1]{{\dP_{#1}}}
+\newcommand{\bQQ}[1]{{\dQ_{#1}}}
+\newcommand{\bPr}[1]{{\mathbb{P}}\left(#1\right)}
+\newcommand{\bPPr}[2]{{\mathbb{P}}_{#1}\left(#2\right)}
+\newcommand{\tPr}[1]{\tilde{\mathrm{P}}\left(#1\right)}
+\newcommand{\tPP}[1]{{\tilde{\mathrm{P}}}_{#1}}
+\newcommand{\tP}[2]{\tilde{\mathrm{P}}_{#1}\left({#2}\right)}
+\newcommand{\tPs}[3]{\tilde{\mathrm{P}}^{#1}_{#2}\left({#3}\right)}
+\newcommand{\bP}[2]{\mathrm{P}_{#1}\left({#2}\right)}
+\newcommand{\bQ}[2]{\mathrm{Q}_{#1}\left({#2}\right)}
+\newcommand{\bE}[2]{{\mathbb{E}}_{#1}\left\{{#2}\right\}}
+\newcommand{\bEE}[1]{{\mathbb{E}}\left[{#1}\right]}
+\newcommand{\mcf}{\mathrm{mcf}}
+\newcommand{\unif}{\bPP {\mathtt{unif}}}
+\newcommand{\mc}{-\!\!\!\!\circ\!\!\!\!-}
+
+\newcommand{\cA}{{\mathcal A}}
+\newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}}
+\newcommand{\cD}{{\mathcal D}}
+\newcommand{\cE}{{\mathcal E}}
+\newcommand{\cF}{{\mathcal F}}
+\newcommand{\cG}{{\mathcal G}}
+\newcommand{\cH}{{\mathcal H}}
+\newcommand{\tg}{\tilde{g}}
+\newcommand{\cI}{{\mathcal I}}
+\newcommand{\cJ}{{\mathcal J}}
+\newcommand{\cK}{{\mathcal K}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cM}{{\mathcal M}}
+\newcommand{\cN}{{\mathcal N}}
+\newcommand{\mN}{{\mathbb N}}
+\newcommand{\mG}{{\mathbb G}}
+\newcommand{\cO}{{\mathcal O}}
+\newcommand{\cP}{{\mathcal P}}
+\newcommand{\cQ}{{\mathcal Q}}
+\newcommand{\cR}{{\mathcal R}}
+\newcommand{\mR}{{\mathbb R}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\cU}{{\mathcal U}}
+\newcommand{\cV}{{\mathcal V}}
+\newcommand{\cW}{{\mathcal W}}
+\newcommand{\cX}{{\mathcal X}}
+\newcommand{\cY}{{\mathcal Y}}
+\newcommand{\cZ}{{\mathcal Z}}
+
+
+
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bF}{\mathbf{F}}
+\newcommand{\bi}{{\mathbf{i}}}
+\newcommand{\bl}{{\overline{\lambda}}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+
+\newcommand{\ep}{\epsilon}
+\newcommand{\la}{\lambda}
+
+\newcommand{\svar}{{\sigma_{\mathtt{var}} } }
+\newcommand{\sdiv}{{\sigma_{\mathtt{div}}}}
+\newcommand{\ssem}{{\sigma_{\mathtt{sem}}}}
+\newcommand{\sdis}{{\sigma_{\mathtt{dis}}}}
+
+\newcommand{\cDn}{\cD^{(n)}}
+\newcommand{\tDn}{\tilde{\cD}^{(n)}}
+\newcommand{\cRn}{\cR^{(n)}}
+\newcommand{\ls}{{\lambda_{\mathtt{sum}}}}
+
+\newcommand{\nn}{\nonumber}
+\newcommand{\ds}{\displaystyle}
+
+%\renewcommand{\atop}[2]{\genfrac{}{}{0pt}{1}{#1}{#2}}
+
+\usepackage{color}
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{lemma*}{Lemmas}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+
+\theoremstyle{remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{remarks*}{Remarks}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+\newcommand{\argmax}{\mathop{\rm argmax}\limits}
+\newcommand{\argmin}{\mathop{\rm argmin}\limits}
+
+
+\newenvironment{protocol}[1][htb]
+  {\renewcommand{\algorithmcfname}{Protocol}%
+   \begin{algorithm}[#1]%
+  }{\end{algorithm}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%New Macros
+\newcommand{\note}[1]{\textcolor{red}{!! #1 !!}}
+\newcommand{\ttlvrn}[2]{\left\| #1 - #2\right\|_1}
+\newcommand{\KL}[2]{D\big( #1 \big\| #2\big)}
+\newcommand{\CKL}[3]{D\big( #1 \big\| #2\, \big|\, #3\big)}
+\newcommand{\MI}[2]{I\left(#1 \wedge #2\right)}
+\newcommand{\CMI}[3]{I\left(#1 \wedge #2\mid #3\right)}
+\newcommand{\RDg}{D_\alpha(\dP, \dQ)}
+
+\newcommand{\gens}{S}
+\newcommand{\fams}{{\cS(\cM)}}
+\newcommand{\scomp}{{\gens^c}}
+\newcommand{\lams}{{\lambda_\gens}}
+\newcommand{\lam}{\lambda}
+
+\newcommand{\lamax}{{\lambda_{\max}}}
+\newcommand{\lamin}{{\lambda_{\min}}}
+
+\newcommand{\Fji}{F_{ji}}
+\newcommand{\Fs}[2]{F_{#1 #2}}
+\newcommand{\Pji}{\Phi_{ji}}
+
+\newcommand{\espc}{\hspace*{-0.5cm}}
+
+\newcommand{\Slsig}{{S_{\ep,\delta}^\sigma}}
+\newcommand{\Slvar}{{S_{\ep,\delta}^{\mathtt{var}}}}
+\newcommand{\Sldiv}{{S_{\ep,\delta}^{\mathtt{div}}}}
+
+\newcommand{\indicator}{{\mathds{1}}}
+
+\newcommand{\two}{{(2)}}
+\newcommand{\m}{{(m)}}
+\newcommand{\three}{{(3)}}
+
+\newcommand{\mono}{M_{\ep, \delta}}
+\newcommand{\monod}{\mono(X_1, X_2|Z)}
+\newcommand{\monos}[3]{\mono(#1, #2| #3)}
+
+\newcommand{\dT}{{\mathrm{T}}}
+
+\newcommand{\slen}{{S_{\ep, \delta}}}
+\newcommand{\sleng}{{\slen(X, Y \mid Z)}}
+%\newcommand{\mod}{mod\,\,}
+
+\newcommand{\ie}{{\it i.e.}\xspace}
+\newcommand{\cf}{{\it cf.}\xspace}
+
+\newcommand{\bU}{{\bf U}}
+\newcommand{\bX}{{\bf X}}
+\newcommand{\bY}{{\bf Y}}
+\newcommand{\bZ}{{\bf Z}}
+
+\newcommand{\id}[2]{{i_{#1}\left(#2\right)}}
+\newcommand{\idxy}{\id {XY}{x,y}}
+\newcommand{\idXY}{\id {XY}{X,Y}}
+\newcommand{\idxz}{\id {XZ}{x,z}}
+\newcommand{\idXZ}{\id {XZ}{X,Z}}
+
+\newcommand{\var}{\mathrm{\mathbb{V}ar}}
+
+%% comments %%
+
+%\newcommand{\hcolor}[1]{\textcolor{blue}{#1}}
+\newcommand{\hcolor}[1]{#1}
+
+%% paths %%
+\graphicspath{{figures/}}
+
+%%% Paper specific 
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\BSC}{\mathtt{BSC}}
+\newcommand{\encode}{\text{encode}}
+\newcommand{\decode}{\text{decode}}
+\newcommand{\append}{\text{append}}
+\newcommand{\extract}{\text{extract}}
+\newcommand{\Beta}{\text{Beta}}
+\newcommand{\zeros}{\text{zeros}}
+\newcommand{\TOP}{\text{\tt TOP}}
+\newcommand{\BOTTOM}{\text{\tt BOTTOM}}
+
+%\newcommand{\name}{{RT-Polar}~}
+

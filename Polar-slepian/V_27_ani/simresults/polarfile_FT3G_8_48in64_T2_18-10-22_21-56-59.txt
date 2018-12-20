@@ -1,0 +1,6 @@
+"channel:0.17,0.11"
+"Sample FT"
+{"atB": [1, "F"], "atC": [1, "F"], "atA": [1, 1]}
+"channel:0.17,0.17"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}

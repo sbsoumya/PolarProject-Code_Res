@@ -1,0 +1,16 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+"sim ran :1"
+"T:9"
+"N=512"
+"Rate vs Block_error="
+0.060000000000000005
+[0.01, 0.02, 0.03, 0.04, 0.05, 0.060000000000000005, 0.06999999999999999, 0.08, 0.09, 0.09999999999999999, 0.11, 0.12, 0.13, 0.14, 0.15000000000000002, 0.16, 0.17, 0.18000000000000002, 0.19, 0.2]
+[1.611328125, 1.611328125, 1.611328125, 1.611328125, 1.611328125, 1.611328125, 1.611328125, 1.611328125, 1.611328125, 2.091796875, 2.33203125, 2.091796875, 2.251953125, 2.091796875, 2.537109375, 2.251953125, 2.251953125, 2.251953125, 2.251953125, 2.537109375]
+[-Infinity, -Infinity, -Infinity, -Infinity, 0.0, -Infinity, 0.0, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, 0.0, -Infinity, -Infinity, -Infinity, -Infinity, 0.0]
+"errorarray=[err_Y2X,err_Z2X,err_X2Y,err_Z2Y,err_Y2Z,err_X2Z]"
+[[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [0.0, 0.0, 0.0, -Infinity, -Infinity, 0.0], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, 0.0, 0.0], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, 0.0, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity], [-Infinity, -Infinity, -Infinity, 0.0, -Infinity, -Infinity]]
+"Iter=[Iter_step_1,Iter_step_2 (continued)]"
+[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 1.0], [1.0, 1.0], [0.0, 1.0], [0.0, 2.0], [0.0, 1.0], [0.0, 2.0], [0.0, 2.0], [0.0, 2.0], [0.0, 2.0], [0.0, 2.0], [0.0, 2.0]]

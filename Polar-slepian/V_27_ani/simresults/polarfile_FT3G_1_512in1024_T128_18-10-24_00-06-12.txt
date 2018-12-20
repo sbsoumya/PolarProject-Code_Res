@@ -1,0 +1,60 @@
+"channel:0.01,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.02,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.03,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.04,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.05,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.060000000000000005,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.06999999999999999,0.03"
+"Sample FT"
+{"atB": [1, 1], "atC": [1, 1], "atA": [1, 1]}
+"channel:0.08,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.09,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.09999999999999999,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.11,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.12,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.13,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.14,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.15000000000000002,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.16,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
+"channel:0.17,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": [2, 1], "atA": [2, "F"]}
+"channel:0.18000000000000002,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": [2, 1], "atA": [2, "F"]}
+"channel:0.19,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": [2, 1], "atA": [2, "F"]}
+"channel:0.2,0.03"
+"Sample FT"
+{"atB": [2, 1], "atC": ["F", 1], "atA": [2, "F"]}
