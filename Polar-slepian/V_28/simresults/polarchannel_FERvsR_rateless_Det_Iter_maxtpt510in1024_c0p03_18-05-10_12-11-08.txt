@@ -1,0 +1,9 @@
+"RATE Vs FER REPORT Rateless Det Iter retro"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+[824.942737580466, 512.0860588395233, 350.5103065659192]
+"sim ran :1"
+"N=1024"
+"Rate vs Block_error="
+0.03

@@ -1,0 +1,15 @@
+"RATE Vs FER REPORT Rateless Det Iter delta"
+"------------------------------------------"
+"Compound_plist:"
+[0.03, 0.11, 0.17]
+"sim ran :10000"
+"T:0"
+"doiter:3"
+"N=64"
+"Rate vs Block_error="
+[0.03, 0.11, 0.17]
+[0.09375000000001502, 0.09375000000001502, 0.09375000000001502]
+[-Infinity, -Infinity, -2.136677139879544]
+"Iter Probabilities="
+[{"0": 1.0}, {"0": 1.0}, {"0": 1.0}]
+"Time taken:1257.69268584"

@@ -1167,7 +1167,7 @@ def send_rateless_file_Iter_retro_det_3G_sim(N,T,compound_plist_u,channel_p1,cha
 		block_errorcnt+=error
 		
 	#print block_errorcnt
-	block_error=float(block_errorcnt)
+	block_error=float(block_errorcnt)/runsim
 	error_array=[float(i)/runsim for i in error_array_cnt]
 	Iter_probab=[float(i)/runsim for i in Iter_prob_cnt]
 	D_array=[float(i)/runsim for i in D_array_cnt]
