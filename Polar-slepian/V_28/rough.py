@@ -36,18 +36,18 @@ def send_rateless_file_Iter_retro_4G(XN,N,I_ord,channel_p,compound_plist,Glist,T
 	
 	decoded={}
 	for n in nodes:
-		decoded[n]=np.zeroes(M)
+		decoded[n]=np.zeros(M)
 
 	maxiter=len(compound_plist)-1
 	#------------------for filing Tx side
 	# reverse arikan :: THIS IS OF SIZE N 
 	
-	Orig_Data={}
-	Rev_Data={}
-	Orig_Data[Node[0]]=XN
+	Orig_data={}
+	Rev_data={}
+	Orig_data[Node[0]]=XN
 	#MC model
 	for i in range(M-1):
-		Orig_Data[Node[i+1]]=pl.BSCN(channel_p[i],Orig_Data[Node[i]])
+		Orig_data[Node[i+1]]=pl.BSCN(channel_p[i],Orig_data[Node[i]])
 	#tree X centred
 	for i in range(M-1):
 		Ori
@@ -56,10 +56,10 @@ def send_rateless_file_Iter_retro_4G(XN,N,I_ord,channel_p,compound_plist,Glist,T
 		
 		
 		
-		pl.BSCN(channel_p[i],Orig_Data[Node[i]])
+		pl.BSCN(channel_p[i],Orig_data[Node[i]])
 
 	for n in nodes:
-		Rev_Data[n]=ec.polarencode(Orig_Data[n],N)
+		Rev_data[n]=ec.polarencode(Orig_data[n],N)
 	
 	decoded_vector={}
 	decoded_origdata={}
@@ -86,17 +86,17 @@ def send_rateless_file_Iter_retro_4G(XN,N,I_ord,channel_p,compound_plist,Glist,T
 		#extra T bits for checking sent over error free channel(this is over and above iter_G)
 		
 		for n in nodes:
-			Iter_lock[n]=ec.getUN(Rev_Data[n],Iter_T,False)
+			Iter_lock[n]=ec.getUN(Rev_data[n],Iter_T,False)
 			#bits frozen sent over errorrfree channel
 			# Note while decoding the data is assumed to be in sorted order
-			D1[n]=ec.getUN(Rev_Data[n],Iter_F,True)
+			D1[n]=ec.getUN(Rev_data[n],Iter_F,True)
 			decoded_vector[n]={}
-			decoded_vector[n][n]=Rev_Data[n] 
+			decoded_vector[n][n]=Rev_data[n] 
 			Iter_key[n]={}
 			for q in nodes:
 				if q!=n:
-					decoded_vector[n][q]=ec.polarSCdecodeG(Orig_Data[n],N,Iter_p,Iter_I,list(D1[q]),False)
-					Iter_Key[n][q]=ec.getUN(decoded_vector[n][q],Iter_T,False)
+					decoded_vector[n][q]=ec.polarSCdecodeG(Orig_data[n],N,Iter_p,Iter_I,list(D1[q]),False)
+					Iter_key[n][q]=ec.getUN(decoded_vector[n][q],Iter_T,False)
 		
 		for n in nodes:
 			for q in nodes:
