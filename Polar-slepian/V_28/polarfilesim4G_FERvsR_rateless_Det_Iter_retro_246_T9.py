@@ -25,14 +25,14 @@ start = timer()
 Nlist=[512] #keep this singleton
 points2=20
 compound_plist=[0.03,0.11,0.17]
-channel_p0=0.03
-channel_p1list=[0.03,0.11,0.17]
+channel_p0=0.1
+channel_p1list=[0.03]#,0.11,0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
 T=9
 R_p1=246
 F_p1=Nlist[0]-R_p1
 error_free_msg_length=F_p1+T #msg to be sent error free
-runsim=1
+runsim=1000
 #\=points
 start=timer()
 print "RATE Vs FER REPORT Rateless Det Iter retro"
@@ -47,16 +47,18 @@ filenames=[]
 achieved_rates=[]
 Empirical_comps=[]
 block_errors=[]
-
+print "MC2"
 for N in Nlist:
 	print "N="+str(N)
 	for channel_p1 in channel_p1list:
-		channel_p2list=list(np.linspace(channel_p1,0.2,points2))
+		channel_p2list=list(np.linspace(channel_p1,0.17,points2))
+		#channel_p2list=[0.11]
+		
 
 		
 		fc+=1
 		stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_MC2_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		filename2="./simresults/polarfile_FT4G_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		f1=open(filename,'w')
 		f2=open(filename2,'w')
@@ -84,7 +86,7 @@ for N in Nlist:
 			Empirical_comp.append(Emp_comp)
 			FER.append(block_error) # ep
 	
-			json.dump("channel:"+str(channel_p1)+","+str(channel_p2),f2);f2.write("\n")
+			json.dump("channel:"+str(channel_p0)+","+str(channel_p1)+","+str(channel_p2),f2);f2.write("\n")
 			json.dump("Sample FT",f2) ;f2.write("\n")
 			json.dump(decoded,f2);f2.write("\n")
 			print decoded
@@ -104,11 +106,14 @@ for N in Nlist:
 
 
 
-	
-print channel_p1list    
+print "Channel"
+print channel_p0
+print channel_p1list
+print channel_p2list
+print "Output"
 print achieved_rates
-print Empirical_comps
 print block_errors
+print Empirical_comps
 print filenames	
 	
 

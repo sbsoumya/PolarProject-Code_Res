@@ -100,35 +100,48 @@ def isnavi(nodes,decoded,src,dst,exclude,Path):
 	else:
 		exclude.append(src)
 		
-		for n in neighbours:
+		for n in neighbours: #goes from nighbour to neighbour!!
 			navigable=navigable or isnavi(nodes,decoded,n,dst,exclude,Path)
 		return navigable
-def getdecstep(decoded,at,neighbour):
+def getdecstep(nodes,decoded,at,neighbour):
 	# feed neighbour to this function only
 	return decoded[at][nodes.index(neighbour)]
 	
+def allprevcom(D,at,Step,t):
+	com=[]
 	
-"""	
+	for i in range(Step):
+		try:
+			com.append(len(D[i][at]))
+		except:
+			pass
+	#print Step
+	#print com
+	
+	return max(com)
+	
+	
+"""
 nodes=["A","B","C","D"]
         
-decoded={"A":np.array([0,0,0,1]),
-         "B":np.array([0,0,3,0]),
-         "C":np.array([0,3,0,2]),
-         "D":np.array([1,0,2,0]),}
+decoded={"A":np.array([0,1,0,1]),
+         "B":np.array([1,0,2,0]),
+         "C":np.array([0,2,0,3]),
+         "D":np.array([0,0,3,0]),}
          
 #print getneighbours(nodes,decoded,"C",[])
         
-print isnavigable(nodes,decoded,"A","B")
+print isnavigable(nodes,decoded,"A","D")
 
-print getdecstep(decoded,"B","C")
+print getdecstep(nodes,decoded,"B","C")
 """
 #-------------------------------------------------------------------------main function		
 
-def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT): 
+def send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT): 
 	# T < deltaG
 	#compound channel
     #----------------------------------------------------Iterations start
-	nodes=Orig_data.keys()
+	#nodes=Orig_data.keys()
 	M=len(nodes)
 	decoded={}
 	for n in nodes:
@@ -155,6 +168,7 @@ def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,
     
 	D=[{},{},{}]
 	Step=0
+	#Note the Step number in FT starts from 1 , while for indexing it starts from 0
     #--------------------------------------Forward decoding all try to decode each other
 	 #Step 1
     	
@@ -195,11 +209,17 @@ def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,
 					if not is_mismatch(Iter_key[n][q],Iter_lock[q]):
 						decoded[n][nodes.index(q)]=Step+1
 						decoded[q][nodes.index(n)]=Step+1 #reverse
+						#Note decoded vector can have data, even if mismatch
+						#print q
+						#print nodes.index(q)
+						#print nodes.index(n)
+						#print decoded
 	
 		for n in nodes:
 			Iter_errorfree[Step]+=len(D[Step][n])+len(Iter_lock[n])
+			#Iter_errorfree[Step]+=Iter_G+T
 
-
+	
 			
 	final_Iter.append(Iter)
 	final_Iter_F.append(Iter_F)
@@ -214,11 +234,13 @@ def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,
 					if q!=n:
 						decoded[n][nodes.index(q)]=Step+1 # evrything in table is made 1
                         decoded_vector[n][q]=Rev_data[q]
-             
+			
                 Iter_errorfree[0]=M*N
-                
-	print decoded
-	print 
+                #print "ALL EXHAUST 1"
+    
+	        
+	#print decoded
+	#print "End of first step...."
 		
 	#Step 2 till F  one side communications-------------------------------------------------------------
 	#********************************************************************************************START HERE		
@@ -234,25 +256,29 @@ def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,
 		Iter_F=list(set(range(N))-set(Iter_I)) 
         for n in nodes:
             if not anydecodedat(decoded,n):
+				#print "Transmitting "+n
                 # node with no decoded vector transmits
-                Iter_lock[n]=ec.getUN(Rev_data[n],Iter_T,False)
-                D[Step][n]=ec.getUN(Rev_data[n],Iter_F,True)
-                decoded_vector[n]={} #decoded vectors AT node n
-                decoded_vector[n][n]=Rev_data[n] 
-                Iter_key[n]={}
+				Iter_lock[n]=ec.getUN(Rev_data[n],Iter_T,False)
+				D[Step][n]=ec.getUN(Rev_data[n],Iter_F,True)
+				Iter_key[n]={}
                 
                 #All other nodes(q) decoding n
-                for q in nodes:
-                    if q!=n and anydecodedat(decoded,n)==0: #stops this step once one node decodes this
-                        decoded_vector[q][n]=ec.polarSCdecodeG(Orig_data[q],N,Iter_p,Iter_I,list(D[Step][n]),False) 
-                        Iter_key[q][n]=ec.getUN(decoded_vector[q][n],Iter_T,False)
-                        if not is_mismatch(Iter_key[q][n],Iter_lock[n]):                   
+				for q in nodes:
+					if q!=n and anydecodedat(decoded,n)==0: #stops this step once one node decodes this
+						decoded_vector[q][n]=ec.polarSCdecodeG(Orig_data[q],N,Iter_p,Iter_I,list(D[Step][n]),False) 
+						Iter_key[q][n]=ec.getUN(decoded_vector[q][n],Iter_T,False)
+						#print q+" trying ..."
+						if not is_mismatch(Iter_key[q][n],Iter_lock[n]): 
+							#print q+" successful..."                  
 							decoded[q][nodes.index(n)]=Step+1
                             #reverse
 							D[Step][q]=ec.getUN(Rev_data[q],Iter_F,True)# reverse
 							decoded_vector[n][q]=ec.polarSCdecodeG(Orig_data[n],N,Iter_p,Iter_I,list(D[Step][q]),False)
 							decoded[n][nodes.index(q)]=Step+1 #reverse
-							Iter_errorfree[Step]=len(D[Step][n])-len(D[Step-1][n])+len(D[Step][q])-len(D[Step-1][q])
+							#print D
+							#Iter_errorfree[Step]=len(D[Step][n])-len(D[Step-1][n])+len(D[Step][q])-len(D[Step-1][q])
+							Iter_errorfree[Step]=len(D[Step][n])+len(D[Step][q])-allprevcom(D,n,Step,T)-allprevcom(D,q,Step,T)
+							#print len(D[Step][n])
 							Step+=1
 							final_Iter.append(Iter)
 							final_Iter_F.append(Iter_F)
@@ -261,7 +287,7 @@ def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,
 
 	
 	#if some nodes have no decoded vectors even after last iter, last step
-	# last step is 3
+	
 	if final_Iter[-1]==maxiter:
 		revNotover=True
 		for n in nodes:
@@ -271,59 +297,89 @@ def send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,
 				for q in nodes:
 					if q!=n:
 						decoded_vector[q][n]=Orig_data[n]
-						decoded[q][nodes.index[n]]=Step
+						decoded[q][nodes.index(n)]=Step+1
 				
 				#for every node with no decoding all transferred
-				prevcom=sum([len(D[i][n]) for i in range(Step)])		
-				Iter_errorfree[Step]=Iter_errorfree[Step]+N-prevcom-t
+				#prevcom=sum([len(D[i][n]) for i in range(Step)])+T		
+				Iter_errorfree[Step]=Iter_errorfree[Step]+N-allprevcom(D,n,Step+1,T)
 
 				#connecting this node to some node
 				for q in nodes:
 					if q!=n and (1 in decoded[q]):
 						decoded_vector[n][q]=Orig_data[q]
-						decoded[n][nodes.index[q]]=Step
+						decoded[n][nodes.index[q]]=Step+1
 						# considered that all these floating nodes was connected to some node decoded in first step
 						if revNotover:
-							prevcom=sum([len(D[i][q]) for i in range(Step)])		
-							Iter_errorfree[Step]=Iter_errorfree[Step]+N-prevcom-t
+							#prevcom=sum([len(D[i][q]) for i in range(Step)])		
+							Iter_errorfree[Step]=Iter_errorfree[Step]+N-allprevcom(D,q,Step+1,T)
 							revNotover = False
 						
-	print decoded
+	#print decoded
+	#print "End of second step"
 	#final decoding-----------------------------------------------------------------
-	
+	#print decoded_vector
 	for n in nodes:
 		for q in nodes:
 			if q!=n:
-				try:
+				
 					if decoded[n][nodes.index(q)]==0:
 						(Path,isnav)=isnavigable(nodes,decoded,n,q)
-						prevnode=n
-						for i in range(len(Path)-1):
-							if decoded[n][nodes.index(Path[i+1])]==0:
-								decstep=getdecstep(decoded,prevnode,Path[i+1])
-								decoded_vector[n][Path[i+1]]=ec.polarSCdecodeG(decoded_vector[n][prevnode],N,final_Iter[decstep],final_Iter_I[decstep],list(D[decstep][Path[i+1]]),False)
-								decoded[n][nodes.index(Path[i+1])]="F"
-				except:
-					print "Final decoding error"
-					print "src="+n+",dst="+q
-					print decoded
+						# path contains src and dest,
+						#Decoding towards destination starting from src
+						#THE PATH IS A SEQUENCE OF DECODING
+						
+						#print "src="+n+",dst="+q
+						#print Path
+						#print decoded
+						
+						for i in range(1,len(Path)): # leaving the src vector
+							if decoded[n][nodes.index(Path[i])]==0:
+								#print "decoding "+Path[i]+", using "+Path[i-1]
+								decstep=int(getdecstep(nodes,decoded,Path[i-1],Path[i]))-1
+								
+								#print decoded[n][nodes.index(Path[i-1])]
+								#print final_Iter[decstep]
+								#print final_Iter_I[decstep]
+								
+								decoded_vector[n][Path[i]]=ec.polarSCdecodeG(decoded_vector[n][Path[i-1]],N,final_Iter_p[decstep],final_Iter_I[decstep],list(D[decstep][Path[i]]),False)
+								decoded[n][nodes.index(Path[i])]="F"
+								
+						
+						
 				
 
+	#print decoded
+	#print "End of final step"
 	
 	for n in nodes:
 		decoded_origdata[n]={}
 		err[n]={}
 		for q in nodes:
 			decoded_origdata[n][q]= ec.polarencode(decoded_vector[n][q],N)
-			#err[n][q]=(decoded_origdata[n][q].tolist() != Orig_data[n][q].tolist())
-			err[n][q]=0
-
+			err[n][q]=(decoded_origdata[n][q].tolist() != Orig_data[q].tolist())
+			
+			
 	Total_error_free= sum(Iter_errorfree)
-	
+	"""
+	for l in Iter_errorfree:
+		if l<0:
+			print "ERROR"
+			print l
+			print Iter_errorfree
+	print Iter_errorfree
+	"""
 	error=0
-	error= (sum([err[n][q] for (n,q) in zip(nodes,nodes)])) >0 
-	#print error
-
+	errcnt=0
+	for n in nodes:
+		for q in nodes:
+			errcnt+=err[n][q]
+	
+	error= (errcnt) >0 
+	"""
+	if error==0:
+		print err
+	print error
+	"""
 	
 	if not error:	
 		Emp_comp_len=Total_error_free
@@ -355,6 +411,7 @@ def send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist_u,channel_p,erro
     #-------------- Simulation input formation
     
 	nodes=["A","B","C","D"]	
+	print nodes
 	M = len(nodes)
 
 	Orig_data={}
@@ -364,15 +421,18 @@ def send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist_u,channel_p,erro
 		Orig_data[nodes[0]]=XN
 
         #MC 
+		
 		for i in range(M-1):
 			Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[i]])
 			
+			
 		#Tree
+		"""
 		for i in range(M-1):
 			Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[0]])
+		"""
 		
-		
-		(Total_error_free,error,decoded,Emp_comp_len)=send_rateless_file_Iter_retro_4G(Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT)
+		(Total_error_free,error,decoded,Emp_comp_len)=send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT)
 		errorfree_ach_rate+=float(Total_error_free)/(N*runsim) # calculates E{D}/N
 		Emp_comp+=float(Emp_comp_len)/(N*runsim)
 		block_errorcnt+=error
