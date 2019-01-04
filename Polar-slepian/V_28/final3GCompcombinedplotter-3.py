@@ -16,7 +16,7 @@ plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
 plt.rc('figure', figsize=[8,3]) 
-
+"""
 #1024-128
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_512in1024_T128_18-10-24_22-17-27.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_512in1024_T128_18-10-25_04-00-13.txt', 
@@ -32,11 +32,12 @@ t=128
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_512in1024_T128_18-10-25_01-54-51.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_512in1024_T128_18-10-25_07-38-07.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_512in1024_T128_18-10-25_15-12-28.txt']
-
+"""
 #512
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-10-26_00-50-41.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_18-10-26_03-27-03.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_18-10-26_06-51-46.txt']
+#Emprirical
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-12-31_23-46-35.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_19-01-01_02-17-33.txt',
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_19-01-01_05-34-17.txt']
@@ -61,7 +62,12 @@ N=8192
 t=1000
 runsim=1000
 """
+#4G
+#MC1
+"""
+files5=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_MC1_1_246in512_T9_19-01-03_22-34-32.txt']
 
+"""
 #==============================================================================Benchmark
 
 #----given p_1

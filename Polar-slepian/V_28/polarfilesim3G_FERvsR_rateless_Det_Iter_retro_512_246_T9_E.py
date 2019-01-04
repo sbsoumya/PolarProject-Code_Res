@@ -39,7 +39,7 @@ error_free_msg_length=F_p1+T #msg to be sent error free
 runsim=1000
 #\=points
 start=timer()
-print "RATE Vs FER REPORT Rateless Det Iter retro"
+print "RATE Vs FER REPORT Rateless Det Iter retro final CRC"
 print "------------------------------------------"
 print "Compound_plist:"
 print compound_plist
@@ -63,7 +63,7 @@ for N in Nlist:
 		f1=open(filename,'w')
 		f2=open(filename2,'w')
 		filenames.append(filename)
-		json.dump( "RATE Vs FER REPORT Rateless Det Iter retro",f1) ;f1.write("\n")
+		json.dump( "RATE Vs FER REPORT Rateless Det Iter retro final CRC",f1) ;f1.write("\n")
 		json.dump( "------------------------------------------",f1) ;f1.write("\n")
 		json.dump( "Compound_plist:",f1) ;f1.write("\n")
 		json.dump(compound_plist,f1) ;f1.write("\n")

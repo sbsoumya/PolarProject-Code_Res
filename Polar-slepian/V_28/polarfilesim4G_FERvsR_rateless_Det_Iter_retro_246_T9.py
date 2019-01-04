@@ -58,7 +58,7 @@ for N in Nlist:
 		
 		fc+=1
 		stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_MC2_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_MC2"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		filename2="./simresults/polarfile_FT4G_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		f1=open(filename,'w')
 		f2=open(filename2,'w')
@@ -97,7 +97,7 @@ for N in Nlist:
 		achieved_rates.append(achieved_rate)	
 		Empirical_comps.append(Empirical_comp)	
 		json.dump( "Rate vs Block_error=",f1) ;f1.write("\n")
-		json.dump(channel_p1,f1);f1.write("\n")
+		json.dump([channel_p0,channel_p1],f1);f1.write("\n")
 		json.dump(channel_p2list,f1) ;f1.write("\n")
 		json.dump(achieved_rate,f1) ;f1.write("\n")
 		json.dump(block_error_exp,f1) ;f1.write("\n")

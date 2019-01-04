@@ -1099,6 +1099,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	
 
 	#errors
+	
 	err_Y2X = (final_Y2X.tolist() != YN.tolist())
 	err_Z2X = (final_Z2X.tolist() != ZN.tolist())
 	
@@ -1108,11 +1109,22 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	err_Y2Z = (final_Y2Z.tolist() != YN.tolist())
 	err_X2Z = (final_X2Z.tolist() != XN.tolist())
 	
+	#CRC match CRC
+	Cerr_Y2X = (ml.getCRC([int(u) for u in final_Y2X.tolist()],32) != ml.getCRC([int(u) for u in YN.tolist()],32))
+	Cerr_Z2X = (ml.getCRC([int(u) for u in final_Z2X.tolist()],32) != ml.getCRC([int(u) for u in ZN.tolist()],32))
+	
+	Cerr_X2Y = (ml.getCRC([int(u) for u in final_X2Y.tolist()],32) != ml.getCRC([int(u) for u in XN.tolist()],32))
+	Cerr_Z2Y = (ml.getCRC([int(u) for u in final_Z2Y.tolist()],32) != ml.getCRC([int(u) for u in ZN.tolist()],32))
+	
+	Cerr_Y2Z = (ml.getCRC([int(u) for u in final_Y2Z.tolist()],32) != ml.getCRC([int(u) for u in YN.tolist()],32))
+	Cerr_X2Z = (ml.getCRC([int(u) for u in final_X2Z.tolist()],32) != ml.getCRC([int(u) for u in XN.tolist()],32))
 	
 	Total_error_free= Iter_errorfree_1+Iter_errorfree_2
 	# decoding of X and Y, decoding at Z, decoding OF Z at X and Y)
 	error=0
 	error= (err_X2Y+err_Y2X+err_Y2Z+err_X2Z+err_Z2Y+err_Z2X) >0 
+	
+	Cerror= (Cerr_X2Y+Cerr_Y2X+Cerr_Y2Z+Cerr_X2Z+Cerr_Z2Y+Cerr_Z2X) >0 
 	#print error
 	errorarray=[err_Y2X,err_Z2X,err_X2Y,err_Z2Y,err_Y2Z,err_X2Z]
 	Iter_prob=[final_Iter_1,final_Iter_2]
@@ -1136,7 +1148,7 @@ def send_rateless_file_Iter_retro_3G(XN,N,I_ord,channel_p1,channel_p2,compound_p
 	except:
 		D_Z=len(D1_Z)+T
 	
-	if not error:	
+	if not Cerror:	
 		Emp_comp_len=Total_error_free
 	else:
 		Emp_comp_len=3*N

@@ -307,7 +307,7 @@ def send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_
 				for q in nodes:
 					if q!=n and (1 in decoded[q]):
 						decoded_vector[n][q]=Orig_data[q]
-						decoded[n][nodes.index[q]]=Step+1
+						decoded[n][nodes.index(q)]=Step+1
 						# considered that all these floating nodes was connected to some node decoded in first step
 						if revNotover:
 							#prevcom=sum([len(D[i][q]) for i in range(Step)])		
@@ -421,16 +421,16 @@ def send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist_u,channel_p,erro
 		Orig_data[nodes[0]]=XN
 
         #MC 
-		
+		"""
 		for i in range(M-1):
 			Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[i]])
 			
-			
+		"""	
 		#Tree
-		"""
+		
 		for i in range(M-1):
 			Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[0]])
-		"""
+		
 		
 		(Total_error_free,error,decoded,Emp_comp_len)=send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT)
 		errorfree_ach_rate+=float(Total_error_free)/(N*runsim) # calculates E{D}/N
