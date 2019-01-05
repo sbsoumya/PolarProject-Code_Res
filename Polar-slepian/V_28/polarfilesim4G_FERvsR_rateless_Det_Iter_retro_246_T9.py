@@ -25,10 +25,10 @@ start = timer()
 Nlist=[512] #keep this singleton
 points2=20
 compound_plist=[0.03,0.11,0.17]
-channel_p0=0.1
+channel_p0=0.07
 channel_p1list=[0.03]#,0.11,0.17]
 compoundcap=[pl.CapacityBSC(Nlist[0],p) for p in compound_plist]
-T=9
+T=50
 R_p1=246
 F_p1=Nlist[0]-R_p1
 error_free_msg_length=F_p1+T #msg to be sent error free
@@ -47,18 +47,23 @@ filenames=[]
 achieved_rates=[]
 Empirical_comps=[]
 block_errors=[]
-print "MC2"
+MC=False
+#print "MC2"
 for N in Nlist:
 	print "N="+str(N)
 	for channel_p1 in channel_p1list:
-		channel_p2list=list(np.linspace(channel_p1,0.17,points2))
+		channel_p2_start=0.01
+		channel_p2list=list(np.linspace(channel_p2_start,0.2,points2))
 		#channel_p2list=[0.11]
 		
 
 		
 		fc+=1
 		stamp=datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-		filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_MC2"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+		if MC:
+			filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_MC2_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
+		else:
+			filename="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro4G_NB_Tree_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		filename2="./simresults/polarfile_FT4G_"+str(fc).replace(".",'p')+"_"+str(R_p1)+"in"+str(N)+"_T"+str(T)+"_"+stamp+".txt"
 		f1=open(filename,'w')
 		f2=open(filename2,'w')
@@ -80,7 +85,7 @@ for N in Nlist:
 	
 		for channel_p2 in channel_p2list:
 		#print "channel_p:"+str(channel_p)
-			(ach_rate,block_error,decoded,Emp_comp)=rlf.send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist,[channel_p0,channel_p1,channel_p2],error_free_msg_length,runsim,False)
+			(ach_rate,block_error,decoded,Emp_comp)=rlf.send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist,[channel_p0,channel_p1,channel_p2],error_free_msg_length,runsim,False,MC)
 
 			achieved_rate.append(ach_rate) # E{D}/N
 			Empirical_comp.append(Emp_comp)

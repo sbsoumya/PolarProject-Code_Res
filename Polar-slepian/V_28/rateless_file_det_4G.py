@@ -341,7 +341,8 @@ def send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_
 								#print final_Iter[decstep]
 								#print final_Iter_I[decstep]
 								
-								decoded_vector[n][Path[i]]=ec.polarSCdecodeG(decoded_vector[n][Path[i-1]],N,final_Iter_p[decstep],final_Iter_I[decstep],list(D[decstep][Path[i]]),False)
+								#decoded_vector[n][Path[i]]=ec.polarSCdecodeG(decoded_vector[n][Path[i-1]],N,final_Iter_p[decstep],final_Iter_I[decstep],list(D[decstep][Path[i]]),False)
+								decoded_vector[n][Path[i]]=ec.polarSCdecodeG(ec.polarencode(decoded_vector[n][Path[i-1]],N),N,final_Iter_p[decstep],final_Iter_I[decstep],list(D[decstep][Path[i]]),False)
 								decoded[n][nodes.index(Path[i])]="F"
 								
 						
@@ -387,10 +388,10 @@ def send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_
 		Emp_comp_len=4*N
 
 		
-	return (Total_error_free,error,decoded,Emp_comp_len)
+	return (Total_error_free,error,decoded,Emp_comp_len,err)
 
 	
-def send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist_u,channel_p,error_free_msg_length,runsim,printFT):
+def send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist_u,channel_p,error_free_msg_length,runsim,printFT,MC):
 	#error_free_msg_length is the initial error_free_msg_length, that is the frozen bits considered+T.
 	compound_plist=list(compound_plist_u) #best channel first
 	compound_plist.sort()
@@ -413,30 +414,29 @@ def send_rateless_file_Iter_retro_det_4G_sim(N,T,compound_plist_u,channel_p,erro
 	nodes=["A","B","C","D"]	
 	print nodes
 	M = len(nodes)
+	if MC:
+		print "MC"
+	else:
+		print "Tree"
 
 	Orig_data={}
     #---------------------
 	for i in range(runsim):
 		XN=np.random.randint(2,size=N)
 		Orig_data[nodes[0]]=XN
-
-        #MC 
-		"""
-		for i in range(M-1):
-			Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[i]])
-			
-		"""	
-		#Tree
-		
-		for i in range(M-1):
-			Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[0]])
+		if MC:
+			for i in range(M-1):
+				Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[i]])
+		else:	
+			for i in range(M-1):
+				Orig_data[nodes[i+1]]=pl.BSCN(channel_p[i],Orig_data[nodes[0]])
 		
 		
-		(Total_error_free,error,decoded,Emp_comp_len)=send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT)
+		(Total_error_free,error,decoded,Emp_comp_len,err)=send_rateless_file_Iter_retro_4G(nodes,Orig_data,N,I_ord,channel_p,compound_plist,Glist,T,printFT)
 		errorfree_ach_rate+=float(Total_error_free)/(N*runsim) # calculates E{D}/N
 		Emp_comp+=float(Emp_comp_len)/(N*runsim)
 		block_errorcnt+=error
-		
+	print err	
 	#print block_errorcnt
 	block_error=float(block_errorcnt)/runsim
 

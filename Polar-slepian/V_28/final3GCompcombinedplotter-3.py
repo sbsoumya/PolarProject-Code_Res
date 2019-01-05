@@ -41,6 +41,10 @@ files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T
 files4=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_18-12-31_23-46-35.txt', 
 './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_19-01-01_02-17-33.txt',
  './simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_19-01-01_05-34-17.txt']
+files5=['./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_1_246in512_T9_19-01-04_22-10-40.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_2_246in512_T9_19-01-05_01-14-58.txt', 
+'./simresults/polarfile_FERvsR_rateless_Det_Iter_retro3G_NB_3_246in512_T9_19-01-05_04-41-19.txt']
+
 
 N=512
 t=9
@@ -76,11 +80,11 @@ fig = plt.figure()
 ax=plt.subplot(211)
 plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
 #p2=list(np.linspace(0.01,0.2,20))
-(w,x,y,s,e)=(8,9,10,11,-1)
+(w,x,y,s,e)=(8,9,10,11,-2)
 z=np.zeros([20])
 theory=np.zeros([20])
 
-usefile=1
+usefile=2
 
 thisfile=files4[usefile]
 print thisfile
@@ -90,7 +94,9 @@ p2=lines[1]
 achrate=lines[2]
 errexp=lines[3]
 Empirical=lines[4]
+EmpiricalCRC=ml.getline(files5[usefile],[-2])[0]
 print Empirical
+print EmpiricalCRC
 point=len(lines[1])
 
 for j in range(point):
@@ -107,6 +113,7 @@ for  j in range(20):
 plt.plot(p2,z,label="l(p) by formula",color="blue",marker="^")
 plt.plot(p2,theory,label="Theory Sum Capacity",color="black",marker=">")
 plt.plot(p2,Empirical,label="Empirical Compression",color="green", marker="<")
+plt.plot(p2,EmpiricalCRC,label="EmpiricalCRC",color="red",marker="o")
 plt.ylabel('$\l(p)$')
 plt.xlabel('flipover probability $p_2$')
 plt.title("$X-p_1-Y-p_2-Z$,\n $t$="+str(t)+", $n$="+str(N)+", $p_1=$"+str(p1))
@@ -145,10 +152,10 @@ for i in range(20):
 	compSum.append(float(Darray[i][0])/N/(1-10**errorarray[i][2]-10**errorarray[i][5])+float(Darray[i][1])/N/(1-10**errorarray[i][0]-10**errorarray[i][4])+float(Darray[i][2])/N/(1-10**errorarray[i][1]-10**errorarray[i][3]))
 
 
-plt.plot(p2,compA,label="l for A")
-plt.plot(p2,compB,label="l for B")
-plt.plot(p2,compC,label="l for C")
-plt.plot(p2,compSum,label="sum l(p)")
+#plt.plot(p2,compA,label="l for A")
+#plt.plot(p2,compB,label="l for B")
+#plt.plot(p2,compC,label="l for C")
+#plt.plot(p2,compSum,label="sum l(p)")
 
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5),columnspacing=0.1,handletextpad =0.1,numpoints=1)
