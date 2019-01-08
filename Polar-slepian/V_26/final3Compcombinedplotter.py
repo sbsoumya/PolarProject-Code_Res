@@ -163,30 +163,32 @@ plt.show()
 
 """
 #~ #================================512vs FR 
+
 #-------------------------plot
 fig=plt.figure()
 ax=plt.subplot(111)
 plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
+"""
 #-----512
 maxiters=3
 N=512
 R_p1=246
-fileT8="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T8_18-06-15_18-04-37.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=8
+#fileT8="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T8_18-06-15_18-04-37.txt"
+fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
+T=9
 
 (x,y,z)=(8,9,10)
-lines=ml.getline(fileT8,[x,y,z])
+lines=ml.getline(fileT9,[x,y,z])
 #print lines
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT8,[12])[0],maxiters)
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[12])[0],maxiters)
 TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
 #plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
+#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
 
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
@@ -204,10 +206,10 @@ lines=ml.getline(fileT32,[x,y,z])
 point=len(lines[0])
 MeanIters=pl.getMeanIter(ml.getline(fileT32,[12])[0],maxiters)
 TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
-#plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
+plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-g>',label='RB-Polar DE, t='+str(T))
+#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-g>',label='RB-Polar DE, t='+str(T))
 
 #-------------------------CRC
 #~ fig=plt.figure()
@@ -232,31 +234,32 @@ MeanIters=pl.getMeanIter(ml.getline(fileT32,[12])[0],maxiters)
 #plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-bo',label='CRC, 32bits')
+#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-bo',label='CRC, 32bits')
 
 #~ fig=plt.figure()
 #~ ax=plt.subplot(111)
 #~ plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
+"""
 #-----512
 maxiters=3
 N=512
 R_p1=246
-fileT8="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_18-17-30.txt"
-#fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
-T=8
+#fileT8="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T0_18-06-15_18-17-30.txt"
+fileT9="./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T9_18-06-06_13-34-29.txt"
+T=9
 
 (x,y,z)=(8,9,10)
-lines=ml.getline(fileT8,[x,y,z])
+lines=ml.getline(fileT9,[x,y,z])
 #print lines
 point=len(lines[0])
-MeanIters=pl.getMeanIter(ml.getline(fileT8,[12])[0],maxiters)
+MeanIters=pl.getMeanIter(ml.getline(fileT9,[12])[0],maxiters)
 #TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
 #plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-kx',label='CRC, 8bits')
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RE-Polar, t='+str(T))
 
 #plt.show()
 
@@ -269,7 +272,7 @@ point=len(lines[0])
 maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileUK,[12])[0],maxiters)
 #plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-.ro',label='Ideal Detection')
-#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-.ro',label='Ideal Detection')
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-.ro',label='Ideal Detection')
 
 #~ (x,y,z)=(9,10,11)
 #~ fileUK="./simresults/polarchannel_FERvsR_rateless_Det_Iter_retro_UK246in512_T0_18-05-09_15-23-02.txt"
@@ -289,7 +292,7 @@ maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
 #plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
 
-#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
 
 
 
@@ -350,7 +353,7 @@ for i in range(point):
 #plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
 
 channel_plist=list(np.linspace(0.01,0.2,20))
-#plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
+plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
 
 plt.ylabel('$\l(p)$')
 plt.xlabel('flipover probability $p$')
