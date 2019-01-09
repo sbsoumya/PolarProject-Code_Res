@@ -10,10 +10,10 @@ plt.rc('figure', figsize=[8,3])
 #==============================================================================Benchmark
 #~ #================================512vs FR 
 #-------------------------plot
-"""
+
 fig=plt.figure()
 ax=plt.subplot(111)
-plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
+plt.subplots_adjust(top=0.95,bottom=0.2,right=0.78,left=0.08)
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
 #-----512
@@ -33,7 +33,7 @@ TPT=[float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)]
 #plt.plot(lines[0],[1-t for t in TPT],'-m^',label='RE-Polar, t='+str(T))
 
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RB-Polar DE, t='+str(T))
+plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-m^',label='RT-Polar DE, t='+str(T))
 
 
 #plt.show()
@@ -67,11 +67,11 @@ maxiters=3
 MeanIters=pl.getMeanIter(ml.getline(fileLTPT,[14])[0],maxiters)
 #plt.plot(lines[0],[1-float(R_p1-T)/(MeanIters[i]*N)*(1-10**lines[2][i]) for i in range(point)],'-gx',label='LT-Polar')
 
-plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
+#plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) ],'-gx',label='LT-Polar DE')
 
 
 
-
+"""
 #---------------------------------cp=dp
 N=512
 fileFR={}
@@ -161,7 +161,7 @@ plt.show()
 ./simresults/polarfile_FERvsR_rateless_Det_Iter_retro_NB_246in512_T32_18-06-15_19-38-19.txt
 
 
-"""
+
 #~ #================================512vs FR 
 
 #-------------------------plot
@@ -170,7 +170,7 @@ ax=plt.subplot(111)
 plt.subplots_adjust(top=0.95,bottom=0.2,right=0.8,left=0.09)
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
-"""
+
 #-----512
 maxiters=3
 N=512
@@ -242,6 +242,7 @@ MeanIters=pl.getMeanIter(ml.getline(fileT32,[12])[0],maxiters)
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
 """
+"""
 #-----512
 maxiters=3
 N=512
@@ -296,7 +297,8 @@ plt.plot(lines[0],[float(lines[1][i])/(1-10**lines[2][i]) for i in range(point) 
 
 
 
-
+"""
+"""
 #---------------------------------cp=dp
 N=512
 fileFR={}
@@ -312,6 +314,7 @@ fileFR["0e03"]="./simresults/polarfile_FERvsp_FR0e03in512_18-06-05_23-43-05.txt"
 fileFR["0e02"]="./simresults/polarfile_FERvsp_FR0e02in512_18-06-05_23-43-28.txt"
 fileFR["0e25"]="./simresults/polarfile_FERvsp_FR0e25in512_18-06-06_16-08-35.txt"
 """
+"""
 fileFR["0e005"]="./simresults/polarchannel_FERvsp_FR0e005in512_18-05-08_23-47-09.txt"
 fileFR["0e1"]="./simresults/polarchannel_FERvsp_FR0e1in512_18-05-08_23-53-00.txt"
 fileFR["0e05"]="./simresults/polarchannel_FERvsp_FR0e05in512_18-05-08_23-46-32.txt"
@@ -324,7 +327,7 @@ fileFR["0e03"]="./simresults/polarchannel_FERvsp_FR0e03in512_18-05-09_14-23-04.t
 fileFR["0e02"]="./simresults/polarchannel_FERvsp_FR0e02in512_18-05-09_14-17-33.txt"
 fileFR["0e25"]="./simresults/polarchannel_FERvsp_FR0e25in512_18-05-09_15-21-47.txt"
 """
-
+"""
 
 
 #print fileFR
@@ -351,9 +354,9 @@ for i in range(point):
 	
 	
 #plt.plot(plist,TPTmax,'-.b>',label='FR-Polar')
-
+"""
 channel_plist=list(np.linspace(0.01,0.2,20))
-plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X|Y)$')
+plt.plot(lines[0],[pl.h(p) for p in lines[0]],'k',label='$H(X_1|X_2)$')
 
 plt.ylabel('$\l(p)$')
 plt.xlabel('flipover probability $p$')
