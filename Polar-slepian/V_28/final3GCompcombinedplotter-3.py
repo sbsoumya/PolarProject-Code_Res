@@ -15,7 +15,7 @@ complist=[0.03,0.11,0.17]
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
-plt.rc('figure', figsize=[8,3]) 
+plt.rc('figure', figsize=[8,2]) 
 
 #------------------------------------------------------------------1024
 """
@@ -92,7 +92,7 @@ fig = plt.figure()
 
 #-------------512
 ax=plt.subplot(111)
-plt.subplots_adjust(top=0.95,bottom=0.2,right=0.9,left=0.08)
+plt.subplots_adjust(top=0.95,bottom=0.3,right=0.9,left=0.08)
 
 #p2=list(np.linspace(0.01,0.2,20))
 (w,x,y,s,e)=(8,9,10,11,-1)

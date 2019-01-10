@@ -5,7 +5,7 @@ complist=[0.03,0.11,0.17]
 plt.rc('xtick', labelsize=14)
 plt.rc('ytick', labelsize=14)
 plt.rc('savefig',dpi=300) 
-plt.rc('figure', figsize=[8,3]) 
+plt.rc('figure', figsize=[8,2]) 
 
 #==============================================================================Benchmark
 #~ #================================512vs FR 
@@ -13,7 +13,7 @@ plt.rc('figure', figsize=[8,3])
 
 fig=plt.figure()
 ax=plt.subplot(111)
-plt.subplots_adjust(top=0.95,bottom=0.2,right=0.78,left=0.08)
+plt.subplots_adjust(top=0.95,bottom=0.3,right=0.78,left=0.08)
 N=512
 #plt.title("Performance of RT-Polar scheme,$\delta$="+str(0.05)+', $n=$'+str(N)) 
 #-----512
